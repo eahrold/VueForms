@@ -1,4 +1,4 @@
-export const states = {
+export default {
     "AL": "Alabama",
     "AK": "Alaska",
     "AS": "American Samoa",

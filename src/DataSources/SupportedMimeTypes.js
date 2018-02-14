@@ -20,4 +20,4 @@ const allMimeTypes = [
     "application/vnd.ms-powerpoint",
 ];
 
-export { allMimeTypes, imageMimeTypes };
+export { allMimeTypes };

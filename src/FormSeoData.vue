@@ -1,51 +1,20 @@
 <template>
-    <div class="panel-group">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#seo-panel">SEO Data</a>
-          </h4>
-        </div>
-        <div id="seo-panel" class="panel-collapse collapse in">
-          <div class="panel-body">
-            <h4>Meta Tags</h4>
-            <div class="form-group" :class='formClass'>
-                <label for='meta_title'>Meta Title: </label>
-                <input type="text" id="meta_title" v-model='aValue.meta_title' class="form-control">
-                <form-errors :errors='errors' property='meta_title'></form-errors>
-            </div>
+    <form-panel>
+            <h4>SEO Tags</h4>
+            <form-text label='Meta Title' v-model='aValue.meta_title' :property='`{property}.meta_title`' :errors='errors'></form-text>
 
-            <div class="form-group" :class='formClass'>
-                <label for='meta_description'>Meta Description: </label>
-                <input type="text" id="meta_description" v-model='aValue.meta_description' class="form-control">
-                <form-errors :errors='errors' property='meta_description'></form-errors>
-            </div>
+            <form-text label='Meta Description' v-model='aValue.meta_description' :property='`{property}.meta_description`' :errors='errors'></form-text>
 
-            <div class="form-group" :class='formClass'>
-                <label for='meta_keywords'>Meta Keywords: </label>
-                <input type="text" id="meta_keywords" v-model='aValue.meta_keywords' class="form-control">
-                <form-errors :errors='errors' property='meta_keywords'></form-errors>
-            </div>
+            <form-text label='Meta Keywords' v-model='aValue.meta_keywords' :property='`{property}.meta_keywords`' :errors='errors'></form-text>
 
-            <h4>OG Tags</h4>
-            <div class="form-group" :class='formClass'>
-                <label for='og_title'>OG Title: </label>
-                <input type="text" id="og_title" v-model='aValue.og_title' class="form-control">
-                <form-errors :errors='errors' property='og_title'></form-errors>
-            </div>
+            <form-text label='OG Title' v-model='aValue.og_title' :property='`{property}.og_title`' :errors='errors'></form-text>
 
-            <div class="form-group" :class='formClass'>
-                <label for='og_description'>OG Description: </label>
-                <input type="text" id="og_description" v-model='aValue.og_description' class="form-control">
-                <form-errors :errors='errors' property='og_description'></form-errors>
-            </div>
+            <form-text label='OG Description' v-model='aValue.og_description' :property='`{property}.og_description`' :errors='errors'></form-text>
 
-            <form-elfinder v-model="aValue.og_image" label="OG Image" property='og_image'></form-elfinder>
-
-          </div>
-        </div>
-      </div>
-    </div>
+            <form-text label='OG Image' placeholder='https://path.to.image' v-model='aValue.og_image' :property='`{property}.og_image`' :errors='errors'>
+                <template slot='help'>Must Be A Valid URL</template>
+            </form-text>
+    </form-panel>
 </template>
 
 <script>

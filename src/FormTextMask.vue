@@ -6,9 +6,9 @@
             <span v-if='lockable' class="input-group-addon">
                 <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
             </span>
+            <form-errors :errors='errors' :property='property'></form-errors>
             <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
         </div>
-        <form-errors :errors='errors' :property='property'></form-errors>
     </div>
 </template>
 
@@ -16,7 +16,7 @@
 
 import { props, errors, watchers } from './FormElementMixins';
 
-const $ = window.jQuery || window.$ || require('jquery')
+const $ = require('jquery')
 require('jquery-mask-plugin');
 
 export default {

@@ -24,6 +24,7 @@
             </span>
         </div>
         <form-errors v-for='(property, idx) in properties' :key='idx' :errors='errors' :property='property'></form-errors>
+        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 <script>

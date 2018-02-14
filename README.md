@@ -2,9 +2,9 @@
 ## (...coming soon)
 ### Vue form input helpers.
 
-Here's a collection of form input and validation 
+Here's a collection of form input and validation
 
-### To Start 
+### To Start
 in your app's entry point
 
 ```
@@ -17,29 +17,29 @@ Vue.use(VueForms)
 
 ```html
 <template>
-  	<form-text v-model='model.text' 
-  		property='text' 
-  		:errors='errors'>
-     	<template slot='help'>Some Help Text</template>
-   </form-text>
+  <form-text v-model='model.text'
+    property='text'
+    :errors='errors'>
+    <template slot='help'>Some Help Text</template>
+ </form-text>
 
-	<form-text v-model='model.required_text' 
-  		property='required_text'
-  		:placeholder='Placeholder text'
-  		:errors='errors' 
-  		:required='true'>
-  		<template slot='help'>Some Required Help Text</template>
-  	</form-text>
+  <form-text v-model='model.required_text'
+    property='required_text'
+    :placeholder='Placeholder text'
+    :errors='errors'
+    :required='true'>
+    <template slot='help'>Some Required Help Text</template>
+  </form-text>
 
-	<form-text v-model='model.email'
-        property='email'
-        :errors='errors' 
-        :rules='[$validation.rules.email]' 
-        :required='true' />
-   
+  <form-text v-model='model.email'
+    property='email'
+    :errors='errors'
+    :rules='[$validation.rules.email]'
+    :required='true' />
+
    <!-- Using the validation -->
-   	<h2> Is The Form Valid{{ $validation.passes }} </h2>
-   	<button class='btn btn-default' :disabled='$validation.fails' @click='submit'></button>
+   <h2> Is The Form Valid{{ $validation.passes }} </h2>
+   <button class='btn btn-default' :disabled='$validation.fails' @click='submit'></button>
 </template>
 ```
 
@@ -48,17 +48,17 @@ Vue.use(VueForms)
 import { ValidationSyncMixin } from 'VueForms'
 
 ...
-	mixins: [
-		ValidationSyncMixin
-	],
-	data() {
-		return {
-		  
-		  model: {
-		    text: null,
-		    required_text: null,
-		    email: null,
-		  }
+  mixins: [
+    ValidationSyncMixin
+  ],
+  data() {
+    return {
+
+    model: {
+        text: null,
+        required_text: null,
+        email: null,
+      }
     }
 ...
 

@@ -5,6 +5,8 @@
             <option v-if='!required' :value="null">Please Choose...</option>
             <option v-for='(opt, idx) in options' :key='idx' :value="opt.value || idx">{{ opt.text || opt.name || opt }}</option>
         </select>
+        <form-errors :errors='errors' :property='property'></form-errors>
+        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

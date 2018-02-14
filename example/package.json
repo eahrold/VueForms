@@ -21,7 +21,8 @@
     "jquery-mask-plugin": "^1.14.13",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
-    "vue": "^2.5.2"
+    "vue": "^2.5.2",
+    "vue-forms": "https://github.com/eahrold/VueForms/tarball/develop"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -4,6 +4,7 @@
         <input type="file" :name="property" :id="property" :multiple="multiple">
         <small>Current File: {{ value }}</small>
         <form-errors :errors='errors' :property='property'></form-errors>
+        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

@@ -3,6 +3,8 @@
     <div class="row">
         <div class="col-md-8">
 
+          <form-seo label='SEO DATA' v-model='model.seo' property='seo'></form-seo>
+
           <form-checkbox label='Show All Elements' v-model='showElementsAll' property='showElementsAll'></form-checkbox>
           <form-checkbox label='Fake Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
 
@@ -41,11 +43,14 @@
           </form-password>
 
           <form-textarea v-model='model.text_area' property='text_area' :errors='errors'>
-                <template slot='help'><b>[Current Val: {{ `${model.text_area}` }}]</b> </template>
           </form-textarea>
 
           <form-slider label='Show Checkbox and Radio Selects Inline' v-model='inline' property='inline'></form-slider>
           <form-checkbox label='Show Checkbox and Radio Selects Inline' v-model='inline' property='inline'></form-checkbox>
+
+          <form-selectize :multiple='true' :inline='inline' v-model='model.selectize_multiple' :options='options' property='checkbox_group' :errors='errors'>
+                <template slot='help'><b>Current Val: {{ model.selectize_multiple }}</b> </template>
+          </form-selectize>
 
           <form-checkbox-group :inline='inline' v-model='model.checkbox_group' :options='options' property='checkbox_group' :errors='errors'>
                 <template slot='help'><b>Current Val: {{ model.checkbox_group }}</b> </template>
@@ -129,13 +134,12 @@
             </form-panel>
         </div>
     </div>
-
   </div>
 </template>
 
 <script>
 
-import { ValidationSyncMixin } from './components/VueForms'
+import { ValidationSyncMixin } from '../../dist'
 
 export default {
   name: 'App',
@@ -178,6 +182,8 @@ export default {
 
         text_area: null,
 
+        selectize: null,
+        selectize_multiple: [],
         checkbox_group: [],
         checkbox_group_from_array: [],
 
@@ -198,7 +204,8 @@ export default {
         file: null,
         dropzone: null,
 
-        address: {}
+        address: {},
+        seo: {}
       },
     }
   },

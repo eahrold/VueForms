@@ -7,6 +7,8 @@
                    type="checkbox">{{ aLabel }}
             </label>
         </div>
+        <form-errors :errors='errors' :property='property'></form-errors>
+        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

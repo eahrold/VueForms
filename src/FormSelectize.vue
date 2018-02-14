@@ -40,13 +40,15 @@
                 {{ opt.text || opt.name || opt }}
             </option>
         </select>
+        <form-errors v-if='errors' :errors='errors' :property='property'></form-errors>
+        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 
 <script>
-import { props, errors } from './FormElementMixins';
+import { props, errors } from './FormElementMixins'
 
-var $ = window.jQuery || window.$ || require('jquery');
+const $ = require('jquery')
 require('bootstrap-select');
 
 export default {
