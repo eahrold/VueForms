@@ -33,7 +33,7 @@ var $ = require('jquery');
 var moment = require('moment');
 require('bootstrap-daterangepicker');
 
-import { errors, dates } from './FormElementMixins';
+import { errors, dates } from './Mixins';
 
 export default {
     mixins: [ errors, dates ],
@@ -44,9 +44,8 @@ export default {
             default: ()=>{ return []},
         },
 
-        errors: {
-            type: Object,
-            required: false
+        label: {
+            type: String,
         },
 
         start : {
@@ -57,28 +56,9 @@ export default {
             type: String,
         },
 
-        label: {
-            type: String,
-        },
-
-        timePicker: {
-            type: Boolean,
-            default: false,
-        },
-
-        timePickerIncrement: {
-            type: Number,
-            default: 15
-        },
-
-        autoApply: {
-            type: Boolean,
-            default: true,
-        },
-
-        showRanges: {
-            type: Boolean,
-            default: true
+        errors: {
+            type: Object,
+            required: false
         },
 
         rules: {
@@ -135,6 +115,11 @@ export default {
     },
 
     methods : {
+        $_emitDates(start, end) {
+            this.$emit('start', this.$_makeFormattedDate(start));
+            this.$emit('end', this.$_makeFormattedDate(end));
+        },
+
         load () {
             var format = 'MM/DD/YYYY'
             if(this.timePicker) {
@@ -146,7 +131,6 @@ export default {
                     cancelLabel: 'Clear',
                     format,
                 },
-                // autoApply: this.autoApply,
                 autoUpdateInput: this.autoApply,
                 timePicker: this.timePicker,
                 timePickerIncrement: this.timePickerIncrement,
@@ -163,16 +147,16 @@ export default {
                 if (endDate.isValid()) options.endDate = endDate
             } else invalid = true
 
+            const config = _.assign({}, options, this.config)
+
             this.rootPicker = $('#'+this.id).daterangepicker(
-                options,
+                config,
             (start, end, label) => {
-                this.$emit('start', start.format(this.valueFormat));
-                this.$emit('end', end.format(this.valueFormat));
+                this.$_emitDates(start, end);
             }).on('cancel.daterangepicker', (ev, picker)=>{
                 this.clear();
             }).on('apply.daterangepicker', (ev, picker)=>{
-                this.$emit('start', picker.startDate.format(this.valueFormat));
-                this.$emit('end', picker.endDate.format(this.valueFormat));
+                this.$_emitDates(picker.startDate, picker.endDate);
             });
 
             if (invalid) {this.rootPicker.val('')}
@@ -181,8 +165,7 @@ export default {
         },
 
         clear() {
-            this.$emit('start', null);
-            this.$emit('end', null);
+            this.$_emitDates(null, null)
             this.rootPicker.val('');
         },
 

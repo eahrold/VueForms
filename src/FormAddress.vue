@@ -29,7 +29,7 @@
 
 <script>
 
-import { props, errors, watchers } from './FormElementMixins'
+import { props, errors, watchers } from './Mixins'
 import FormStateSelect from './FormStateSelect'
 
 export default {

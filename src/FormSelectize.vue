@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { props, errors } from './FormElementMixins'
+import { props, errors } from './Mixins'
 
 const $ = require('jquery')
 require('bootstrap-select');

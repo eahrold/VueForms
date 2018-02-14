@@ -8,7 +8,7 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
-import { VueForms } from '../../dist'
+import { VueForms } from 'vue-forms'
 
 Vue.use(VueForms)
 

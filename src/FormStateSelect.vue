@@ -6,7 +6,7 @@
 
 import { states } from './DataSources';
 
-import { props, errors, watchers } from './FormElementMixins';
+import { props, errors, watchers } from './Mixins';
 
 export default {
     mixins: [ props, errors, watchers ],

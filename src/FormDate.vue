@@ -15,45 +15,15 @@
 
 var $ = require('jquery');
 var moment = require('moment');
-require('eonasdan-bootstrap-datetimepicker');
+require('bootstrap-daterangepicker')
 
-import { props, errors, dates } from './FormElementMixins';
-
-const DEFAULT_FORMAT = "YYYY-MM-DD";
+import { props, errors, dates } from './Mixins';
 
 export default {
     mixins: [ props, errors, dates ],
 
-    props: {
-        stepping: {
-            type: Number,
-            default: 15
-        },
-
-        viewMode: {
-            type: String,
-            default: "days"
-        },
-
-        defaultDate: {
-            type: Object,
-            default: ()=>{ return moment() }
-        },
-
-        format: {
-            type: String,
-            default: DEFAULT_FORMAT
-        },
-
-        timePicker: {
-            type: Boolean,
-            default: false
-        }
-    },
-
     data () {
         return {
-            single: true,
             id: 'daterange-' + Math.floor(Math.random() * 9999),
             picker: null
         }
@@ -65,41 +35,65 @@ export default {
         });
     },
 
-    computed: {
-        $_FormDate_format() {
-            if (this.format === DEFAULT_FORMAT && this.timePicker) {
-                return `${this.format} hh:mm a`
-            }
-            return this.format;
-        }
-    },
-
     methods : {
-        clear() {
-            $('#'+this.id).datetimepicker().data("DateTimePicker").date(null)
-        },
-
-        update(date) {
-            $('#'+this.id).datetimepicker().data("DateTimePicker").date(moment(date) || null);
+        $_emitDates(moment) {
+            this.$emit('input', this.$_makeFormattedDate(moment));
         },
 
         load () {
+            var format = 'MM/DD/YYYY'
+            if(this.timePicker) {
+                format += ' h:mm A'
+            }
 
-            $('#'+this.id).datetimepicker({
-                format: this.$_FormDate_format,
-                stepping: this.stepping,
-                showTodayButton: true,
-                viewMode: this.viewMode,
-                defaultDate: this.defaultDate
-            }).on('dp.change', (e)=>{
-                this.$emit('input', e.date ? e.date.format() : null);
-            }).data("DateTimePicker").date(moment(this.value) || null);
-        }
+            var options = {
+                locale: {
+                    cancelLabel: 'Clear',
+                    format,
+                },
+                autoUpdateInput: this.autoApply,
+                timePicker: this.timePicker,
+                timePickerIncrement: this.timePickerIncrement,
+            }
+
+            var invalid = false;
+            if(this.value) {
+                const startDate = moment(this.value);
+                if (startDate.isValid()) options.startDate = startDate
+            } else invalid = true
+
+            const config = _.assign({}, options, this.config)
+            config.singleDatePicker = true
+
+            this.rootPicker = $('#'+this.id).daterangepicker(config,
+            (start, end, label) => {
+                this.$_emitDates(start);
+            }).on('cancel.daterangepicker', (ev, picker)=>{
+                this.clear();
+            }).on('apply.daterangepicker', (ev, picker)=>{
+                this.$_emitDates(picker.startDate);
+            });
+
+            if (invalid) {this.rootPicker.val('')}
+
+            this.picker = this.rootPicker.data('daterangepicker')
+        },
+
+        clear() {
+            this.$emit('input', null);
+            this.rootPicker.val('');
+        },
+
+        updateStart(aMoment) {
+            if( aMoment.isValid()) {
+                this.picker.setStartDate(aMoment)
+            }
+        },
     },
 
     watch : {
-        value (newVal, oldVal) {
-            this.update(newVal)
+       value (change) {
+            this.updateStart(moment(change))
         },
     }
 }

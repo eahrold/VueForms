@@ -5,8 +5,12 @@ import {
     dates,
     options,
     formData,
-    validation
-} from './FormElementMixins'
+} from './Mixins'
+
+import {
+    validation,
+    vfconfig
+} from './Prototypes'
 
 import FormText from './FormText'
 import FormFile from './FormFile'
@@ -64,14 +68,17 @@ export const VueFormsCore = {
 
         Vue.component('form-panel', FormPanel)
         Vue.component('form-group', FormGroup)
+
+        vfconfig.configure(options)
+        Vue.prototype.$vfconfig = vfconfig
     }
 }
 
 export const VueForms = {
     install (Vue, options) {
 
-        Vue.use(VueFormsCore)
-        Vue.use(VueFormHelpers)
+        Vue.use(VueFormsCore, options)
+        Vue.use(VueFormHelpers, options)
 
         /**
          * Components requiring all libs libs...
@@ -95,16 +102,16 @@ export const VueForms = {
  */
 export const VueFormHelpers = {
     install (Vue, options) {
-        Vue.component('form-loader', FormLoader);
-        Vue.component('form-errors', FormErrors);
-        Vue.component('form-save-button', FormSaveButton);
-        Vue.component('form-modal',   FormModal);
+        Vue.component('form-loader', FormLoader)
+        Vue.component('form-errors', FormErrors)
+        Vue.component('form-save-button', FormSaveButton)
+        Vue.component('form-modal',   FormModal)
 
         Vue.prototype.$validation = validation
     }
 }
 
-export { ValidationSyncMixin, ValidationEvents } from './FormElementMixins/validation'
+export { ValidationSyncMixin, ValidationEvents } from './Prototypes/validation'
 
 export {
     FormText,

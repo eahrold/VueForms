@@ -2,9 +2,10 @@ import moment from 'moment'
 
 export default {
     props: {
-        timepicker: {
-            type: Boolean,
-            default: false
+
+        config: {
+            type: Object,
+            default: ()=>{return {}}
         },
 
         dropdowns: {
@@ -12,18 +13,47 @@ export default {
             default: false
         },
 
+        opens: {
+            type: String,
+            default: "center"
+        },
+
         autoApply: {
             type: Boolean,
             default: true
         },
 
-        opens: {
-            type: String,
-            default: "center"
-        }
+        timePicker: {
+            type: Boolean,
+            default: false,
+        },
+
+        timePickerIncrement: {
+            type: Number,
+            default: 15
+        },
+
+        autoApply: {
+            type: Boolean,
+            default: true,
+        },
+
+        showRanges: {
+            type: Boolean,
+            default: true
+        },
     },
 
     methods: {
+        $_makeFormattedDate(moment) {
+            if(!moment || !moment.isValid())return null;
+
+            if(this.timePicker) {
+                return moment.format(this.valueFormat)
+            }
+            return moment.startOf('day').format(this.valueFormat)
+        },
+
         safeDate (string) {
             var date = moment(string);
             if (date.isValid()) {

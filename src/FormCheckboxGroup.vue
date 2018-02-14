@@ -33,7 +33,7 @@
 
 <script>
 
-import { props, errors, watchers, options } from './FormElementMixins';
+import { props, errors, watchers, options } from './Mixins';
 
 export default {
     mixins: [ props, errors, watchers, options ],

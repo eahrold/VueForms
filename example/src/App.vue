@@ -66,11 +66,11 @@
 
 
           <form-date v-model='model.date' property='date' :errors='errors'>
-              <template slot='help'>Some Date Help Text</template>
+              <template slot='help'><b>Current Val: {{ model.date }}</b> </template>
           </form-date>
 
           <form-date v-model='model.date_time' :time-picker='true' property='date_time' :errors='errors'>
-              <template slot='help'>Some Date Time Help Text</template>
+              <template slot='help'><b>Current Val: {{ model.date_time }}</b> </template>
           </form-date>`
 
           <form-daterange
@@ -80,7 +80,9 @@
             @end='model.end = arguments[0]'
             :properties="['start', 'end']"
             label="Date Range"
-            ></form-daterange>
+            >
+              <template slot='help'><b>Current Val: {{ model.start }} - {{ model.end }}</b> </template>
+            </form-daterange>
 
           <form-daterange
             :start='model.start_time'
@@ -90,7 +92,9 @@
             :properties="['start_time', 'end_time']"
             label="Date Range With Time"
             :time-picker="true"
-            ></form-daterange>
+            >
+                <template slot='help'><b>Current Val: {{ model.start_time }} - {{ model.end_time }}</b> </template>
+            </form-daterange>
 
           <form-address v-model='model.address' property='address' :include-coordinates='true' :errors='errors'>
               <template slot='help'>use the `include-coordinated` prop to conditionally display Lat &amp; Lng</template>
@@ -139,7 +143,7 @@
 
 <script>
 
-import { ValidationSyncMixin } from '../../dist'
+import { ValidationSyncMixin } from 'vue-forms'
 
 export default {
   name: 'App',

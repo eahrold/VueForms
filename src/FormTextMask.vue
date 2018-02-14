@@ -14,7 +14,7 @@
 
 <script>
 
-import { props, errors, watchers } from './FormElementMixins';
+import { props, errors, watchers } from './Mixins';
 
 const $ = require('jquery')
 require('jquery-mask-plugin');
