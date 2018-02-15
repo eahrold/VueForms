@@ -1,8 +1,23 @@
-const allMimeTypes = [
+import _ from 'lodash'
+
+export const image = [
     "image/*",
-    "text/*",
-    "audio/*",
-    "video/*",
+]
+
+export const audio = [
+        "audio/*",
+        'application/ogg'
+]
+
+export const video = [
+        "video/*",
+        'application/ogg'
+]
+
+export const media = _.uniq(_.concat(image, audio, video))
+
+export const documents = [
+    "text/plain",
     "application/pdf",
     "application/xls",
     "application/excel",
@@ -18,6 +33,13 @@ const allMimeTypes = [
     "application/docx",
     "application/msword",
     "application/vnd.ms-powerpoint",
-];
+]
 
-export { allMimeTypes };
+export const any = _.uniq(_.concat(media, documents))
+
+export default {
+    image,
+    media,
+    documents,
+    any
+};

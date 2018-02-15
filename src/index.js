@@ -47,7 +47,9 @@ import FormSaveButton from './FormSaveButton'
  * Core Components
  */
 export const VueFormsCore = {
-    install (Vue, Option) {
+    install (Vue, option) {
+        vfconfig.configure(option)
+        Vue.prototype.$vfconfig = vfconfig
 
         Vue.component('form-text',   FormText)
 
@@ -69,8 +71,6 @@ export const VueFormsCore = {
         Vue.component('form-panel', FormPanel)
         Vue.component('form-group', FormGroup)
 
-        vfconfig.configure(options)
-        Vue.prototype.$vfconfig = vfconfig
     }
 }
 
@@ -147,6 +147,8 @@ export {
     watchers,
     dates,
     options,
-    validation,
     formData,
+
+    validation,
+    vfconfig,
 }

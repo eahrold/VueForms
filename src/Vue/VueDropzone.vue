@@ -54,7 +54,7 @@ export default {
         },
         headers: {
             type: Object,
-            default: {}
+            required: true
         },
         dropzoneOptions: {
             type: Object

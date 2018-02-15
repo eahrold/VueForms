@@ -1,5 +1,7 @@
 import Vue from "Vue"
 
+import mimeTypes from '../DataSources/SupportedMimeTypes'
+
 const DEFAULT_DATE_FORMAT = 'MM/DD/YYYY'
 const DEFAULT_TIME_FORMAT = 'h:mm A'
 
@@ -13,15 +15,13 @@ export default new Vue({
         format: {
             date: DEFAULT_DATE_FORMAT,
             time: DEFAULT_TIME_FORMAT
-        }
+        },
     },
 
     computed: {
-
-    },
-
-    watch: {
-
+        fileTypes() {
+            return mimeTypes
+        }
     },
 
     methods: {
@@ -30,6 +30,7 @@ export default new Vue({
             if(headers) {
                 this.headers = headers
             }
+
             this.format.date = _.get(format, 'date', DEFAULT_DATE_FORMAT)
             this.format.time = _.get(format, 'time', DEFAULT_TIME_FORMAT)
 

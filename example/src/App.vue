@@ -100,7 +100,14 @@
               <template slot='help'>use the `include-coordinated` prop to conditionally display Lat &amp; Lng</template>
           </form-address>
 
-          <form-dropzone label='File' type='modelType' v-model='model.dropzone' property='text' :errors='errors'></form-dropzone>
+          <form-dropzone v-model='model.dropzone'
+              label='File'
+              property='images'
+              type='SOME_MODEL_TYPE'
+              :file-types='$vfconfig.fileTypes.any'
+              :id='model.id'
+              :errors='errors'>
+          </form-dropzone>
 
           <form-panel>
              <button class="btn btn-default" @click='showModal = true'>Launch An Example Modal</button>
@@ -172,7 +179,7 @@ export default {
       ],
 
       model: {
-
+        id: 12345,
         text: null,
         text_required: null,
         text_prepopulated: "Here to start",

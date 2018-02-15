@@ -3,19 +3,18 @@
         <label class="control-label">{{ label }}</label>
         <dropzonejs :existing='value'
                     :url="endpoint"
-                    :accepted-file-types="fileTypes"
                     :headers='requestHeaders'
+                    :accepted-file-types="acceptedFiletypes"
                     :max-number-of-files='limit'
                     :max-file-size-in-mb='maxFileSize'
-                    v-on:vdropzone-success="dzAdded"
-                    v-on:vdropzone-removed-file="dzRemoved">
+                    @vdropzone-success="dzAdded"
+                    @vdropzone-removed-file="dzRemoved">
         </dropzonejs>
     </div>
 </template>
 
 <script>
 
-    let token = document.head.querySelector('meta[name="csrf-token"]');
     import _  from 'lodash';
 
     import VueDropzone from './Vue/VueDropzone.vue'
@@ -26,6 +25,11 @@
         },
 
         props: {
+            headers: {
+                type: Object,
+                required: false,
+            },
+
             // Used for v-bind
             value: {
                 type: [ Object, Array ],
@@ -55,8 +59,8 @@
 
             // Supported file types
             fileTypes: {
-                type: String,
-                default: 'image/*'
+                type: [String, Array],
+                default: "image/*"
             },
 
             // If multiple files are allowed, how many
@@ -78,13 +82,29 @@
 
             base: {
                 type: String,
-                default: "/api/upload"
+                // default: this.$vfconfig.endpoints.upload
             }
         },
 
         computed: {
+            requestHeaders() {
+                return this.headers || _.get(this.$vfconfig, 'headers', {})
+            },
+
+            acceptedFiletypes() {
+                if(_.isString(this.fileTypes)) {
+                    return this.fileTypes
+                }
+
+                if(_.isArray(this.fileTypes)) {
+                    return this.fileTypes.join(',')
+                }
+            },
+
             endpoint() {
-                var endpoint =  this.base + "?type=" +this.type;
+                const base = this.base || _.get(this.$vfconfig, 'endpoints.upload');
+
+                var endpoint = base + "?type=" +this.type;
 
                 if (this.id) {
                     endpoint += "&model=" + this.id;
@@ -104,17 +124,6 @@
                 else if (this.value instanceof Object) {
                     return [ this.value ];
                 }
-            },
-
-            requestHeaders () {
-                var headers = { }
-                if( !! token) {
-                    headers['X-CSRF-TOKEN'] = token.content
-                }
-                if ( !! this.apiToken) {
-                    headers['Authorization'] = `Bearer ${this.apiToken}`
-                }
-                return headers
             },
 
             impliedArray() {
