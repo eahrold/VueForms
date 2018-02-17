@@ -6,25 +6,15 @@
 
 import { states } from './DataSources';
 
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
 
     data () {
         return {
             states: states,
-            aValue: null
         }
     },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    }
-
 }
 </script>

@@ -10,16 +10,17 @@
 
                 <div class="row">
                     <div class="col-xs-8">
-                        <vue-dropzone :existing='value'
-                                    :url="endpoint"
-                                    :accepted-file-types="fileTypes"
-                                    :headers='headers'
-                                    :max-number-of-files='limit'
-                                    :max-file-size-in-mb='maxFileSize'
-                                    @error="dzError"
-                                    @progress='progress = arguments[0]'
-                                    @success="dzAdded"
-                                    @removed="dzRemoved">
+                        <vue-dropzone
+                            :existing='value'
+                            :url="requestEndpoint"
+                            :accepted-file-types="acceptedFileTypes"
+                            :headers='requestHeaders'
+                            :max-number-of-files='limit'
+                            :max-file-size-in-mb='maxFileSize'
+                            @error="dzError"
+                            @progress='progress = arguments[0]'
+                            @success="dzAdded"
+                            @removed="dzRemoved">
                             <template slot='button'>{{ btnText }}</template>
                         </vue-dropzone>
                         <span class="help-block">Limited to {{ limitText }}. Each file must not exceed {{ maxFileSize }}MB.</span>

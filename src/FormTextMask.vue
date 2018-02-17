@@ -16,11 +16,11 @@
 <script>
 
 import { TheMask } from 'vue-the-mask'
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 
 export default {
     components: { TheMask },
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
 
     props: {
         mask: {
@@ -37,7 +37,6 @@ export default {
     data () {
         return {
             enabled: this.lockable === false ? true : false,
-            aValue: null
         }
     },
 
@@ -51,12 +50,5 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    },
 }
 </script>

@@ -23,4 +23,11 @@ export default {
             this.aValue = change;
         }
     },
+
+    methods : {
+        autocomplete (event) {
+            this.aValue = event.target.value;
+        }
+    }
+
 }

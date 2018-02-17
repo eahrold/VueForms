@@ -6,10 +6,10 @@
 
 import { suffixes } from './DataSources/Honorifics';
 
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
 
     data () {
         return {
@@ -17,14 +17,5 @@ export default {
             aValue: null
         }
     },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    }
-
 }
 </script>

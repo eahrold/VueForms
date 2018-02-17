@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
     props: {
         required: {
             type: Boolean,
@@ -26,20 +26,6 @@ export default {
             required: false
         }
     },
-
-    data () {
-        return {
-            aValue: null
-        }
-    },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    }
 
 }
 </script>

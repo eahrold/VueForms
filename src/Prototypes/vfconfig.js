@@ -16,6 +16,22 @@ export default new Vue({
             date: DEFAULT_DATE_FORMAT,
             time: DEFAULT_TIME_FORMAT
         },
+
+        dropzone: {
+            maxFileSize: 10 // in MB
+        },
+
+        tinymce: {
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualchars',
+                'searchreplace visualblocks codemirror fullscreen textcolor contextmenu',
+                'insertdatetime media table contextmenu paste imagetools'
+            ],
+            toolbar: `undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify |
+                bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code`,
+            css: ''
+        },
     },
 
     computed: {

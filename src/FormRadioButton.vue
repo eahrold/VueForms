@@ -32,30 +32,16 @@
 
 <script>
 
-import { props, errors, watchers, options } from './Mixins';
+import { props, errors, values, options } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers, options ],
+    mixins: [ props, errors, values, options ],
 
     props: {
         inline: {
             type: Boolean,
             default: false
         }
-    },
-
-    data () {
-        return {
-            aValue: null
-        }
-    },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
     },
 }
 </script>

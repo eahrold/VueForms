@@ -48,12 +48,12 @@
 
 <script>
 
-import { value, props, errors, watchers } from './Mixins'
+import { value, props, errors, values } from './Mixins'
 import FormStateSelect from './FormStateSelect'
 import FormCountrySelect from './FormCountrySelect'
 
 export default {
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
     components: {
         'form-state-select': FormStateSelect,
         'form-country-select': FormCountrySelect,

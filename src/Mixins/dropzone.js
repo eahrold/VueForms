@@ -78,7 +78,6 @@ export default {
 
     data () {
         return {
-            base: "/api/admin/upload",
             errors: [],
             progress: 0,
         }
@@ -99,8 +98,8 @@ export default {
             }
         },
 
-        endpoint() {
-            const base = this.base || _.get(this.$vfconfig, 'endpoints.upload');
+        requestEndpoint() {
+            const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload');
 
             var endpoint = base + "?type=" +this.type;
 
@@ -114,7 +113,6 @@ export default {
 
             return endpoint;
         },
-
 
         fileList () {
             if (this.value instanceof Array) {

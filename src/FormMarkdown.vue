@@ -1,10 +1,10 @@
 <template>
     <div class="form-group">
-        <label v-if='label' :for='element'>{{ label }}:</label>
+        <label v-if='label' :for='vf_uid'>{{ label }}:</label>
         <p v-if="showInfo" class="help-block">
             <small>For information on Markdown syntax, <a href="https://simplemde.com/markdown-guide" target="_blank">click here</a></small>
         </p>
-        <textarea :id="element" v-model='aValue'></textarea>
+        <textarea :id="vf_uid" v-model='aValue'></textarea>
         <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
@@ -12,13 +12,13 @@
 
 <script>
 
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values, uuid } from './Mixins';
 import _ from 'lodash';
 
 const SimpleMDE = require('simplemde');
 
 export default {
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values, uuid ],
 
     props: {
         showInfo: {
@@ -31,7 +31,6 @@ export default {
         return {
             aValue: this.value,
             simplemde: null,
-            element: 'markdown-' + Math.floor(Math.random() * 9999)
         }
     },
 
@@ -47,7 +46,7 @@ export default {
 
     mounted () {
         const props = _.assign({}, this.options, {
-            element: document.getElementById(this.element),
+            element: document.getElementById(this.vf_uid),
             forceSync: false,
             initialValue: this.value,
         })

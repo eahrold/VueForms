@@ -14,23 +14,9 @@
 
 <script>
 
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers ],
-
-    data () {
-        return {
-            aValue: null
-        }
-    },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    }
+    mixins: [ props, errors, values ],
 }
 </script>

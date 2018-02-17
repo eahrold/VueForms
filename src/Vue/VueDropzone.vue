@@ -1,6 +1,6 @@
 <template>
 
-<form :action="url" class="dropzone" :id="id"></form>
+<form :action="url" class="dropzone"></form>
 
 </template>
 
@@ -36,7 +36,7 @@ export default {
             type: Boolean,
             default: true
         },
-        maxFileSizeInMB: {
+        maxFileSizeInMb: {
             type: Number,
             default: 2
         },
@@ -71,24 +71,17 @@ export default {
       });
     },
 
-    data () {
-        return {
-            id: 'dropzone-' + Math.floor(Math.random() * 999)
-        }
-    },
-
     computed: { },
 
     methods: {
         loadDropzone () {
-            var element = document.getElementById(this.id)
 
             if(this.dropzone) {
                 this.dropzone.destroy();
             }
 
             if (!this.useCustomDropzoneOptions) {
-                this.dropzone = new Dropzone(element, {
+                this.dropzone = new Dropzone(this.$el, {
                     url: this.url,
                     clickable: this.clickable,
                     headers: this.headers,
@@ -103,26 +96,25 @@ export default {
                     dictDefaultMessage: '<i class="fa fa-2x fa-cloud-upload" aria-hidden="true"></i><br>Drop files here to upload',
                 })
             } else {
-                this.dropzone = new Dropzone(element, this.dropzoneOptions)
+                this.dropzone = new Dropzone(this.$el, this.dropzoneOptions)
             }
 
             // Handle the dropzone events
-            var self = this
-            this.dropzone.on('addedfile', function (file) {
-                self.$emit('vdropzone-fileAdded', file);
+            this.dropzone.on('addedfile', (file)=>{
+                this.$emit('vdropzone-fileAdded', file);
             })
 
-            this.dropzone.on('removedfile', function (file) {
-                self.$emit('vdropzone-removedFile', file)
+            this.dropzone.on('removedfile', (file)=>{
+                this.$emit('vdropzone-removedFile', file)
             })
 
-            this.dropzone.on('success', function (file, response) {
+            this.dropzone.on('success', (file, response)=>{
                 file.id = response.id;
-                self.$emit('vdropzone-success', response)
+                this.$emit('vdropzone-success', response)
             })
 
-            this.dropzone.on('error', function (file, error, xhr) {
-                self.$emit('vdropzone-error', file, error, xhr)
+            this.dropzone.on('error', (file, error, xhr)=>{
+                this.$emit('vdropzone-error', file, error, xhr)
             })
         },
 

@@ -33,10 +33,10 @@
 
 <script>
 
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
 
     props: {
         suggestions: {

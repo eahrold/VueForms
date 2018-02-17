@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <textarea v-if="isReady" :id="element"></textarea>
-    </div>
+    <textarea v-if="isReady" :id="vf_uid"></textarea>
 </template>
 
 <style>
@@ -27,15 +25,15 @@ var elFinderBrowser = function (field_name, url, type, win) {
     return false;
 }
 
+import _ from 'lodash'
+import { uuid } from '../Mixins'
+
 export default {
+    mixins: [ uuid ],
+
     props: {
         value: {
             required: true
-        },
-
-        options: {
-            type: Object,
-            default: ()=>{ return {}; }
         },
 
         property: {
@@ -44,6 +42,11 @@ export default {
 
         content: {
             type: String,
+        },
+
+        options: {
+            type: Object,
+            default: ()=>{ return {}; }
         },
 
         headers: {
@@ -56,14 +59,14 @@ export default {
             default: true
         },
 
-        css: {
-            type: String,
-            default: ""
-        },
-
         height: {
             type: Number,
             default: 300
+        },
+
+        filepicker: {
+            type: Function,
+            default: elFinderBrowser
         },
 
         menubar: {
@@ -73,24 +76,18 @@ export default {
 
         plugins: {
             type: Array,
-            default: () => { return [
-                  'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                  'searchreplace wordcount visualchars',
-                  "searchreplace visualblocks codemirror fullscreen textcolor contextmenu",
-                  "insertdatetime media table contextmenu paste imagetools"
-                ];
-            }
+            required: false
         },
 
         toolbar: {
             type: String,
-            default: 'undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code'
+            required: false
         },
 
-        filepicker: {
-            type: Function,
-            default: elFinderBrowser
-        }
+        css: {
+            type: String,
+            default: ""
+        },
     },
 
     data () {
@@ -99,7 +96,6 @@ export default {
             tinymce: null,
             editor: null,
             recreate: false,
-            element: 'tinymce-' + Math.floor(Math.random() * 9999)
         }
     },
 
@@ -119,7 +115,7 @@ export default {
         },
 
         $route (newVal, oldVal) {
-            this.editor = tinymce.get(this.element);
+            this.editor = tinymce.get(this.vf_uid);
             this.recreate = true;
         },
 
@@ -134,16 +130,21 @@ export default {
 
     computed: {
         defaults() {
-            var selector = "#"+this.element;
-            return {
-                // theme: 'modern',
-                selector: selector,
-                height: this.height,
-                menubar: false,
-                plugins: this.plugins,
-                toolbar: this.toolbar,
-                content_css: this.css,
+            var selector = `#${this.vf_uid}`
+            let plugins = this.plugins || _.get(this.$vfconfig,'tinymce.plugins')
+            let toolbar = this.toolbar || _.get(this.$vfconfig,'tinymce.toolbar')
+            let css = this.css || _.get(this.$vfconfig,'tinymce.toolbar');
+            let theme = this.theme || _.get(this.$vfconfig,'tinymce.theme', 'modern');
 
+            return {
+                theme: theme,
+                selector: selector,
+                menubar: false,
+                plugins: plugins,
+                toolbar: toolbar,
+                content_css: css,
+
+                height: this.height,
                 image_caption: true,
                 image_advtab: true,
 
@@ -173,7 +174,7 @@ export default {
         },
 
         loadTinymce () {
-            var opts = Object.assign({}, this.defaults, this.options);
+            var opts = _.assign({}, this.defaults, this.options);
             opts.setup = this.setup;
             //----------------------------------------------------------
             // Init Tinymce...

@@ -33,10 +33,10 @@
 
 <script>
 
-import { props, errors, watchers, options } from './Mixins';
+import { props, errors, values, options } from './Mixins';
 
 export default {
-    mixins: [ props, errors, watchers, options ],
+    mixins: [ props, errors, values, options ],
 
     props: {
         inline: {
@@ -45,18 +45,5 @@ export default {
         }
     },
 
-    data () {
-        return {
-            aValue: null
-        }
-    },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    }
 }
 </script>

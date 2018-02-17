@@ -188,20 +188,20 @@ module.exports = function normalizeComponent (
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(70), __webpack_require__(71), __webpack_require__(72), __webpack_require__(73), __webpack_require__(74), __webpack_require__(86), __webpack_require__(88)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(70), __webpack_require__(226), __webpack_require__(236), __webpack_require__(72), __webpack_require__(73), __webpack_require__(74), __webpack_require__(88), __webpack_require__(86)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./props'), require('./watchers'), require('./options'), require('./errors'), require('./dates'), require('./formData'), require('./dropzone'));
+    factory(exports, require('./props'), require('./values'), require('./uuid'), require('./options'), require('./errors'), require('./dates'), require('./dropzone'), require('./formData'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.props, global.watchers, global.options, global.errors, global.dates, global.formData, global.dropzone);
+    factory(mod.exports, global.props, global.values, global.uuid, global.options, global.errors, global.dates, global.dropzone, global.formData);
     global.index = mod.exports;
   }
-})(this, function (exports, _props, _watchers, _options, _errors, _dates, _formData, _dropzone) {
+})(this, function (exports, _props, _values, _uuid, _options, _errors, _dates, _dropzone, _formData) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -213,10 +213,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return _interopRequireDefault(_props).default;
     }
   });
-  Object.defineProperty(exports, 'watchers', {
+  Object.defineProperty(exports, 'values', {
     enumerable: true,
     get: function () {
-      return _interopRequireDefault(_watchers).default;
+      return _interopRequireDefault(_values).default;
+    }
+  });
+  Object.defineProperty(exports, 'uuid', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_uuid).default;
     }
   });
   Object.defineProperty(exports, 'options', {
@@ -237,16 +243,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return _interopRequireDefault(_dates).default;
     }
   });
-  Object.defineProperty(exports, 'formData', {
-    enumerable: true,
-    get: function () {
-      return _interopRequireDefault(_formData).default;
-    }
-  });
   Object.defineProperty(exports, 'dropzone', {
     enumerable: true,
     get: function () {
       return _interopRequireDefault(_dropzone).default;
+    }
+  });
+  Object.defineProperty(exports, 'formData', {
+    enumerable: true,
+    get: function () {
+      return _interopRequireDefault(_formData).default;
     }
   });
 
@@ -18870,7 +18876,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 type: Boolean,
                 default: true
             },
-            maxFileSizeInMB: {
+            maxFileSizeInMb: {
                 type: Number,
                 default: 2
             },
@@ -18906,25 +18912,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _this.preload();
             });
         },
-        data: function data() {
-            return {
-                id: 'dropzone-' + Math.floor(Math.random() * 999)
-            };
-        },
 
 
         computed: {},
 
         methods: {
             loadDropzone: function loadDropzone() {
-                var element = document.getElementById(this.id);
+                var _this2 = this;
 
                 if (this.dropzone) {
                     this.dropzone.destroy();
                 }
 
                 if (!this.useCustomDropzoneOptions) {
-                    this.dropzone = new Dropzone(element, {
+                    this.dropzone = new Dropzone(this.$el, {
                         url: this.url,
                         clickable: this.clickable,
                         headers: this.headers,
@@ -18939,30 +18940,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         dictDefaultMessage: '<i class="fa fa-2x fa-cloud-upload" aria-hidden="true"></i><br>Drop files here to upload'
                     });
                 } else {
-                    this.dropzone = new Dropzone(element, this.dropzoneOptions);
+                    this.dropzone = new Dropzone(this.$el, this.dropzoneOptions);
                 }
 
                 // Handle the dropzone events
-                var self = this;
                 this.dropzone.on('addedfile', function (file) {
-                    self.$emit('vdropzone-fileAdded', file);
+                    _this2.$emit('vdropzone-fileAdded', file);
                 });
 
                 this.dropzone.on('removedfile', function (file) {
-                    self.$emit('vdropzone-removedFile', file);
+                    _this2.$emit('vdropzone-removedFile', file);
                 });
 
                 this.dropzone.on('success', function (file, response) {
                     file.id = response.id;
-                    self.$emit('vdropzone-success', response);
+                    _this2.$emit('vdropzone-success', response);
                 });
 
                 this.dropzone.on('error', function (file, error, xhr) {
-                    self.$emit('vdropzone-error', file, error, xhr);
+                    _this2.$emit('vdropzone-error', file, error, xhr);
                 });
             },
             preload: function preload() {
-                var _this2 = this;
+                var _this3 = this;
 
                 if (!this.existing || !this.dropzone) {
                     return;
@@ -18976,8 +18976,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         status: 'success',
                         processing: false
                     };
-                    _this2.dropzone.emit("addedfile", mockFile);
-                    _this2.dropzone.emit("thumbnail", mockFile, file.thumbnail_sm || file.thumbnail);
+                    _this3.dropzone.emit("addedfile", mockFile);
+                    _this3.dropzone.emit("thumbnail", mockFile, file.thumbnail_sm || file.thumbnail);
                     mockFile.previewElement.classList.add('dz-complete');
                 };
 
@@ -19028,7 +19028,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
         props: {
             lockable: {
                 type: Boolean,
@@ -19038,8 +19038,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         data: function data() {
             return {
-                enabled: this.lockable === false ? true : false,
-                aValue: null
+                enabled: this.lockable === false ? true : false
             };
         },
 
@@ -19051,17 +19050,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             lockClass: function lockClass() {
                 return this.enabled ? 'fa-unlock-alt' : 'fa-lock';
             }
-        },
-
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
+
     };
 });
 
@@ -19091,28 +19081,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         props: {
             multiple: {
                 type: Boolean,
                 default: true
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -19144,7 +19119,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     });
     exports.default = {
         components: { TheMask: _vueTheMask.TheMask },
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         props: {
             mask: {
@@ -19160,8 +19135,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         data: function data() {
             return {
-                enabled: this.lockable === false ? true : false,
-                aValue: null
+                enabled: this.lockable === false ? true : false
             };
         },
 
@@ -19173,17 +19147,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             lockClass: function lockClass() {
                 return this.enabled ? 'fa-unlock-alt' : 'fa-lock';
             }
-        },
-
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
+
     };
 });
 
@@ -19213,7 +19178,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         props: {
             min: {
@@ -19225,21 +19190,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 type: [Number, String],
                 default: Number.MAX_VALUE
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -19270,27 +19220,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
         props: {
             disabled: {
                 type: Boolean,
                 default: false
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -19321,23 +19256,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
-        },
-
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         methods: {
             toggle: function toggle(event) {
@@ -19373,22 +19292,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
-        }
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values]
     };
 });
 
@@ -19418,29 +19322,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers, _Mixins.options],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values, _Mixins.options],
 
         props: {
             inline: {
                 type: Boolean,
                 default: false
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
+
     };
 });
 
@@ -19652,7 +19542,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
         props: {
             required: {
                 type: Boolean,
@@ -19663,22 +19553,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 type: [Array, Object],
                 required: false
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
+
     };
 });
 
@@ -19814,28 +19690,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers, _Mixins.options],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values, _Mixins.options],
 
         props: {
             inline: {
                 type: Boolean,
                 default: false
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -19866,28 +19727,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         props: {
             rows: {
                 required: false,
                 default: 3
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -19927,7 +19773,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values, _Mixins.uuid],
 
         props: {
             showInfo: {
@@ -19939,8 +19785,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         data: function data() {
             return {
                 aValue: this.value,
-                simplemde: null,
-                element: 'markdown-' + Math.floor(Math.random() * 9999)
+                simplemde: null
             };
         },
 
@@ -19959,7 +19804,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             var _this = this;
 
             var props = _lodash2.default.assign({}, this.options, {
-                element: document.getElementById(this.element),
+                element: document.getElementById(this.vf_uid),
                 forceSync: false,
                 initialValue: this.value
             });
@@ -21882,7 +21727,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
         components: {
             'form-state-select': _FormStateSelect2.default,
             'form-country-select': _FormCountrySelect2.default
@@ -21988,22 +21833,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         data: function data() {
             return {
-                states: _DataSources.states,
-                aValue: null
+                states: _DataSources.states
             };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -22085,22 +21920,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         data: function data() {
             return {
-                options: _DataSources.countryCodes,
-                aValue: null
+                options: _DataSources.countryCodes
             };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -22131,22 +21956,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         data: function data() {
             return {
                 prefixes: _Honorifics.prefixes,
                 aValue: null
             };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -22177,22 +21993,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
 
         data: function data() {
             return {
                 suffixes: _Honorifics.suffixes,
                 aValue: null
             };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -22449,29 +22256,29 @@ if (false) {(function () {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(200), __webpack_require__(18)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(18), __webpack_require__(5), __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/helpers/defineProperty'));
+        factory(exports, require('babel-runtime/helpers/defineProperty'), require('lodash'), require('../Mixins'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.defineProperty);
+        factory(mod.exports, global.defineProperty, global.lodash, global.Mixins);
         global.VueTinymce = mod.exports;
     }
-})(this, function (exports, _assign, _defineProperty2) {
+})(this, function (exports, _defineProperty2, _lodash, _Mixins) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
 
-    var _assign2 = _interopRequireDefault(_assign);
-
     var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+    var _lodash2 = _interopRequireDefault(_lodash);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -22479,8 +22286,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    //
-    //
     //
     //
     //
@@ -22509,16 +22314,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     exports.default = {
+        mixins: [_Mixins.uuid],
+
         props: {
             value: {
                 required: true
-            },
-
-            options: {
-                type: Object,
-                default: function _default() {
-                    return {};
-                }
             },
 
             property: {
@@ -22527,6 +22327,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             content: {
                 type: String
+            },
+
+            options: {
+                type: Object,
+                default: function _default() {
+                    return {};
+                }
             },
 
             headers: {
@@ -22541,14 +22348,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 default: true
             },
 
-            css: {
-                type: String,
-                default: ""
-            },
-
             height: {
                 type: Number,
                 default: 300
+            },
+
+            filepicker: {
+                type: Function,
+                default: elFinderBrowser
             },
 
             menubar: {
@@ -22558,19 +22365,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             plugins: {
                 type: Array,
-                default: function _default() {
-                    return ['advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualchars', "searchreplace visualblocks codemirror fullscreen textcolor contextmenu", "insertdatetime media table contextmenu paste imagetools"];
-                }
+                required: false
             },
 
             toolbar: {
                 type: String,
-                default: 'undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code'
+                required: false
             },
 
-            filepicker: {
-                type: Function,
-                default: elFinderBrowser
+            css: {
+                type: String,
+                default: ""
             }
         },
 
@@ -22579,8 +22384,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 selector: null,
                 tinymce: null,
                 editor: null,
-                recreate: false,
-                element: 'tinymce-' + Math.floor(Math.random() * 9999)
+                recreate: false
             };
         },
         mounted: function mounted() {
@@ -22601,7 +22405,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 }
             },
             $route: function $route(newVal, oldVal) {
-                this.editor = tinymce.get(this.element);
+                this.editor = tinymce.get(this.vf_uid);
                 this.recreate = true;
             },
             value: function value(newVal, oldVal) {
@@ -22615,16 +22419,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         computed: {
             defaults: function defaults() {
-                var selector = "#" + this.element;
-                return (0, _defineProperty3.default)({
-                    // theme: 'modern',
-                    selector: selector,
-                    height: this.height,
-                    menubar: false,
-                    plugins: this.plugins,
-                    toolbar: this.toolbar,
-                    content_css: this.css,
+                var selector = '#' + this.vf_uid;
+                var plugins = this.plugins || _lodash2.default.get(this.$vfconfig, 'tinymce.plugins');
+                var toolbar = this.toolbar || _lodash2.default.get(this.$vfconfig, 'tinymce.toolbar');
+                var css = this.css || _lodash2.default.get(this.$vfconfig, 'tinymce.toolbar');
+                var theme = this.theme || _lodash2.default.get(this.$vfconfig, 'tinymce.theme', 'modern');
 
+                return (0, _defineProperty3.default)({
+                    theme: theme,
+                    selector: selector,
+                    menubar: false,
+                    plugins: plugins,
+                    toolbar: toolbar,
+                    content_css: css,
+
+                    height: this.height,
                     image_caption: true,
                     image_advtab: true,
 
@@ -22653,7 +22462,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 });
             },
             loadTinymce: function loadTinymce() {
-                var opts = (0, _assign2.default)({}, this.defaults, this.options);
+                var opts = _lodash2.default.assign({}, this.defaults, this.options);
                 opts.setup = this.setup;
                 //----------------------------------------------------------
                 // Init Tinymce...
@@ -22665,53 +22474,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(63);
-var defined = __webpack_require__(64);
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(207);
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
-
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-
-/***/ }),
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22750,27 +22516,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             'vue-tinymce': _VueTinymce2.default
         },
 
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.watchers],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values],
         props: {
             rows: {
                 required: false,
                 default: 3
             }
-        },
-
-        data: function data() {
-            return {
-                aValue: null
-            };
-        },
-        mounted: function mounted() {
-            var _this = this;
-
-            this.$nextTick(function () {
-                if (_this.value) {
-                    _this.aValue = _this.value;
-                }
-            });
         }
     };
 });
@@ -22781,26 +22532,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(15), __webpack_require__(1), __webpack_require__(96), __webpack_require__(99), __webpack_require__(101), __webpack_require__(103), __webpack_require__(106), __webpack_require__(108), __webpack_require__(110), __webpack_require__(114), __webpack_require__(116), __webpack_require__(118), __webpack_require__(122), __webpack_require__(124), __webpack_require__(130), __webpack_require__(132), __webpack_require__(219), __webpack_require__(134), __webpack_require__(155), __webpack_require__(159), __webpack_require__(163), __webpack_require__(165), __webpack_require__(167), __webpack_require__(169), __webpack_require__(171), __webpack_require__(50), __webpack_require__(178), __webpack_require__(180), __webpack_require__(182), __webpack_require__(186), __webpack_require__(190), __webpack_require__(194), __webpack_require__(22), __webpack_require__(60)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(15), __webpack_require__(1), __webpack_require__(96), __webpack_require__(99), __webpack_require__(101), __webpack_require__(103), __webpack_require__(106), __webpack_require__(108), __webpack_require__(110), __webpack_require__(114), __webpack_require__(122), __webpack_require__(124), __webpack_require__(130), __webpack_require__(116), __webpack_require__(231), __webpack_require__(118), __webpack_require__(132), __webpack_require__(219), __webpack_require__(134), __webpack_require__(155), __webpack_require__(159), __webpack_require__(163), __webpack_require__(165), __webpack_require__(167), __webpack_require__(234), __webpack_require__(169), __webpack_require__(171), __webpack_require__(50), __webpack_require__(178), __webpack_require__(180), __webpack_require__(182), __webpack_require__(186), __webpack_require__(228), __webpack_require__(190), __webpack_require__(194), __webpack_require__(22), __webpack_require__(60)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('./Prototypes/validation'), require('./Mixins'), require('./Prototypes'), require('./FormText'), require('./FormFile'), require('./FormTextMask'), require('./FormNumber'), require('./FormPassword'), require('./FormSlider'), require('./FormCheckbox'), require('./FormCheckboxGroup'), require('./FormOptionsLists'), require('./FormSelect'), require('./FormSelectize'), require('./FormRadioButton'), require('./FormTextarea'), require('./FormTinymce'), require('./FormMarkdown'), require('./FormDateRange'), require('./FormDate'), require('./FormPanel'), require('./FormGroup'), require('./FormDropzone'), require('./FormSeoData'), require('./FormAddress'), require('./FormStateSelect'), require('./FormNamePrefixSelect'), require('./FormNameSuffixSelect'), require('./FormLoader'), require('./FormModal'), require('./FormErrors'), require('./FormSaveButton'), require('./Vue/VueDropzone'), require('./Vue/VueTinymce'));
+        factory(exports, require('./Prototypes/validation'), require('./Mixins'), require('./Prototypes'), require('./FormText'), require('./FormFile'), require('./FormTextMask'), require('./FormNumber'), require('./FormPassword'), require('./FormSlider'), require('./FormCheckbox'), require('./FormSelect'), require('./FormSelectize'), require('./FormRadioButton'), require('./FormCheckboxGroup'), require('./FormSegmentedControl'), require('./FormOptionsLists'), require('./FormTextarea'), require('./FormTinymce'), require('./FormMarkdown'), require('./FormDateRange'), require('./FormDate'), require('./FormPanel'), require('./FormGroup'), require('./FormDropzone'), require('./FormDropzoneButton'), require('./FormSeoData'), require('./FormAddress'), require('./FormStateSelect'), require('./FormNamePrefixSelect'), require('./FormNameSuffixSelect'), require('./FormLoader'), require('./FormModal'), require('./FormProgressBar'), require('./FormErrors'), require('./FormSaveButton'), require('./Vue/VueDropzone'), require('./Vue/VueTinymce'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.validation, global.Mixins, global.Prototypes, global.FormText, global.FormFile, global.FormTextMask, global.FormNumber, global.FormPassword, global.FormSlider, global.FormCheckbox, global.FormCheckboxGroup, global.FormOptionsLists, global.FormSelect, global.FormSelectize, global.FormRadioButton, global.FormTextarea, global.FormTinymce, global.FormMarkdown, global.FormDateRange, global.FormDate, global.FormPanel, global.FormGroup, global.FormDropzone, global.FormSeoData, global.FormAddress, global.FormStateSelect, global.FormNamePrefixSelect, global.FormNameSuffixSelect, global.FormLoader, global.FormModal, global.FormErrors, global.FormSaveButton, global.VueDropzone, global.VueTinymce);
+        factory(mod.exports, global.validation, global.Mixins, global.Prototypes, global.FormText, global.FormFile, global.FormTextMask, global.FormNumber, global.FormPassword, global.FormSlider, global.FormCheckbox, global.FormSelect, global.FormSelectize, global.FormRadioButton, global.FormCheckboxGroup, global.FormSegmentedControl, global.FormOptionsLists, global.FormTextarea, global.FormTinymce, global.FormMarkdown, global.FormDateRange, global.FormDate, global.FormPanel, global.FormGroup, global.FormDropzone, global.FormDropzoneButton, global.FormSeoData, global.FormAddress, global.FormStateSelect, global.FormNamePrefixSelect, global.FormNameSuffixSelect, global.FormLoader, global.FormModal, global.FormProgressBar, global.FormErrors, global.FormSaveButton, global.VueDropzone, global.VueTinymce);
         global.index = mod.exports;
     }
-})(this, function (exports, _validation, _Mixins, _Prototypes, _FormText, _FormFile, _FormTextMask, _FormNumber, _FormPassword, _FormSlider, _FormCheckbox, _FormCheckboxGroup, _FormOptionsLists, _FormSelect, _FormSelectize, _FormRadioButton, _FormTextarea, _FormTinymce, _FormMarkdown, _FormDateRange, _FormDate, _FormPanel, _FormGroup, _FormDropzone, _FormSeoData, _FormAddress, _FormStateSelect, _FormNamePrefixSelect, _FormNameSuffixSelect, _FormLoader, _FormModal, _FormErrors, _FormSaveButton) {
+})(this, function (exports, _validation, _Mixins, _Prototypes, _FormText, _FormFile, _FormTextMask, _FormNumber, _FormPassword, _FormSlider, _FormCheckbox, _FormSelect, _FormSelectize, _FormRadioButton, _FormCheckboxGroup, _FormSegmentedControl, _FormOptionsLists, _FormTextarea, _FormTinymce, _FormMarkdown, _FormDateRange, _FormDate, _FormPanel, _FormGroup, _FormDropzone, _FormDropzoneButton, _FormSeoData, _FormAddress, _FormStateSelect, _FormNamePrefixSelect, _FormNameSuffixSelect, _FormLoader, _FormModal, _FormProgressBar, _FormErrors, _FormSaveButton) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.vfconfig = exports.validation = exports.formData = exports.options = exports.dates = exports.watchers = exports.errors = exports.props = exports.FormModal = exports.FormSaveButton = exports.FormErrors = exports.FormLoader = exports.FormSeoData = exports.FormDropzone = exports.FormGroup = exports.FormPanel = exports.FormDate = exports.FormDateRange = exports.FormRadioButton = exports.FormSelectize = exports.FormSelect = exports.FormCheckbox = exports.FormSlider = exports.FormFile = exports.FormNumber = exports.FormPassword = exports.FormTinymce = exports.FormTextarea = exports.FormTextMask = exports.FormText = exports.ValidationEvents = exports.ValidationSyncMixin = exports.VueFormHelpers = exports.VueForms = exports.VueFormsCore = undefined;
+    exports.vfconfig = exports.validation = exports.formData = exports.options = exports.dates = exports.errors = exports.props = exports.values = exports.FormModal = exports.FormProgressBar = exports.FormSaveButton = exports.FormErrors = exports.FormLoader = exports.FormSeoData = exports.FormDropzoneButton = exports.FormDropzone = exports.FormGroup = exports.FormPanel = exports.FormDate = exports.FormDateRange = exports.FormOptionsLists = exports.FormSegmentedControl = exports.FormCheckboxGroup = exports.FormRadioButton = exports.FormSelectize = exports.FormSelect = exports.FormCheckbox = exports.FormSlider = exports.FormFile = exports.FormNumber = exports.FormPassword = exports.FormMarkdown = exports.FormTinymce = exports.FormTextarea = exports.FormTextMask = exports.FormText = exports.ValidationEvents = exports.ValidationSyncMixin = exports.VueFormHelpers = exports.VueFormsCore = exports.VueForms = undefined;
     Object.defineProperty(exports, 'ValidationSyncMixin', {
         enumerable: true,
         get: function () {
@@ -22828,15 +22579,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var _FormCheckbox2 = _interopRequireDefault(_FormCheckbox);
 
-    var _FormCheckboxGroup2 = _interopRequireDefault(_FormCheckboxGroup);
-
-    var _FormOptionsLists2 = _interopRequireDefault(_FormOptionsLists);
-
     var _FormSelect2 = _interopRequireDefault(_FormSelect);
 
     var _FormSelectize2 = _interopRequireDefault(_FormSelectize);
 
     var _FormRadioButton2 = _interopRequireDefault(_FormRadioButton);
+
+    var _FormCheckboxGroup2 = _interopRequireDefault(_FormCheckboxGroup);
+
+    var _FormSegmentedControl2 = _interopRequireDefault(_FormSegmentedControl);
+
+    var _FormOptionsLists2 = _interopRequireDefault(_FormOptionsLists);
 
     var _FormTextarea2 = _interopRequireDefault(_FormTextarea);
 
@@ -22854,6 +22607,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var _FormDropzone2 = _interopRequireDefault(_FormDropzone);
 
+    var _FormDropzoneButton2 = _interopRequireDefault(_FormDropzoneButton);
+
     var _FormSeoData2 = _interopRequireDefault(_FormSeoData);
 
     var _FormAddress2 = _interopRequireDefault(_FormAddress);
@@ -22868,6 +22623,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var _FormModal2 = _interopRequireDefault(_FormModal);
 
+    var _FormProgressBar2 = _interopRequireDefault(_FormProgressBar);
+
     var _FormErrors2 = _interopRequireDefault(_FormErrors);
 
     var _FormSaveButton2 = _interopRequireDefault(_FormSaveButton);
@@ -22877,39 +22634,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             default: obj
         };
     }
-
-    /**
-     * Core Components
-     */
-    var VueFormsCore = exports.VueFormsCore = {
-        install: function install(Vue, option) {
-            _Prototypes.vfconfig.configure(option);
-            Vue.prototype.$vfconfig = _Prototypes.vfconfig;
-
-            Vue.component('form-text', _FormText2.default);
-
-            Vue.component('form-number', _FormNumber2.default);
-            Vue.component('form-password', _FormPassword2.default);
-
-            Vue.component('form-slider', _FormSlider2.default);
-            Vue.component('form-checkbox', _FormCheckbox2.default);
-
-            Vue.component('form-select', _FormSelect2.default);
-
-            Vue.component('form-radio-button', _FormRadioButton2.default);
-            Vue.component('form-checkbox-group', _FormCheckboxGroup2.default);
-
-            Vue.component('form-textarea', _FormTextarea2.default);
-
-            Vue.component('form-file', _FormFile2.default);
-
-            Vue.component('form-panel', _FormPanel2.default);
-            Vue.component('form-group', _FormGroup2.default);
-
-            Vue.component('form-seo', _FormSeoData2.default);
-            Vue.component('form-address', _FormAddress2.default);
-        }
-    };
 
     var VueForms = exports.VueForms = {
         install: function install(Vue, options) {
@@ -22941,6 +22665,40 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     /**
+     * Core Components
+     */
+    var VueFormsCore = exports.VueFormsCore = {
+        install: function install(Vue, option) {
+            _Prototypes.vfconfig.configure(option);
+            Vue.prototype.$vfconfig = _Prototypes.vfconfig;
+
+            Vue.component('form-text', _FormText2.default);
+
+            Vue.component('form-number', _FormNumber2.default);
+            Vue.component('form-password', _FormPassword2.default);
+
+            Vue.component('form-slider', _FormSlider2.default);
+            Vue.component('form-checkbox', _FormCheckbox2.default);
+
+            Vue.component('form-select', _FormSelect2.default);
+
+            Vue.component('form-radio-button', _FormRadioButton2.default);
+            Vue.component('form-checkbox-group', _FormCheckboxGroup2.default);
+            Vue.component('form-segmented-control', _FormSegmentedControl2.default);
+
+            Vue.component('form-textarea', _FormTextarea2.default);
+
+            Vue.component('form-file', _FormFile2.default);
+
+            Vue.component('form-panel', _FormPanel2.default);
+            Vue.component('form-group', _FormGroup2.default);
+
+            Vue.component('form-seo', _FormSeoData2.default);
+            Vue.component('form-address', _FormAddress2.default);
+        }
+    };
+
+    /**
      * Helpers
      */
     var VueFormHelpers = exports.VueFormHelpers = {
@@ -22949,6 +22707,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             Vue.component('form-errors', _FormErrors2.default);
             Vue.component('form-save-button', _FormSaveButton2.default);
             Vue.component('form-modal', _FormModal2.default);
+            Vue.component('form-progress-bar', _FormProgressBar2.default);
 
             Vue.prototype.$validation = _Prototypes.validation;
         }
@@ -22958,6 +22717,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.FormTextMask = _FormTextMask2.default;
     exports.FormTextarea = _FormTextarea2.default;
     exports.FormTinymce = _FormTinymce2.default;
+    exports.FormMarkdown = _FormMarkdown2.default;
     exports.FormPassword = _FormPassword2.default;
     exports.FormNumber = _FormNumber2.default;
     exports.FormFile = _FormFile2.default;
@@ -22966,19 +22726,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.FormSelect = _FormSelect2.default;
     exports.FormSelectize = _FormSelectize2.default;
     exports.FormRadioButton = _FormRadioButton2.default;
+    exports.FormCheckboxGroup = _FormCheckboxGroup2.default;
+    exports.FormSegmentedControl = _FormSegmentedControl2.default;
+    exports.FormOptionsLists = _FormOptionsLists2.default;
     exports.FormDateRange = _FormDateRange2.default;
     exports.FormDate = _FormDate2.default;
     exports.FormPanel = _FormPanel2.default;
     exports.FormGroup = _FormGroup2.default;
     exports.FormDropzone = _FormDropzone2.default;
+    exports.FormDropzoneButton = _FormDropzoneButton2.default;
     exports.FormSeoData = _FormSeoData2.default;
     exports.FormLoader = _FormLoader2.default;
     exports.FormErrors = _FormErrors2.default;
     exports.FormSaveButton = _FormSaveButton2.default;
+    exports.FormProgressBar = _FormProgressBar2.default;
     exports.FormModal = _FormModal2.default;
+    exports.values = _Mixins.values;
     exports.props = _Mixins.props;
     exports.errors = _Mixins.errors;
-    exports.watchers = _Mixins.watchers;
     exports.dates = _Mixins.dates;
     exports.options = _Mixins.options;
     exports.formData = _Mixins.formData;
@@ -23385,50 +23150,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(exports);
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod.exports);
-        global.watchers = mod.exports;
-    }
-})(this, function (exports) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.default = {
-        watch: {
-            aValue: function aValue(change) {
-                this.$emit('input', change);
-                this.touched = true;
-            },
-            value: function value(change) {
-                this.aValue = change;
-            }
-        },
-
-        methods: {
-            autocomplete: function autocomplete(event) {
-                this.aValue = event.target.value;
-            }
-        }
-    };
-});
-
-/***/ }),
+/* 71 */,
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23984,7 +23706,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         data: function data() {
             return {
-                base: "/api/admin/upload",
                 errors: [],
                 progress: 0
             };
@@ -24004,8 +23725,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     return this.fileTypes.join(',');
                 }
             },
-            endpoint: function endpoint() {
-                var base = this.base || _.get(this.$vfconfig, 'endpoints.upload');
+            requestEndpoint: function requestEndpoint() {
+                var base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload');
 
                 var endpoint = base + "?type=" + this.type;
 
@@ -24209,10 +23930,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", {
-    staticClass: "dropzone",
-    attrs: { action: _vm.url, id: _vm.id }
-  })
+  return _c("form", { staticClass: "dropzone", attrs: { action: _vm.url } })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -24319,6 +24037,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             format: {
                 date: DEFAULT_DATE_FORMAT,
                 time: DEFAULT_TIME_FORMAT
+            },
+
+            dropzone: {
+                maxFileSize: 10 // in MB
+            },
+
+            tinymce: {
+                plugins: ['advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualchars', 'searchreplace visualblocks codemirror fullscreen textcolor contextmenu', 'insertdatetime media table contextmenu paste imagetools'],
+                toolbar: 'undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify |\n                bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code',
+                css: ''
             }
         },
 
@@ -33789,7 +33517,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group" }, [
     _vm.label
-      ? _c("label", { attrs: { for: _vm.element } }, [
+      ? _c("label", { attrs: { for: _vm.vf_uid } }, [
           _vm._v(_vm._s(_vm.label) + ":")
         ])
       : _vm._e(),
@@ -33807,7 +33535,7 @@ var render = function() {
           expression: "aValue"
         }
       ],
-      attrs: { id: _vm.element },
+      attrs: { id: _vm.vf_uid },
       domProps: { value: _vm.aValue },
       on: {
         input: function($event) {
@@ -34453,7 +34181,7 @@ var render = function() {
                 _c("vue-dropzone", {
                   attrs: {
                     existing: _vm.value,
-                    url: _vm.endpoint,
+                    url: _vm.requestEndpoint,
                     "accepted-file-types": _vm.acceptedFiletypes,
                     headers: _vm.requestHeaders,
                     "max-number-of-files": _vm.limit,
@@ -36037,251 +35765,24 @@ exports.push([module.i, "\n.mce-window-head {\n    min-height: 1.1em;\n}\n", ""]
 
 
 /***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(201), __esModule: true };
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(202);
-module.exports = __webpack_require__(7).Object.assign;
-
-
-/***/ }),
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.3.1 Object.assign(target, source)
-var $export = __webpack_require__(19);
-
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(203) });
-
-
-/***/ }),
-/* 203 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 19.1.2.1 Object.assign(target, source, ...)
-var getKeys = __webpack_require__(204);
-var gOPS = __webpack_require__(215);
-var pIE = __webpack_require__(216);
-var toObject = __webpack_require__(217);
-var IObject = __webpack_require__(63);
-var $assign = Object.assign;
-
-// should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(11)(function () {
-  var A = {};
-  var B = {};
-  // eslint-disable-next-line no-undef
-  var S = Symbol();
-  var K = 'abcdefghijklmnopqrst';
-  A[S] = 7;
-  K.split('').forEach(function (k) { B[k] = k; });
-  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
-  var T = toObject(target);
-  var aLen = arguments.length;
-  var index = 1;
-  var getSymbols = gOPS.f;
-  var isEnum = pIE.f;
-  while (aLen > index) {
-    var S = IObject(arguments[index++]);
-    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
-    var length = keys.length;
-    var j = 0;
-    var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
-  } return T;
-} : $assign;
-
-
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(205);
-var enumBugKeys = __webpack_require__(214);
-
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
-};
-
-
-/***/ }),
-/* 205 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var has = __webpack_require__(206);
-var toIObject = __webpack_require__(62);
-var arrayIndexOf = __webpack_require__(208)(false);
-var IE_PROTO = __webpack_require__(211)('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-
-/***/ }),
-/* 206 */
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-/* 207 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-
-/***/ }),
-/* 208 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// false -> Array#indexOf
-// true  -> Array#includes
-var toIObject = __webpack_require__(62);
-var toLength = __webpack_require__(209);
-var toAbsoluteIndex = __webpack_require__(210);
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-
-/***/ }),
-/* 209 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.15 ToLength
-var toInteger = __webpack_require__(65);
-var min = Math.min;
-module.exports = function (it) {
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-
-/***/ }),
-/* 210 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toInteger = __webpack_require__(65);
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
-  index = toInteger(index);
-  return index < 0 ? max(index + length, 0) : min(index, length);
-};
-
-
-/***/ }),
-/* 211 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var shared = __webpack_require__(212)('keys');
-var uid = __webpack_require__(213);
-module.exports = function (key) {
-  return shared[key] || (shared[key] = uid(key));
-};
-
-
-/***/ }),
-/* 212 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__(9);
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
-  return store[key] || (store[key] = {});
-};
-
-
-/***/ }),
-/* 213 */
-/***/ (function(module, exports) {
-
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-
-/***/ }),
-/* 214 */
-/***/ (function(module, exports) {
-
-// IE 8- don't enum bug keys
-module.exports = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-
-/***/ }),
-/* 215 */
-/***/ (function(module, exports) {
-
-exports.f = Object.getOwnPropertySymbols;
-
-
-/***/ }),
-/* 216 */
-/***/ (function(module, exports) {
-
-exports.f = {}.propertyIsEnumerable;
-
-
-/***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(64);
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
 /* 218 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -36290,9 +35791,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.isReady ? _c("textarea", { attrs: { id: _vm.element } }) : _vm._e()
-  ])
+  return _vm.isReady ? _c("textarea", { attrs: { id: _vm.vf_uid } }) : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38620,6 +38119,626 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-37df20f4", esExports)
   }
 }
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports);
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports);
+        global.values = mod.exports;
+    }
+})(this, function (exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        data: function data() {
+            return {
+                aValue: null
+            };
+        },
+        mounted: function mounted() {
+            var _this = this;
+
+            this.$nextTick(function () {
+                if (_this.value) {
+                    _this.aValue = _this.value;
+                }
+            });
+        },
+
+
+        watch: {
+            aValue: function aValue(change) {
+                this.$emit('input', change);
+                this.touched = true;
+            },
+            value: function value(change) {
+                this.aValue = change;
+            }
+        },
+
+        methods: {
+            autocomplete: function autocomplete(event) {
+                this.aValue = event.target.value;
+            }
+        }
+
+    };
+});
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports);
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports);
+        global.FormProgressBar = mod.exports;
+    }
+})(this, function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        props: {
+            progress: {
+                type: [Number, String],
+                required: true
+            },
+
+            max: {
+                type: Number,
+                default: 100
+            },
+
+            min: {
+                type: Number,
+                default: 0
+            }
+        },
+
+        computed: {
+            barStyle: function barStyle() {
+                return "width:" + this.progress + '%';
+            }
+        }
+    };
+});
+
+/***/ }),
+/* 228 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormProgressBar_vue__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormProgressBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormProgressBar_vue__);
+/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormProgressBar_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormProgressBar_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0b89d759_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormProgressBar_vue__ = __webpack_require__(229);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormProgressBar_vue___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0b89d759_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormProgressBar_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src/FormProgressBar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0b89d759", Component.options)
+  } else {
+    hotAPI.reload("data-v-0b89d759", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 229 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "progress" }, [
+    _c(
+      "div",
+      {
+        staticClass: "progress-bar",
+        style: _vm.barStyle,
+        attrs: {
+          role: "progressbar",
+          "aria-valuenow": _vm.progress,
+          "aria-valuemin": _vm.min,
+          "aria-valuemax": _vm.max
+        }
+      },
+      [
+        _c("span", { staticClass: "sr-only" }, [
+          _vm._v(_vm._s(_vm.progress) + "% Complete")
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0b89d759", esExports)
+  }
+}
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("./Mixins"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.Mixins);
+        global.FormSegmentedControl = mod.exports;
+    }
+})(this, function (exports, _Mixins) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.values, _Mixins.options],
+
+        props: {
+            color: {
+                type: String,
+                default: "#1B5293"
+            }
+        },
+
+        data: function data() {
+            return {
+                aValue: 0
+            };
+        }
+    };
+});
+
+/***/ }),
+/* 231 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormSegmentedControl_vue__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormSegmentedControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormSegmentedControl_vue__);
+/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormSegmentedControl_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormSegmentedControl_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3b3ee6c8_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormSegmentedControl_vue__ = __webpack_require__(232);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormSegmentedControl_vue___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3b3ee6c8_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormSegmentedControl_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src/FormSegmentedControl.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3b3ee6c8", Component.options)
+  } else {
+    hotAPI.reload("data-v-3b3ee6c8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "segmented-control", staticStyle: { width: "100%" } },
+    [
+      _vm._l(_vm.options, function(opt, idx) {
+        return [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.aValue,
+                expression: "aValue"
+              }
+            ],
+            attrs: {
+              type: "radio",
+              name: "sc-1-" + _vm.vf_uid,
+              id: "sc-1-" + _vm.vf_uid + "-" + idx,
+              checked: ""
+            },
+            domProps: { value: idx, checked: _vm._q(_vm.aValue, idx) },
+            on: {
+              change: function($event) {
+                _vm.aValue = idx
+              }
+            }
+          })
+        ]
+      }),
+      _vm._v(" "),
+      _vm._l(_vm.options, function(opt, idx) {
+        return [
+          _c(
+            "label",
+            {
+              attrs: {
+                for: "sc-1-" + _vm.vf_uid + "-" + idx,
+                "data-value": opt
+              }
+            },
+            [_vm._v(_vm._s(opt))]
+          )
+        ]
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3b3ee6c8", esExports)
+  }
+}
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("./Mixins"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.Mixins);
+        global.FormDropzoneButton = mod.exports;
+    }
+})(this, function (exports, _Mixins) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        mixins: [_Mixins.dropzone],
+
+        props: {
+            btnText: {
+                type: String,
+                default: "Choose File"
+            }
+        }
+    };
+});
+
+/***/ }),
+/* 234 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDropzoneButton_vue__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDropzoneButton_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDropzoneButton_vue__);
+/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDropzoneButton_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDropzoneButton_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d75d416c_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormDropzoneButton_vue__ = __webpack_require__(235);
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDropzoneButton_vue___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d75d416c_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormDropzoneButton_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "src/FormDropzoneButton.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d75d416c", Component.options)
+  } else {
+    hotAPI.reload("data-v-d75d416c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 235 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "form-group upload" },
+    [
+      _c("transition", { attrs: { name: "fade" } }, [
+        _vm.id
+          ? _c("div", [
+              _c("div", { staticClass: "row" }, [
+                _c("label", { staticClass: "col-xs-12" }, [
+                  _vm._v(_vm._s(_vm.label) + " ")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-xs-8" },
+                  [
+                    _c(
+                      "vue-dropzone",
+                      {
+                        attrs: {
+                          existing: _vm.value,
+                          url: _vm.requestEndpoint,
+                          "accepted-file-types": _vm.acceptedFileTypes,
+                          headers: _vm.requestHeaders,
+                          "max-number-of-files": _vm.limit,
+                          "max-file-size-in-mb": _vm.maxFileSize
+                        },
+                        on: {
+                          error: _vm.dzError,
+                          progress: function($event) {
+                            _vm.progress = arguments[0]
+                          },
+                          success: _vm.dzAdded,
+                          removed: _vm.dzRemoved
+                        }
+                      },
+                      [
+                        _c("template", { slot: "button" }, [
+                          _vm._v(_vm._s(_vm.btnText))
+                        ])
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "help-block" }, [
+                      _vm._v(
+                        "Limited to " +
+                          _vm._s(_vm.limitText) +
+                          ". Each file must not exceed " +
+                          _vm._s(_vm.maxFileSize) +
+                          "MB."
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm.helpText
+                      ? _c("span", { staticClass: "help-block" }, [
+                          _vm._v(_vm._s(_vm.helpText))
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-4 text-right" },
+                  [
+                    !!_vm.$slots["thumbnail"] ? [_vm._t("thumbnail")] : _vm._e()
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("form-progress-bar", {
+                      attrs: { progress: _vm.progress }
+                    })
+                  ],
+                  1
+                )
+              ])
+            ])
+          : _c("div", [
+              _c("span", { staticClass: "help-block" }, [
+                _vm._v("File upload is available after initial save.")
+              ])
+            ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d75d416c", esExports)
+  }
+}
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports);
+    global.uuid = mod.exports;
+  }
+})(this, function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    computed: {
+      vf_uid: function vf_uid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+          var r = Math.random() * 16 | 0,
+              v = c == 'x' ? r : r & 0x3 | 0x8;
+          return v.toString(16);
+        });
+      }
+    }
+  };
+});
 
 /***/ })
 /******/ ]);

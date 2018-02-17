@@ -9,7 +9,7 @@
 
 <script>
 
-import { props, errors, watchers } from './Mixins';
+import { props, errors, values } from './Mixins';
 import VueTinymce from './Vue/VueTinymce.vue'
 
 export default {
@@ -17,26 +17,12 @@ export default {
         'vue-tinymce' : VueTinymce
     },
 
-    mixins: [ props, errors, watchers ],
+    mixins: [ props, errors, values ],
     props: {
         rows: {
             required: false,
             default: 3
         },
     },
-
-    data () {
-        return {
-            aValue: null
-        }
-    },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
-    }
 }
 </script>
