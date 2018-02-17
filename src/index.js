@@ -22,12 +22,15 @@ import FormSlider from './FormSlider'
 import FormCheckbox from './FormCheckbox'
 import FormCheckboxGroup from './FormCheckboxGroup'
 
+import FormOptionsLists from './FormOptionsLists'
 
 import FormSelect from './FormSelect'
 import FormSelectize from './FormSelectize'
 import FormRadioButton from './FormRadioButton'
 import FormTextarea from './FormTextarea'
 import FormTinymce from './FormTinymce'
+import FormMarkdown from './FormMarkdown'
+
 import FormDateRange from './FormDateRange'
 import FormDate from './FormDate'
 import FormPanel from './FormPanel'
@@ -36,6 +39,10 @@ import FormDropzone from './FormDropzone'
 
 import FormSeoData from './FormSeoData'
 import FormAddress from './FormAddress'
+import FormStateSelect from './FormStateSelect'
+
+import FormNamePrefixSelect from './FormNamePrefixSelect'
+import FormNameSuffixSelect from './FormNameSuffixSelect'
 
 import FormLoader from './FormLoader'
 import FormModal from './FormModal'
@@ -71,6 +78,8 @@ export const VueFormsCore = {
         Vue.component('form-panel', FormPanel)
         Vue.component('form-group', FormGroup)
 
+        Vue.component('form-seo', FormSeoData)
+        Vue.component('form-address', FormAddress)
     }
 }
 
@@ -80,19 +89,26 @@ export const VueForms = {
         Vue.use(VueFormsCore, options)
         Vue.use(VueFormHelpers, options)
 
+        Vue.component('vue-dropzonejs', require('./Vue/VueDropzone'))
+        Vue.component('vue-tinymce', require('./Vue/VueTinymce'))
+
         /**
          * Components requiring all libs libs...
          */
         Vue.component('form-daterange', FormDateRange)
         Vue.component('form-date', FormDate)
-        Vue.component('dropzonejs', require('./Vue/VueDropzone.vue'))
-        Vue.component('tinymce', require('./Vue/VueTinymce.vue'))
         Vue.component('form-text-mask',   FormTextMask)
         Vue.component('form-selectize', FormSelectize)
+
+        Vue.component('form-name-prefix-select', FormNamePrefixSelect)
+        Vue.component('form-name-suffix-select', FormNameSuffixSelect)
+        Vue.component('form-state-select', FormStateSelect)
+
         Vue.component('form-tinymce', FormTinymce)
+        Vue.component('form-markdown', FormMarkdown)
         Vue.component('form-dropzone', FormDropzone)
-        Vue.component('form-seo', FormSeoData)
-        Vue.component('form-address', FormAddress)
+
+        Vue.component('form-options-list', FormOptionsLists)
 
     }
 }

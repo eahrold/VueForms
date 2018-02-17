@@ -37,3 +37,8 @@ export const suffixes = [
     'III',
     'IV'
 ]
+
+export default {
+    prefixes,
+    suffixes
+}

@@ -3,8 +3,6 @@
     <div class="row">
         <div class="col-md-8">
 
-          <form-seo label='SEO DATA' v-model='model.seo' property='seo'></form-seo>
-
           <form-checkbox label='Show All Elements' v-model='showElementsAll' property='showElementsAll'></form-checkbox>
           <form-checkbox label='Fake Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
 
@@ -73,6 +71,14 @@
               <template slot='help'><b>Current Val: {{ model.date_time }}</b> </template>
           </form-date>`
 
+          <form-options-list
+              v-model='model.options_list'
+              :options='options'
+              key-by='text'
+              property='options_list'
+              :errors='errors'>
+          </form-options-list>
+
           <form-daterange
             :start='model.start'
             :end='model.end'
@@ -124,6 +130,11 @@
                   </div>
               </template>
           </form-modal>
+
+          <form-seo label='SEO DATA' v-model='model.seo' property='seo'></form-seo>
+          <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
+
+          <form-markdown label='Markdown' v-model='model.markdown' property='markdown'></form-markdown>
 
         </div>
 
@@ -197,6 +208,7 @@ export default {
         selectize_multiple: [],
         checkbox_group: [],
         checkbox_group_from_array: [],
+        options_list: [],
 
         radio_select: null,
         radio_select_from_array: null,

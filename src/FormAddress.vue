@@ -2,24 +2,43 @@
     <form-panel>
         <template slot='heading'>Address</template>
         <div class="row">
-            <form-text class='col-md-12' v-model='aValue.address_line1' property='address_line1'></form-text>
-            <form-text class='col-md-12' v-model='aValue.address_line2' property='address_line2'></form-text>
+            <form-text class='col-md-12' label='Line 1' v-model='aValue.address_line1' :property='`${property}.address_line1`'></form-text>
+            <form-text class='col-md-12' label='Line 2' v-model='aValue.address_line2' :property='`${property}.address_line2`'></form-text>
         </div>
 
         <div class="row">
-            <form-text class='col-md-5' v-model='aValue.city' property='city'></form-text>
-            <form-state-select class='col-md-4' v-if='stateSelect' v-model='aValue.state' property='state' label='State'></form-state-select>
-            <form-text v-else class='col-md-3'v-model='aValue.state' property='state'></form-text>
-            <form-text-mask class='col-md-3' v-model='aValue.zip' property='zip' mask='00000-0000'></form-text-mask>
+            <form-text class='col-md-4' label='City' v-model='aValue.city' :property='`${property}.city`'></form-text>
+            <form-state-select class='col-md-4' label='State' v-if='stateSelect' v-model='aValue.state' :property='`${property}.state`'></form-state-select>
+            <form-text v-else class='col-md-4' label='State' v-model='aValue.state' :property='`${property}.state`'></form-text>
+            <form-text-mask class='col-md-4' label='Zip' v-model='aValue.zip' placeholder='55555-5555' :property='`${property}.zip`' mask='#####-####'></form-text-mask>
         </div>
 
         <div class="row">
-            <form-text class='col-md-3 col-md-offset-9' v-model='aValue.country' property='country'></form-text>
+            <form-country-select
+                v-model='aValue.country'
+                :property='`${property}.country`'
+                label='Country'
+                class='col-md-4 col-md-offset-8'
+                v-if='stateSelect'></form-country-select>
         </div>
 
         <div class='row' v-if='includeCoordinates'>
-            <form-text class='col-md-6' v-model='aValue.lat' property='lat' label='Latitude'></form-text>
-            <form-text class='col-md-6' v-model='aValue.lng' property='lng' label='Longitude'></form-text>
+            <form-number
+                :max='90'
+                :min='-90'
+                v-model='aValue.lat'
+                :property='`${property}.lat`'
+                label='Latitude'
+                class='col-md-6' >
+            </form-number>
+            <form-number
+                :max='90'
+                :min='-90'
+                v-model='aValue.lng'
+                :property='`${property}.lng`'
+                label='Longitude'
+                class='col-md-6'>
+            </form-number>
         </div>
 
         <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
@@ -29,13 +48,15 @@
 
 <script>
 
-import { props, errors, watchers } from './Mixins'
+import { value, props, errors, watchers } from './Mixins'
 import FormStateSelect from './FormStateSelect'
+import FormCountrySelect from './FormCountrySelect'
 
 export default {
     mixins: [ props, errors, watchers ],
     components: {
-        'form-state-select': FormStateSelect
+        'form-state-select': FormStateSelect,
+        'form-country-select': FormCountrySelect,
     },
 
     props: {
@@ -54,14 +75,6 @@ export default {
         return {
             aValue: { address_line1: '', address_line2: '', city: '', state: '', zip: '', lat: null, lng: null }
         }
-    },
-
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
-            }
-        });
     }
 }
 </script>

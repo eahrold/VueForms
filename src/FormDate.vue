@@ -100,5 +100,5 @@ export default {
 </script>
 
 <style type="text/css">
-    @import url('~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css');
+    @import url('~bootstrap-daterangepicker/daterangepicker.css');
 </style>

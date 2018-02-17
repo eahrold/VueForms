@@ -1,175 +1,31 @@
 <template>
     <div class="form-group upload">
-        <label class="control-label">{{ label }}</label>
-        <dropzonejs :existing='value'
-                    :url="endpoint"
-                    :headers='requestHeaders'
-                    :accepted-file-types="acceptedFiletypes"
-                    :max-number-of-files='limit'
-                    :max-file-size-in-mb='maxFileSize'
-                    @vdropzone-success="dzAdded"
-                    @vdropzone-removed-file="dzRemoved">
-        </dropzonejs>
+        <transition name='fade'>
+            <div v-if='id'>
+                <label>{{ label }} </label>
+                <vue-dropzone :existing='value'
+                            :url="endpoint"
+                            :accepted-file-types="acceptedFiletypes"
+                            :headers='requestHeaders'
+                            :max-number-of-files='limit'
+                            :max-file-size-in-mb='maxFileSize'
+                            @error="dzError"
+                            @success="dzAdded"
+                            @removed="dzRemoved">
+                </vue-dropzone>
+                <span class="help-block">Limited to {{ limitText }}. Each file must not exceed {{ maxFileSize }}MB.</span>
+                <span v-if='helpText' class="help-block">{{ helpText }}</span>
+            </div>
+            <div v-else>
+                <span class="help-block">File upload is available after initial save.</span>
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
-
-    import _  from 'lodash';
-
-    import VueDropzone from './Vue/VueDropzone.vue'
-
-    export default {
-        components: {
-            dropzonejs: VueDropzone
-        },
-
-        props: {
-            headers: {
-                type: Object,
-                required: false,
-            },
-
-            // Used for v-bind
-            value: {
-                type: [ Object, Array ],
-            },
-
-            // the label for the form element
-            label: {
-                type: String,
-                required: true
-            },
-
-            // The type of model
-            type: {
-                type: String,
-                required: true
-            },
-
-            // The id of the model
-            id: {
-                type: Number,
-            },
-
-            // The model property the image should be attached to
-            property: {
-                type: String,
-            },
-
-            // Supported file types
-            fileTypes: {
-                type: [String, Array],
-                default: "image/*"
-            },
-
-            // If multiple files are allowed, how many
-            limit: {
-                type: Number,
-                default: 1
-            },
-
-            // If multiple files are allowed, how many
-            maxFileSize: {
-                type: Number,
-                default: 2
-            },
-
-            // Error callback
-            error: {
-                type: Function
-            },
-
-            base: {
-                type: String,
-                // default: this.$vfconfig.endpoints.upload
-            }
-        },
-
-        computed: {
-            requestHeaders() {
-                return this.headers || _.get(this.$vfconfig, 'headers', {})
-            },
-
-            acceptedFiletypes() {
-                if(_.isString(this.fileTypes)) {
-                    return this.fileTypes
-                }
-
-                if(_.isArray(this.fileTypes)) {
-                    return this.fileTypes.join(',')
-                }
-            },
-
-            endpoint() {
-                const base = this.base || _.get(this.$vfconfig, 'endpoints.upload');
-
-                var endpoint = base + "?type=" +this.type;
-
-                if (this.id) {
-                    endpoint += "&model=" + this.id;
-                }
-
-                if (this.property) {
-                    endpoint += "&property=" + this.property;
-                }
-
-                return endpoint;
-            },
-
-            fileList () {
-                if (this.value instanceof Array) {
-                    return this.value;
-                }
-                else if (this.value instanceof Object) {
-                    return [ this.value ];
-                }
-            },
-
-            impliedArray() {
-                return Boolean(this.limit > 1 || this.value instanceof Array)
-            }
-        },
-
-        methods: {
-            _error (response) {
-                if(this.error) {
-                    this.error(response);
-                }
-            },
-
-            dzError (response) {
-                this._error(response);
-            },
-
-            dzAdded (file) {
-                if(this.impliedArray) {
-                    var files = this.value || [];
-                    files.push(file);
-                    return this.$emit('input', files);
-                }
-                this.$emit('input', file);
-            },
-
-            dzRemoved (file) {
-                var success = (response) => {
-                    if(this.impliedArray) {
-                        var files = _.filter(this.value, (f)=>{
-                            return f.id != file.id
-                        });
-                        return this.$emit('input', files);
-                    }
-                    this.$emit('input', null);
-                };
-
-                var error = (response) => {
-                    this._error(response)
-                    console.error('FormDropzone Error:', response);
-                };
-
-                var endpoint = this.base + "/" + file.id;
-                this.$http.delete(endpoint).then(success, error);
-            },
-        }
-    }
+import { dropzone } from './Mixins'
+export default {
+    mixins: [ dropzone ]
+}
 </script>

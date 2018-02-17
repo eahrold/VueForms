@@ -1,0 +1,116 @@
+/**
+ * Borrowed Heavily from
+ * https://github.com/fareez-ahamed/autocomplete-vuejs2
+ */
+
+<style scoped>
+.dropdown-menu {
+    overflow-y: scroll;
+    max-height: 10em;
+}
+</style>
+
+<template>
+<div class="form-group" :class='formClass'>
+    <div style="position:relative" :class="{'open':openSuggestion}">
+        <label :for='property'>{{ aLabel }}: </label>
+        <input class="form-control" type="text" :id="property" :name='property' :value="aValue" @input="updateValue($event.target.value)"
+          @keydown.enter = 'enter'
+          @keydown.down = 'down'
+          @keydown.up = 'up'
+        >
+        <ul class="dropdown-menu" style="width:100%">
+            <li v-for="(suggestion, idx) in matches"
+                :class="{'active': isActive(idx)}"
+                @click="suggestionClick(idx)"
+            >
+                <span class="clickable">{{ suggestion }}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+</template>
+
+<script>
+
+import { props, errors, watchers } from './Mixins';
+
+export default {
+    mixins: [ props, errors, watchers ],
+
+    props: {
+        suggestions: {
+            type: Array,
+            required: true
+        }
+    },
+
+    data () {
+        return {
+            open: false,
+            current: 0,
+            aValue: null,
+        }
+    },
+
+    mounted() {
+        this.$nextTick(()=>{
+            this.aValue = this.value
+        })
+    },
+
+    computed: {
+        // Filtering the suggestion based on the input
+        matches () {
+            return this.suggestions.filter((item) => {
+            return item.includes(this.aValue)
+        })
+    },
+
+    openSuggestion () {
+        return this.selection !== '' &&
+               this.matches.length !== 0 &&
+               this.open === true
+        }
+    },
+    methods: {
+        updateValue (value) {
+            if (this.open === false) {
+                this.open = true
+                this.current = 0
+            }
+            this.aValue = value
+        },
+        // When enter pressed on the input
+        enter () {
+            this.aValue = this.matches[this.current];
+            this.open = false
+        },
+
+        // When up pressed while suggestions are open
+        up () {
+            if (this.current > 0) {
+                this.current--
+            }
+        },
+
+        // When up pressed while suggestions are open
+        down () {
+            if (this.current < this.matches.length - 1) {
+                this.current++
+            }
+        },
+
+        // For highlighting element
+        isActive (index) {
+            return index === this.current
+        },
+
+        // When one of the suggestion is clicked
+        suggestionClick (index) {
+            this.aValue = this.matches[index];
+            this.open = false
+        }
+    }
+}
+</script>

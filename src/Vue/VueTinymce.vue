@@ -125,7 +125,8 @@ export default {
 
         value (newVal, oldVal) {
             if((newVal === "") || newVal === null || (oldVal === undefined) || this.recreate) {
-                this.editor.setContent(newVal || "");
+                const editor = this.editor = tinymce.get(this.element);
+                editor.setContent(newVal || "");
                 this.recreate = false;
             }
         }
@@ -135,7 +136,7 @@ export default {
         defaults() {
             var selector = "#"+this.element;
             return {
-                theme: 'modern',
+                // theme: 'modern',
                 selector: selector,
                 height: this.height,
                 menubar: false,
@@ -161,9 +162,8 @@ export default {
         setup(editor) {
             editor.on('init', ()=>{
                 editor.setContent(this.value || "");
-                if(!this.value) {
-                    this.editor = editor;
-                }
+                if(!this.value) {}
+                this.editor = editor;
             });
 
             editor.on('change',(e)=>{
@@ -175,7 +175,6 @@ export default {
         loadTinymce () {
             var opts = Object.assign({}, this.defaults, this.options);
             opts.setup = this.setup;
-
             //----------------------------------------------------------
             // Init Tinymce...
             //-------------------------------------------------------

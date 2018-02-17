@@ -1,26 +1,27 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='property'>{{ aLabel }}: </label>
+        <label :for='property'>{{ aLabel }}: </label>
         <div class='text' :class='groupClass'>
-            <input @keydown.tab="autocomplete" :data-mask="mask" :name='property' type="text" :id="property" v-model='aValue' class="form-control" :disabled='!enabled'>
+            <the-mask @keydown.tab="autocomplete" :id="property" :placeholder='placeholder' v-model='aValue' :name='property' :mask="mask" class="form-control" :disabled='!enabled'/>
+
             <span v-if='lockable' class="input-group-addon">
                 <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
             </span>
-            <form-errors :errors='errors' :property='property'></form-errors>
             <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
         </div>
+        <form-errors :errors='errors' :property='property'></form-errors>
     </div>
 </template>
 
 <script>
 
+import { TheMask } from 'vue-the-mask'
 import { props, errors, watchers } from './Mixins';
 
-const $ = require('jquery')
-require('jquery-mask-plugin');
-
 export default {
+    components: { TheMask },
     mixins: [ props, errors, watchers ],
+
     props: {
         mask: {
             type: String,
@@ -52,7 +53,6 @@ export default {
 
     mounted () {
         this.$nextTick(()=>{
-            $("#"+this.property).mask(this.mask);
             if(this.value) {
                 this.aValue = this.value;
             }
