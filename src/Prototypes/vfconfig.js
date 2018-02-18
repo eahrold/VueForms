@@ -22,29 +22,46 @@ export default new Vue({
         },
 
         tinymce: {
-            plugins: [
-                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                'searchreplace wordcount visualchars',
-                'searchreplace visualblocks codemirror fullscreen textcolor contextmenu',
-                'insertdatetime media table contextmenu paste imagetools'
-            ],
-            toolbar: `undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify |
-                bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code`,
-            css: ''
+            apiKey: null,
+            config: {
+                 plugins: [
+                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualchars',
+                    'searchreplace visualblocks fullscreen textcolor contextmenu',
+                    'insertdatetime media table contextmenu paste imagetools'
+                ],
+                toolbar: `undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify |
+                    bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code`,
+                css: ''
+            }
         },
     },
 
     computed: {
         fileTypes() {
             return mimeTypes
-        }
+        },
     },
 
     methods: {
+        filesEndpoint(key) {
+            const files = _.get(this, 'endpoints.files');
+            if (_.isObject(files)){
+                return _.get(files, key || 'default')
+            } else if (_.isString(files)) {
+                return files
+            }
+        },
+
         configure(options) {
-            const { headers, format, endpoints } = options
+            const { headers, format, endpoints, tinymce } = options
             if(headers) {
                 this.headers = headers
+            }
+
+            if(tinymce) {
+                console.log("Setting tinymce", tinymce)
+                this.tinymce = _.assign({}, this.tinymce, tinymce)
             }
 
             this.format.date = _.get(format, 'date', DEFAULT_DATE_FORMAT)

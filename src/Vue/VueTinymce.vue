@@ -133,13 +133,14 @@ export default {
             var selector = `#${this.vf_uid}`
             let plugins = this.plugins || _.get(this.$vfconfig,'tinymce.plugins')
             let toolbar = this.toolbar || _.get(this.$vfconfig,'tinymce.toolbar')
-            let css = this.css || _.get(this.$vfconfig,'tinymce.toolbar');
+            let menubar = this.menubar || _.get(this.$vfconfig,'tinymce.menubar')
+            let css = this.css || _.get(this.$vfconfig,'tinymce.css');
             let theme = this.theme || _.get(this.$vfconfig,'tinymce.theme', 'modern');
 
             return {
                 theme: theme,
                 selector: selector,
-                menubar: false,
+                menubar: menubar,
                 plugins: plugins,
                 toolbar: toolbar,
                 content_css: css,

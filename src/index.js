@@ -58,9 +58,6 @@ export const VueForms = {
         Vue.use(VueFormsCore, options)
         Vue.use(VueFormHelpers, options)
 
-        Vue.component('vue-dropzonejs', require('./Vue/VueDropzone'))
-        Vue.component('vue-tinymce', require('./Vue/VueTinymce'))
-
         /**
          * Components requiring all libs libs...
          */
