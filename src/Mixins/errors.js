@@ -9,21 +9,19 @@ export default {
         }
     },
 
-    computed : {
+    computed: {
         formClass() {
-            return [
-                {
-                    "has-error": this.hasError,
-                    "has-warning": !this.isValid,
-                }
-            ];
+            return [{
+                "has-error": this.hasError,
+                "has-warning": !this.isValid,
+            }];
         },
 
         typeErrors() {
             return _.get(this.errors, this.property, []);
         },
 
-        hasError () {
+        hasError() {
             return Boolean(this.errors && this.typeErrors.length);
         },
 
@@ -31,9 +29,9 @@ export default {
             return this.hasError || this.warning
         },
 
-        warning () {
+        warning() {
             const message = _.get(this, 'vfErrors')
-            if(_.isString(message)){
+            if (_.isString(message)) {
                 return message
             }
             return null

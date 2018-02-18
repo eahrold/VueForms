@@ -10,7 +10,7 @@ export default {
     props: {
         // Used for v-bind
         value: {
-            type: [ Object, Array ],
+            type: [Object, Array],
         },
 
         // the label for the form element
@@ -69,7 +69,7 @@ export default {
         },
     },
 
-    data () {
+    data() {
         return {
             error: null,
             progress: 0,
@@ -86,11 +86,11 @@ export default {
         },
 
         acceptedFileTypes() {
-            if(_.isString(this.fileTypes)) {
+            if (_.isString(this.fileTypes)) {
                 return this.fileTypes
             }
 
-            if(_.isArray(this.fileTypes)) {
+            if (_.isArray(this.fileTypes)) {
                 return this.fileTypes.join(',')
             }
         },
@@ -98,7 +98,7 @@ export default {
         requestEndpoint() {
             const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload');
 
-            var endpoint = base + "?type=" +this.type;
+            var endpoint = base + "?type=" + this.type;
 
             if (this.id) {
                 endpoint += "&model=" + this.id;
@@ -111,13 +111,11 @@ export default {
             return endpoint;
         },
 
-        fileList () {
+        fileList() {
             if (this.value instanceof Array) {
                 return this.value;
-            }
-
-            else if (this.value instanceof Object) {
-                return [ this.value ];
+            } else if (this.value instanceof Object) {
+                return [this.value];
             }
         },
 
@@ -130,27 +128,27 @@ export default {
         },
 
         limitText() {
-            return "" + this.limit + " file" + ((this.limit > 1) ? 's':'');
+            return "" + this.limit + " file" + ((this.limit > 1) ? 's' : '');
         }
     },
 
     methods: {
 
-        dzError (file, response) {
+        dzError(file, response) {
             console.error('FormDropzone Error:', response);
             this.error = response
 
             this.progress = 0;
-            if(this.$alerter && _.isFunction(this.$alerter.errorResponse)) {
+            if (this.$alerter && _.isFunction(this.$alerter.errorResponse)) {
                 this.$alerter.errorResponse(response);
             }
 
             this.$emit('error', response);
         },
 
-        dzAdded (file) {
+        dzAdded(file) {
             this.progress = 0;
-            if(this.impliedArray) {
+            if (this.impliedArray) {
                 var files = this.value || [];
                 files.push(file);
                 return this.$emit('input', files);
@@ -160,22 +158,22 @@ export default {
             this.$emit('added', file);
         },
 
-        dzRemoved (file) {
+        dzRemoved(file) {
             this.progress = 0;
 
-            var success=(response)=>{
+            var success = (response) => {
                 var files = null
-                if(this.impliedArray) {
-                    files = _.filter(this.value, (f)=>{
+                if (this.impliedArray) {
+                    files = _.filter(this.value, (f) => {
                         return f.id != file.id
                     });
                 }
                 this.$emit('input', files);
                 this.$emit('removed', file);
-                console.log("Successfully removed "+file.name);
+                console.log("Successfully removed " + file.name);
             };
 
-            var error=(response)=>{
+            var error = (response) => {
                 this.error = response
                 this.$emit('error', response);
             };

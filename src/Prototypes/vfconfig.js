@@ -24,7 +24,7 @@ export default new Vue({
         tinymce: {
             apiKey: null,
             config: {
-                 plugins: [
+                plugins: [
                     'advlist autolink lists link image charmap print preview hr anchor pagebreak',
                     'searchreplace wordcount visualchars',
                     'searchreplace visualblocks fullscreen textcolor contextmenu',
@@ -46,7 +46,7 @@ export default new Vue({
     methods: {
         filesEndpoint(key) {
             const files = _.get(this, 'endpoints.files');
-            if (_.isObject(files)){
+            if (_.isObject(files)) {
                 return _.get(files, key || 'default')
             } else if (_.isString(files)) {
                 return files
@@ -55,11 +55,11 @@ export default new Vue({
 
         configure(options) {
             const { headers, format, endpoints, tinymce } = options
-            if(headers) {
+            if (headers) {
                 this.headers = headers
             }
 
-            if(tinymce) {
+            if (tinymce) {
                 console.log("Setting tinymce", tinymce)
                 this.tinymce = _.assign({}, this.tinymce, tinymce)
             }

@@ -5,27 +5,27 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(()=>{
-            if(this.value !== this.aValue) {
+    mounted() {
+        this.$nextTick(() => {
+            if (this.value !== this.aValue) {
                 this.aValue = this.value;
             }
         });
     },
 
-    watch : {
-        aValue (change) {
+    watch: {
+        aValue(change) {
             this.$emit('input', change);
             this.touched = true;
         },
 
-        value (change) {
+        value(change) {
             this.aValue = change;
         }
     },
 
-    methods : {
-        autocomplete (event) {
+    methods: {
+        autocomplete(event) {
             this.aValue = event.target.value;
         }
     }

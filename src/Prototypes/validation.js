@@ -4,23 +4,23 @@ import _ from 'lodash'
 const VALIDATION_EVENT_REGISTRY_CHANGED = 'VALIDATION_EVENT_REGISTRY_CHANGED'
 
 export const ValidationEvents = {
-    'STATUS_CHANGE' : VALIDATION_EVENT_REGISTRY_CHANGED,
+    'STATUS_CHANGE': VALIDATION_EVENT_REGISTRY_CHANGED,
 }
 
 export const ValidationSyncMixin = {
-  mounted() {
-    this.$validation.$on(VALIDATION_EVENT_REGISTRY_CHANGED, this.didUpdateValidationRegistry)
-  },
+    mounted() {
+        this.$validation.$on(VALIDATION_EVENT_REGISTRY_CHANGED, this.didUpdateValidationRegistry)
+    },
 
-  beforeDestory() {
-    this.$validation.$off(VALIDATION_EVENT_REGISTRY_CHANGED, this.didUpdateValidationRegistry)
-  },
+    beforeDestory() {
+        this.$validation.$off(VALIDATION_EVENT_REGISTRY_CHANGED, this.didUpdateValidationRegistry)
+    },
 
-  methods: {
-      didUpdateValidationRegistry(registry) {
-          this.$forceUpdate()
-      }
-  },
+    methods: {
+        didUpdateValidationRegistry(registry) {
+            this.$forceUpdate()
+        }
+    },
 }
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -41,28 +41,28 @@ export default new Vue({
 
         VueForm_validation_internalRules: {
             required: function(value) {
-                if(!_.isEmpty(value)){
+                if (!_.isEmpty(value)) {
                     return true;
                 }
                 return lang.REQUIRED
             },
 
             number: function(value) {
-                if(_.isNumber(value)){
+                if (_.isNumber(value)) {
                     return true;
                 }
                 return lang.NUMBER
             },
 
             email: function(value) {
-                if(EMAIL_REGEX.test(value)){
+                if (EMAIL_REGEX.test(value)) {
                     return true
                 }
                 return lang.EMAIL
             },
 
-            url: function (value) {
-                if (HTTPS_REGEX.test(value)){
+            url: function(value) {
+                if (HTTPS_REGEX.test(value)) {
                     return true
                 }
                 return lang.URL
@@ -70,7 +70,7 @@ export default new Vue({
 
             match: function(compared, label) {
                 return function(value) {
-                    if(compared == value) {
+                    if (compared == value) {
                         return true
                     }
                     return `${lang.MATCH} ${label || "other value"}`
@@ -88,7 +88,7 @@ export default new Vue({
         },
 
         failing() {
-            return _.omitBy(this.registry, (value, key)=>{
+            return _.omitBy(this.registry, (value, key) => {
                 return value === true
             })
         },
@@ -109,7 +109,7 @@ export default new Vue({
     watch: {
         VueForms_validation_registry: {
             deep: true,
-            handler:function(newVal){
+            handler: function(newVal) {
                 this.$emit(VALIDATION_EVENT_REGISTRY_CHANGED, newVal)
             }
         },
@@ -121,19 +121,19 @@ export default new Vue({
         },
 
         update(key, status) {
-            if(!_.has(this.VueForms_validation_registry, key)) {
-                return this.register(key, status===true)
+            if (!_.has(this.VueForms_validation_registry, key)) {
+                return this.register(key, status === true)
             }
 
-            this.$set(this.VueForms_validation_registry, key, status===true)
+            this.$set(this.VueForms_validation_registry, key, status === true)
         },
 
         register(key, status) {
-            this.$set(this.VueForms_validation_registry, key, status===true)
+            this.$set(this.VueForms_validation_registry, key, status === true)
         },
 
         unregister(key) {
-            this.VueForms_validation_registry = _.omitBy(this.VueForms_validation_registry, (value, aKey)=>{
+            this.VueForms_validation_registry = _.omitBy(this.VueForms_validation_registry, (value, aKey) => {
                 return key === aKey
             })
         },

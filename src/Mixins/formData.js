@@ -7,7 +7,7 @@ export default {
             var keys = _.keys(this.model);
             var data = this.formDataFromModel(keys, method);
 
-            _.each(file_elems, (el)=>{
+            _.each(file_elems, (el) => {
                 var image = document.getElementById(file_elems).files[0];
                 data.append(file_elems, image || null);
             })
@@ -19,8 +19,8 @@ export default {
             var data = new FormData();
             data.append('_method', method || 'POST');
 
-            _.each(fillables, (key)=>{
-                var val =  _.get(this.model, key, null);
+            _.each(fillables, (key) => {
+                var val = _.get(this.model, key, null);
                 if (val instanceof Object || val instanceof Array) {
                     val = JSON.stringify(val);
                 }

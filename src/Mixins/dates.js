@@ -3,9 +3,9 @@ import moment from 'moment'
 export default {
     props: {
 
-        config: {
+        dateConfig: {
             type: Object,
-            default: ()=>{return {}}
+            default: () => { return {} }
         },
 
         dropdowns: {
@@ -46,15 +46,15 @@ export default {
 
     methods: {
         $_makeFormattedDate(moment) {
-            if(!moment || !moment.isValid())return null;
+            if (!moment || !moment.isValid()) return null;
 
-            if(this.timePicker) {
+            if (this.timePicker) {
                 return moment.format(this.valueFormat)
             }
             return moment.startOf('day').format(this.valueFormat)
         },
 
-        safeDate (string) {
+        safeDate(string) {
             var date = moment(string);
             if (date.isValid()) {
                 return date;
@@ -62,14 +62,14 @@ export default {
             return moment({});
         },
 
-        updateStart (string) {
+        updateStart(string) {
             var date = moment(string);
             if (date.isValid()) {
                 this.picker.data('daterangepicker').setStartDate(date);
             }
         },
 
-        updateEnd (string) {
+        updateEnd(string) {
             var date = moment(string);
             if (date.isValid()) {
                 this.picker.data('daterangepicker').setEndDate(date);
@@ -77,8 +77,8 @@ export default {
         }
     },
 
-    computed : {
-        params () {
+    computed: {
+        params() {
             var date = this.safeDate(this.value);
             return {
                 "singleDatePicker": this.single || false,
