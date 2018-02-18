@@ -61,7 +61,7 @@ Vue.use(VueForms, options)
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: '#example-app',
   components: { App },
   template: '<App/>'
 })

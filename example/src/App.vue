@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="container">
-    <div class="row">
-        <div class="col-md-8">
+  <div id='app' class="container-fluid">
+    <div class="row h-100">
+        <div class="col-md-8 h-100 o-scroll">
           <form-section heading='Core Types'>
             <template v-if='showElementsAll'>
               <form-text
@@ -210,7 +210,7 @@
               v-model='model.file_picker'
               property='file_picker'
               src-key='path'
-              btn-text="Choose a Vue logo"
+              btn-text="Choose an example document"
               :errors='errors'>
             </form-file-picker>
 
@@ -218,7 +218,7 @@
               v-model='model.file_picker_2'
               property='file_picker_2'
               src-key='path'
-              btn-text="Choose another Vue logo"
+              btn-text="Choose a Vue.js logo"
               :endpoint='$vfconfig.filesEndpoint("images")'
               :errors='errors'>
             </form-file-picker>
@@ -279,30 +279,35 @@
           </form-section>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 h-100 o-scroll">
             <form-panel>
               <form-checkbox label='Show All Elements' v-model='showElementsAll' property='showElementsAll'></form-checkbox>
-              <form-checkbox label='Fake Server Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
+              <form-checkbox label='Fake Server Response Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
             </form-panel>
 
             <form-section heading='Validation'>
-              <button class='btn btn-default' :disabled='$validation.fails'>You Can Click Me When Valid</button>
+              <form-panel>
+                <p>Validation Passes: <code>{{ $validation.passes }}</code> </p>
+                <p>Validation Fails: <code>{{ $validation.fails }}</code> </p>
+              </form-panel>
 
-              <p>Validation Passes: <code>{{ $validation.passes }}</code> </p>
-              <p>Validation Fails: <code>{{ $validation.fails }}</code> </p>
-              <h4>Faling Props</h4>
-              <p v-for='(value, key) in $validation.failing'><code>{{key}}</code></p>
+              <form-panel>
+                <h4>Faling Props</h4>
+                <p v-for='(value, key) in $validation.failing'><code>{{key}}</code></p>
+              </form-panel>
 
               <form-checkbox label='Show validation registry' v-model='showValidationRegistry' property='showValidationRegistry'></form-checkbox>
+              <form-panel v-if='showValidationRegistry'>
+                <p v-for='(value, key) in $validation.registry'><label>{{ key }}: </label><code>{{value}}</code></p>
+              </form-panel>
 
-              <p v-if='showValidationRegistry' v-for='(value, key) in $validation.registry'><label>{{ key }}: </label><code>{{value}}</code></p>
+              <button class='btn btn-default' :disabled='$validation.fails'>You Can Click Me When Valid</button>
 
             </form-section>
 
-            <h4>Properties</h4>
-            <form-panel>
-              <p v-for='(value, key) in model'><b>{{key}}: </b>{{ value }}</p>
-            </form-panel>
+            <form-section heading='Properties'>
+                <p v-for='(value, key) in model'><b>{{key}}: </b>{{ value }}</p>
+            </form-section>
         </div>
     </div>
   </div>
@@ -401,12 +406,20 @@ export default {
 
 <style>
 @import url('bootstrap/dist/css/bootstrap.min.css');
-
 #app {
+  height: 100vh;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  padding: 2em;
 }
+
+.h-100 {
+  height: 100%;
+}
+.o-scroll {
+  overflow: scroll;
+}
+
 </style>
