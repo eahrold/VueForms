@@ -4,30 +4,59 @@
 window.$ = window.jQuery = require('jquery')
 require('bootstrap')
 
+import moment from 'moment'
+window.moment = moment
+
+import _ from 'lodash'
+window._ = _
+
 import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
 import { VueForms } from 'vue-forms'
 
-let options = {
-    headers: {},
-    endpoints: {
-        upload: '/api/uploads',
-        file:  '/api/file-list'
-    }
+let tinymceConfig = {
+    plugins: [
+        'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+        'searchreplace wordcount visualchars code',
+        'visualblocks fullscreen textcolor',
+        'insertdatetime media table contextmenu paste imagetools'
+    ],
+    imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
+    toolbar: `
+        undo redo | insert | bold italic | alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code
+    `,
+    menubar: false,
+    css: ''
 }
 
+
+let headers = {}
 const token = document.head.querySelector('meta[name="csrf-token"]');
 if( !! token) {
-    options.headers['X-CSRF-TOKEN'] = token.content
+    headers['X-CSRF-TOKEN'] = token.content
 }
-
 const apiToken = document.head.querySelector('meta[name="api-token"]');
 if ( !! apiToken) {
-    options.headers['Authorization'] = `Bearer ${apiToken.content}`
+    headers['Authorization'] = `Bearer ${apiToken.content}`
 }
 
+let options = {
+    headers: headers,
+    tinymce: {
+      //apiKey: "YOUR_API_KEY", // We use this under the hood https://github.com/tinymce/tinymce-vue
+      config: tinymceConfig
+    },
+    endpoints: {
+        upload: '/example/api/upload',
+        files:  {
+            default: '/static/json/files.json',
+            images: '/static/json/images.json'
+        }
+    }
+}
 Vue.use(VueForms, options)
 
 /* eslint-disable no-new */

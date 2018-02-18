@@ -42,6 +42,20 @@ export default {
         type: Boolean,
         default: false
       }
+    },
+
+    data() {
+      return {
+        default: document.body.style.display
+      }
+    },
+
+    beforeDestroy() {
+        document.body.style.overflow = this.default;
+    },
+
+    mounted() {
+        document.body.style.overflow = "hidden";
     }
 }
 </script>

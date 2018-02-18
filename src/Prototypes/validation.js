@@ -22,6 +22,16 @@ export const ValidationSyncMixin = {
   },
 }
 
+const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+const HTTPS_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+
+const lang = {
+    REQUIRED: "This is required",
+    NUMBER: "The value must be a numbrer",
+    EMAIL: "The value must be a valid email address",
+    URL: "The value must be a valid, secure url (https://)"
+}
+
 export default new Vue({
     data: {
 
@@ -29,16 +39,33 @@ export default new Vue({
 
         VueForm_validation_internalRules: {
             required: function(value) {
-                return !_.isEmpty(value)
+                if(!_.isEmpty(value)){
+                    return true;
+                }
+                return lang.REQUIRED
+            },
+
+            number: function(value) {
+                if(_.isNumber(value)){
+                    return true;
+                }
+                return lang.NUMBER
             },
 
             email: function(value) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
+                if(EMAIL_REGEX.test(value)){
+                    return true
+                }
+                return lang.EMAIL
             },
 
             url: function (value) {
-                return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(value)
+                if (HTTPS_REGEX.test(value)){
+                    return true
+                }
+                return lang.URL
             }
+
         }
     },
 

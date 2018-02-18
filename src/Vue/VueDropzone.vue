@@ -1,14 +1,20 @@
 <template>
 
-<form :action="url" class="dropzone"></form>
+<form :action="url" :id='rootId' :class='{dropzone: id === rootId}'>
+    <div v-if="!!$slots['button']" :id="id" class="btn btn-primary btn-dropzone"><slot name='button'></slot></div>
+</form>
 
 </template>
 
 <script>
-var Dropzone = require('dropzone')
+const Dropzone = require('dropzone')
 Dropzone.autoDiscover = false
 
+import uuid from '../Mixins/uuid'
+
 export default {
+    mixins: [ uuid ],
+
     props: {
         value: {
             type: String
@@ -54,7 +60,7 @@ export default {
         },
         headers: {
             type: Object,
-            required: true
+            default: {}
         },
         dropzoneOptions: {
             type: Object
@@ -71,51 +77,124 @@ export default {
       });
     },
 
-    computed: { },
+    data () {
+        return {
+            dropzone: null
+        }
+    },
+
+    computed: {
+        id() {
+            return this.makeVfUuid()
+        },
+
+        rootId() {
+            return !!this.$slots['button'] ? this.makeVfUuid() : this.id
+        },
+
+        __dzOptoions() {
+            var opts = {
+                url: this.url,
+                accept: this.accept,
+                clickable: this.clickable,
+                headers: this.headers,
+                thumbnailWidth: this.thumbnailWidth,
+                thumbnailHeight: this.thumbnailHeight,
+                maxFiles: this.maxNumberOfFiles,
+                maxFilesize: this.maxFileSizeInMb,
+                dictRemoveFile: 'Remove',
+                addRemoveLinks: this.showRemoveLink,
+                acceptedFiles: this.acceptedFileTypes,
+                autoProcessQueue: this.autoProcessQueue,
+                dictDefaultMessage: '<i class="fa fa-2x fa-cloud-upload" aria-hidden="true"></i><br>Drop files here to upload',
+            }
+
+            if(!!this.$slots['button']) {
+                opts.previewTemplate = "<span hidden></span>";
+            }
+            return opts;
+        }
+    },
 
     methods: {
+
+        accept(file, done) {
+            if(this.dropzone.files.length > this.maxNumberOfFiles) {
+                done("You cannon upload any more files");
+                setTimeout(()=>{
+                    this.dropzone.removeFile(file);
+                }, 5000);
+            }
+            done();
+        },
+
+
         loadDropzone () {
+            var element = document.getElementById(this.id)
 
             if(this.dropzone) {
                 this.dropzone.destroy();
             }
 
+            console.log("loading dz with max number of files", this.maxNumberOfFiles);
             if (!this.useCustomDropzoneOptions) {
-                this.dropzone = new Dropzone(this.$el, {
-                    url: this.url,
-                    clickable: this.clickable,
-                    headers: this.headers,
-                    thumbnailWidth: this.thumbnailWidth,
-                    thumbnailHeight: this.thumbnailHeight,
-                    maxFiles: this.maxNumberOfFiles,
-                    maxFilesize: this.maxFileSizeInMB,
-                    dictRemoveFile: 'Remove',
-                    addRemoveLinks: this.showRemoveLink,
-                    acceptedFiles: this.acceptedFileTypes,
-                    autoProcessQueue: this.autoProcessQueue,
-                    dictDefaultMessage: '<i class="fa fa-2x fa-cloud-upload" aria-hidden="true"></i><br>Drop files here to upload',
-                })
+                this.dropzone = new Dropzone(element, this.__dzOptoions)
             } else {
-                this.dropzone = new Dropzone(this.$el, this.dropzoneOptions)
+                this.dropzone = new Dropzone(element, this.dropzoneOptions)
             }
 
             // Handle the dropzone events
-            this.dropzone.on('addedfile', (file)=>{
-                this.$emit('vdropzone-fileAdded', file);
+            var self = this
+            this.dropzone.on('addedfile', function (file) {
+                self.$emit('added', file);
             })
 
-            this.dropzone.on('removedfile', (file)=>{
-                this.$emit('vdropzone-removedFile', file)
+            this.dropzone.on("maxfilesexceeded", function(file) {
+                setTimeout(()=>{
+                    this.removeFile(file);
+                }, 5000);
             })
 
-            this.dropzone.on('success', (file, response)=>{
+            this.dropzone.on('removedfile', function (file) {
+                console.log("removed File");
+                self.$emit('removed', file)
+            })
+
+
+            this.dropzone.on('totaluploadprogress', (progress, bytesTotal, bytesSent)=>{
+                this.$emit('progress', progress, bytesTotal, bytesSent);
+            })
+
+            this.dropzone.on('success', function (file, response) {
                 file.id = response.id;
-                this.$emit('vdropzone-success', response)
+                self.$emit('success', response)
             })
 
-            this.dropzone.on('error', (file, error, xhr)=>{
-                this.$emit('vdropzone-error', file, error, xhr)
+
+            this.dropzone.on('error', function (file, error, xhr) {
+                if(error.message) {
+                    $(file.previewElement).find('.dz-error-message').text(error.message);
+                }
+
+                setTimeout(()=>{
+                    this.removeFile(file);
+                }, 5000);
+
+                self.$emit('error', file, error, xhr)
             })
+        },
+
+        _getPreloadImage(file) {
+
+            if (file.image) {
+                var img = file.image.sm || file.image.default;
+                if (img) return img;
+            }
+
+            if (file.thumbnail) {
+                var img = file.thumbnail.sm || file.thumbnail.default;
+                if (img) return img;
+            }
         },
 
         preload () {
@@ -125,16 +204,20 @@ export default {
 
             var add = (file)=>{
                 var mockFile = {
-                    name: file.filename,
-                    size: file.filesize ,
+                    name: file.name || file.filename,
+                    size: file.filesize,
                     id: file.id,
                     status: 'success',
                     processing: false
                 };
+
                 this.dropzone.emit("addedfile", mockFile);
-                this.dropzone.emit("thumbnail", mockFile, file.thumbnail_sm || file.thumbnail);
+                this.dropzone.emit("thumbnail", mockFile, this._getPreloadImage(file));
+                this.dropzone.files.push(mockFile);
+
                 mockFile.previewElement.classList.add('dz-complete');
             };
+
 
             if (this.existing instanceof Array) {
                 for (var i = this.existing.length - 1; i >= 0; i--) {
@@ -159,20 +242,9 @@ export default {
 </script>
 
 <style>
+    .dropzone .dz-preview .dz-image img {
+        width: 100%;
+    }
     @import url('~dropzone/dist/dropzone.css');
     @import url('~dropzone/dist/basic.css');
-
-    form.dropzone {
-        min-height: 200px;
-    }
-
-    .dropzone .dz-preview .dz-image img {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        margin:auto;
-    }
-
 </style>

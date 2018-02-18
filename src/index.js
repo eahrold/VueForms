@@ -35,16 +35,19 @@ import FormMarkdown from './FormMarkdown'
 import FormDateRange from './FormDateRange'
 import FormDate from './FormDate'
 
-import FormPanel from './FormPanel'
-import FormGroup from './FormGroup'
 import FormDropzone from './FormDropzone'
 import FormDropzoneButton from './FormDropzoneButton'
+import FormFilePicker from './FormFilePicker'
 
 import FormSeoData from './FormSeoData'
 import FormAddress from './FormAddress'
 import FormStateSelect from './FormStateSelect'
 import FormNamePrefixSelect from './FormNamePrefixSelect'
 import FormNameSuffixSelect from './FormNameSuffixSelect'
+
+import FormPanel from './FormPanel'
+import FormGroup from './FormGroup'
+import FormSection from './FormSection'
 
 import FormLoader from './FormLoader'
 import FormModal from './FormModal'
@@ -73,6 +76,8 @@ export const VueForms = {
         Vue.component('form-tinymce', FormTinymce)
         Vue.component('form-markdown', FormMarkdown)
         Vue.component('form-dropzone', FormDropzone)
+        Vue.component('form-dropzone-button', FormDropzoneButton)
+        Vue.component('form-file-picker', FormFilePicker)
 
         Vue.component('form-options-list', FormOptionsLists)
 
@@ -107,6 +112,7 @@ export const VueFormsCore = {
 
         Vue.component('form-panel', FormPanel)
         Vue.component('form-group', FormGroup)
+        Vue.component('form-section', FormSection)
 
         Vue.component('form-seo', FormSeoData)
         Vue.component('form-address', FormAddress)
@@ -153,11 +159,15 @@ export {
     FormDateRange,
     FormDate,
 
-    FormPanel,
-    FormGroup,
     FormDropzone,
     FormDropzoneButton,
+    FormFilePicker,
 
+    FormPanel,
+    FormGroup,
+    FormSection,
+
+    FormAddress,
     FormSeoData,
 
     FormLoader,

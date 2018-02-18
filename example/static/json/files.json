@@ -1,0 +1,5 @@
+[
+    {"id": 1, "name": "Document 1", "path": "/static/docs/fake.docx"},
+    {"id": 2, "name": "Document 2", "path": "/static/docs/fake.pdf"},
+    {"id": 3, "name": "Document 3", "path": "/static/docs/fake.xls"}
+]

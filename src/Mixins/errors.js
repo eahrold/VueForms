@@ -3,7 +3,9 @@ import _ from 'lodash'
 export default {
     data() {
         return {
-            touched: false
+            touched: false,
+            blurred: false,
+            focused: false,
         }
     },
 
@@ -12,7 +14,7 @@ export default {
             return [
                 {
                     "has-error": this.hasError,
-                    "has-warning": this.requiredIsMissing || !this.isValid,
+                    "has-warning": !this.isValid,
                 }
             ];
         },
@@ -25,8 +27,37 @@ export default {
             return Boolean(this.errors && this.typeErrors.length);
         },
 
-        requiredIsMissing() {
-            return this.required && this.touched && _.isEmpty(this.value)
+        displayErrors() {
+            return this.hasError || this.warningMessage
+        },
+
+        warningMessage () {
+            const message = _.get(this, 'vfErrors')
+            if(_.isString(message)){
+                return message
+            }
+            return null
+        },
+
+    },
+
+    methods: {
+        onFocus() {
+            this.focused = true
+        },
+
+        onBlur() {
+            this.blurred = true
+        }
+    },
+
+    watch: {
+        blurred(newVal) {
+            this.focused = !newVal
+        },
+
+        focused(newVal) {
+            this.blurred = !newVal
         }
     }
 };

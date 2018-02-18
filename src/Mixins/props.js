@@ -44,6 +44,12 @@ export default {
     }
   },
 
+  data() {
+    return {
+      vfErrors: null
+    }
+  },
+
   mounted() {
     if (this.$validation) {
       this.$validation.register(this.property, this.isValidIgnoringTouch)
@@ -59,40 +65,55 @@ export default {
   watch: {
     isValidIgnoringTouch(newVal) {
       if (this.$validation) {
-          this.$validation.update(this.property, newVal)
+        this.$validation.update(this.property, newVal)
+      }
+    },
+
+    blurred(newVal) {
+      if(_.isString(this.validated)) {
+        this.vfErrors = this.validated;
+      } else if(this.validated === true) {
+        this.vfErrors = null
       }
     }
   },
 
   computed: {
-    isValidIgnoringTouch() {
-        if (this.required === true && _.isEmpty(this.value) && !_.isNumber(this.value)) {
-            return false
-        }
+    validated() {
+      if(this.required === false && _.isEmpty(this.value)) return true;
 
-        if (_.isBoolean(this.rules)) {
-            return this.rules
-        } else if (_.isFunction(this.rules)) {
-            return this.rules(this.value)
-        } else if (_.isArray(this.rules)) {
-            for (var i = this.rules.length - 1; i >= 0; i--) {
-                const rule = this.rules[i]
-                const isFunction = _.isFunction(rule)
-                if(!isFunction) {
-                  console.error("[VueForms Validation] Rules array must only contain functions.")
-                  return false
-                }
-                if (rule(this.value) === false) {
-                    return false
-                }
-            }
+      if (this.required === true && _.isEmpty(this.value) && !_.isNumber(this.value)) {
+        return `${_.startCase(this.property || "This field")} is required`
+      }
+
+      if (_.isBoolean(this.rules)) {
+        return this.rules
+      } else if (_.isFunction(this.rules)) {
+        return this.rules(this.value)
+      } else if (_.isArray(this.rules)) {
+        for (var i = this.rules.length - 1; i >= 0; i--) {
+          const rule = this.rules[i]
+          const isFunction = _.isFunction(rule)
+          if(!isFunction) {
+            console.error("[VueForms Validation] Rules array must only contain functions.")
+            return false
+          }
+          let success = rule(this.value)
+          if (success !== false) {
+            return success
+          }
         }
-        return true;
+      }
+      return true;
+    },
+
+    isValidIgnoringTouch() {
+        return this.validated === true;
     },
 
     isValid() {
         if (!this.touched) return true;
-        return this.isValidIgnoringTouch;
+        return this.isValidIgnoringTouch === true;
     },
 
     aLabel() {
@@ -102,5 +123,5 @@ export default {
 
       return (this.label || _.startCase(this.property || '')) + (this.required ? "*" : "")
     }
-  }
+  },
 };

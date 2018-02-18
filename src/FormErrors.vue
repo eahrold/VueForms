@@ -8,38 +8,49 @@
 </style>
 <template>
 <transition name='fade'>
-    <ul v-if='hasError' class='error list-unstyled'>
-        <li v-for='err in typeErrors'>
+    <ul v-if='hasError || hasWarning' class='error list-unstyled'>
+        <li v-if='hasError' v-for='err in typeErrors'>
             <span class="help-block">{{ err }}</span>
+        </li>
+        <li v-if='!hasError && hasWarning'>
+            <span class="help-block">{{ this.warning }}</span>
         </li>
     </ul>
 </transition>
 </template>
 
 <script>
-    export default {
-        props: [
-            'property',
-            'errors',
-        ],
+import _ from 'lodash'
 
-        mounted() {},
+export default {
+    props: {
+        property: {
+            type: String,
+            required: true
+        },
 
-        computed: {
+        errors: {
+            required: true
+        },
 
-            typeErrors() {
-                return this.errors[this.property];
-            },
-
-            hasError() {
-                return Boolean(this.errors && this.errors[this.property]);
-            },
-
-            formClass() {
-                return [
-                    { "has-error": this.hasError }
-                ];
-            },
+        warning: {
+            type: String,
+            required: false
         }
+    },
+
+    computed: {
+        typeErrors() {
+            return _.get(this.errors, this.property);
+        },
+
+        hasError() {
+            return Boolean(this.errors && !!this.typeErrors);
+        },
+
+        hasWarning() {
+            return _.isString(this.warning) && this.warning.length
+        },
     }
+}
 </script>

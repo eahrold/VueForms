@@ -5,11 +5,11 @@
             <div v-if='id'>
 
                 <div class="row">
-                <label class="col-xs-12">{{ label }} </label>
+                    <label class="col-xs-12">{{ label }} </label>
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-8">
+                    <div class="col-xs-3">
                         <vue-dropzone
                             :existing='value'
                             :url="requestEndpoint"
@@ -23,19 +23,24 @@
                             @removed="dzRemoved">
                             <template slot='button'>{{ btnText }}</template>
                         </vue-dropzone>
-                        <span class="help-block">Limited to {{ limitText }}. Each file must not exceed {{ maxFileSize }}MB.</span>
-                        <span v-if='helpText' class="help-block">{{ helpText }}</span>
                     </div>
-                    <div class="col-xs-4 text-right">
-                        <template v-if="!!$slots['thumbnail']">
-                            <slot name='thumbnail'></slot>
-                        </template>
+                    <div class="col-xs-9">
+                        <form-progress-bar :progress='progress'></form-progress-bar>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <form-progress-bar :progress='progress'></form-progress-bar>
+                        <span class="help-block">{{ dzHelpText }}</span>
+                        <span v-if='helpText' class="help-block">{{ helpText }}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <template v-if="!!$slots['thumbnail']">
+                            <slot name='thumbnail'></slot>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -55,7 +60,7 @@ export default {
     props: {
         btnText: {
             type: String,
-            default: "Choose File"
+            default: "Upload File"
         }
     },
 }

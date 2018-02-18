@@ -6,7 +6,7 @@
                 <vue-dropzone
                     :existing='value'
                     :url="requestEndpoint"
-                    :accepted-file-types="acceptedFiletypes"
+                    :accepted-file-types="acceptedFileTypes"
                     :headers='requestHeaders'
                     :max-number-of-files='limit'
                     :max-file-size-in-mb='maxFileSize'
@@ -14,7 +14,7 @@
                     @success="dzAdded"
                     @removed="dzRemoved">
                 </vue-dropzone>
-                <span class="help-block">Limited to {{ limitText }}. Each file must not exceed {{ maxFileSize }}MB.</span>
+                <span class="help-block">{{ dzHelpText }}</span>
                 <span v-if='helpText' class="help-block">{{ helpText }}</span>
             </div>
             <div v-else>

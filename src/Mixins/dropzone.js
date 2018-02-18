@@ -1,6 +1,4 @@
-const _ = require('lodash');
-
-const token = document.head.querySelector('meta[name="csrf-token"]');
+import _ from 'lodash'
 
 import VueDropzone from '../Vue/VueDropzone'
 
@@ -69,26 +67,25 @@ export default {
             type: String,
             required: false
         },
-
-        // Error callback
-        error: {
-            type: Function
-        },
     },
 
     data () {
         return {
-            errors: [],
+            error: null,
             progress: 0,
         }
     },
 
     computed: {
+        dzHelpText() {
+            return `Limited to ${this.limitText}. ${this.eachText} must not exceed ${this.maxFileSize}MB.`
+        },
+
         requestHeaders() {
             return this.headers || _.get(this.$vfconfig, 'headers', {})
         },
 
-        acceptedFiletypes() {
+        acceptedFileTypes() {
             if(_.isString(this.fileTypes)) {
                 return this.fileTypes
             }
@@ -128,32 +125,27 @@ export default {
             return Boolean(this.limit > 1 || this.value instanceof Array);
         },
 
+        eachText() {
+            return this.limit > 1 ? "Each file" : "The file"
+        },
+
         limitText() {
             return "" + this.limit + " file" + ((this.limit > 1) ? 's':'');
         }
     },
 
     methods: {
-        _reloadListeners() {
-            $('.dz-details').on('click', (target)=>{
 
-            })
-        },
-
-        _error (response) {
+        dzError (file, response) {
             console.error('FormDropzone Error:', response);
+            this.error = response
+
             this.progress = 0;
-            if(this.$alerter) {
+            if(this.$alerter && _.isFunction(this.$alerter.errorResponse)) {
                 this.$alerter.errorResponse(response);
             }
 
-            if(this.error) {
-                this.error(response);
-            }
-        },
-
-        dzError (file, response) {
-            this._error(response);
+            this.$emit('error', response);
         },
 
         dzAdded (file) {
@@ -169,8 +161,9 @@ export default {
         },
 
         dzRemoved (file) {
-            var success = (response) => {
-                this.progress = 0;
+            this.progress = 0;
+
+            var success=(response)=>{
                 var files = null
                 if(this.impliedArray) {
                     files = _.filter(this.value, (f)=>{
@@ -182,8 +175,9 @@ export default {
                 console.log("Successfully removed "+file.name);
             };
 
-            var error = (response) => {
-                this._error(response)
+            var error=(response)=>{
+                this.error = response
+                this.$emit('error', response);
             };
 
             if (file.id) {
