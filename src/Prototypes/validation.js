@@ -1,4 +1,5 @@
 import Vue from "Vue"
+import _ from 'lodash'
 
 const VALIDATION_EVENT_REGISTRY_CHANGED = 'VALIDATION_EVENT_REGISTRY_CHANGED'
 
@@ -27,9 +28,10 @@ const HTTPS_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6
 
 const lang = {
     REQUIRED: "This is required",
-    NUMBER: "The value must be a numbrer",
+    NUMBER: "The value must be a number",
     EMAIL: "The value must be a valid email address",
-    URL: "The value must be a valid, secure url (https://)"
+    URL: "The value must be a valid, secure url (https://)",
+    MATCH: "Does not match"
 }
 
 export default new Vue({
@@ -64,19 +66,30 @@ export default new Vue({
                     return true
                 }
                 return lang.URL
-            }
+            },
 
+            match: function(compared, label) {
+                return function(value) {
+                    if(compared == value) {
+                        return true
+                    }
+                    return `${lang.MATCH} ${label || "other value"}`
+                }
+            }
         }
     },
 
     computed: {
         registry() {
-            return this.VueForms_validation_registry
+            return _.reduce(this.VueForms_validation_registry, function(registry, value, key) {
+                registry[key] = value === true;
+                return registry;
+            }, {});
         },
 
         failing() {
-            return _.omitBy(this.VueForms_validation_registry, (value, key)=>{
-                return value !== false
+            return _.omitBy(this.registry, (value, key)=>{
+                return value === true
             })
         },
 
@@ -109,14 +122,14 @@ export default new Vue({
 
         update(key, status) {
             if(!_.has(this.VueForms_validation_registry, key)) {
-                return this.register(key, status)
+                return this.register(key, status===true)
             }
 
-            this.$set(this.VueForms_validation_registry, key, status)
+            this.$set(this.VueForms_validation_registry, key, status===true)
         },
 
         register(key, status) {
-            this.$set(this.VueForms_validation_registry, key, status)
+            this.$set(this.VueForms_validation_registry, key, status===true)
         },
 
         unregister(key) {
@@ -130,7 +143,7 @@ export default new Vue({
         },
 
         getStatus(key) {
-            return _.get(this.VueForms_validation_registry, key);
+            return _.get(this.registry, key) === true;
         }
     }
 })

@@ -28,10 +28,10 @@ export default {
         },
 
         displayErrors() {
-            return this.hasError || this.warningMessage
+            return this.hasError || this.warning
         },
 
-        warningMessage () {
+        warning () {
             const message = _.get(this, 'vfErrors')
             if(_.isString(message)){
                 return message

@@ -69,12 +69,24 @@ export default {
       }
     },
 
+    validated(newVal) {
+      this.$_checkValidated(newVal)
+    },
+
     blurred(newVal) {
-      if(_.isString(this.validated)) {
-        this.vfErrors = this.validated;
-      } else if(this.validated === true) {
-        this.vfErrors = null
+      if(newVal === true) {
+        this.$_checkValidated(this.validated)
       }
+    }
+  },
+
+  methods: {
+    $_checkValidated(validated) {
+        if(_.isString(validated)) {
+          this.vfErrors = validated;
+        } else if(validated === true) {
+          this.vfErrors = null
+        }
     }
   },
 
@@ -98,9 +110,9 @@ export default {
             console.error("[VueForms Validation] Rules array must only contain functions.")
             return false
           }
-          let success = rule(this.value)
-          if (success !== false) {
-            return success
+          let passes = rule(this.value)
+          if (passes !== true) {
+            return passes
           }
         }
       }

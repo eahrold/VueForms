@@ -2,12 +2,27 @@
     <div class="form-group" :class='formClass'>
         <label class="control-label" :for='property'>{{ aLabel }}</label>
         <div class='text' :class='groupClass'>
-            <input @blur='onBlur' @focus='onFocus' @keydown.tab="autocomplete" type="email" :placeholder='placeholder' :name='property' :id="property" v-model='aValue' class="form-control" :disabled='disabled || !enabled'>
+            <input
+                v-model='aValue'
+                type="text"
+                :name='property'
+                :id="property"
+                :placeholder='placeholder'
+                @blur='onBlur'
+                @focus='onFocus'
+                @keydown.tab="autocomplete"
+                class="form-control"
+                :disabled='disabled || !enabled'>
             <span v-if='lockable' class="input-group-addon">
                 <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
             </span>
-            <form-errors v-if='displayErrors' :errors='errors' :warning='warningMessage' :property='property'></form-errors>
-            <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+            <form-errors
+                v-if='displayErrors'
+                v-bind="{errors, warning, property}">
+            </form-errors>
+            <p v-if="!!$slots['help']" class="help-block">
+                <small><slot name='help'></slot></small>
+            </p>
         </div>
     </div>
 </template>

@@ -9,7 +9,10 @@
             </span>
             <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
         </div>
-        <form-errors :errors='errors' :property='property'></form-errors>
+        <form-errors
+            v-if='displayErrors'
+            v-bind="{errors, warning, property}">
+        </form-errors>
     </div>
 </template>
 

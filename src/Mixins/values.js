@@ -1,13 +1,13 @@
 export default {
-    data () {
+    data() {
         return {
-            aValue: null
+            aValue: this.value
         }
     },
 
     mounted () {
         this.$nextTick(()=>{
-            if(this.value) {
+            if(this.value !== this.aValue) {
                 this.aValue = this.value;
             }
         });

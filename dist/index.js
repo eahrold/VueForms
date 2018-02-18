@@ -10361,20 +10361,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(14)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(14), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('Vue'));
+        factory(exports, require('Vue'), require('lodash'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.Vue);
+        factory(mod.exports, global.Vue, global.lodash);
         global.validation = mod.exports;
     }
-})(this, function (exports, _Vue) {
+})(this, function (exports, _Vue, _lodash) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -10383,6 +10383,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.ValidationSyncMixin = exports.ValidationEvents = undefined;
 
     var _Vue2 = _interopRequireDefault(_Vue);
+
+    var _lodash2 = _interopRequireDefault(_lodash);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -10417,9 +10419,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var lang = {
         REQUIRED: "This is required",
-        NUMBER: "The value must be a numbrer",
+        NUMBER: "The value must be a number",
         EMAIL: "The value must be a valid email address",
-        URL: "The value must be a valid, secure url (https://)"
+        URL: "The value must be a valid, secure url (https://)",
+        MATCH: "Does not match"
     };
 
     exports.default = new _Vue2.default({
@@ -10429,14 +10432,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             VueForm_validation_internalRules: {
                 required: function required(value) {
-                    if (!_.isEmpty(value)) {
+                    if (!_lodash2.default.isEmpty(value)) {
                         return true;
                     }
                     return lang.REQUIRED;
                 },
 
                 number: function number(value) {
-                    if (_.isNumber(value)) {
+                    if (_lodash2.default.isNumber(value)) {
                         return true;
                     }
                     return lang.NUMBER;
@@ -10454,25 +10457,36 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         return true;
                     }
                     return lang.URL;
-                }
+                },
 
+                match: function match(compared, label) {
+                    return function (value) {
+                        if (compared == value) {
+                            return true;
+                        }
+                        return lang.MATCH + ' ' + (label || "other value");
+                    };
+                }
             }
         },
 
         computed: {
             registry: function registry() {
-                return this.VueForms_validation_registry;
+                return _lodash2.default.reduce(this.VueForms_validation_registry, function (registry, value, key) {
+                    registry[key] = value === true;
+                    return registry;
+                }, {});
             },
             failing: function failing() {
-                return _.omitBy(this.VueForms_validation_registry, function (value, key) {
-                    return value !== false;
+                return _lodash2.default.omitBy(this.registry, function (value, key) {
+                    return value === true;
                 });
             },
             rules: function rules() {
                 return this.VueForm_validation_internalRules;
             },
             passes: function passes() {
-                return _.isEmpty(this.failing);
+                return _lodash2.default.isEmpty(this.failing);
             },
             fails: function fails() {
                 return !this.passes;
@@ -10493,17 +10507,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 this.VueForms_validation_registry = {};
             },
             update: function update(key, status) {
-                if (!_.has(this.VueForms_validation_registry, key)) {
-                    return this.register(key, status);
+                if (!_lodash2.default.has(this.VueForms_validation_registry, key)) {
+                    return this.register(key, status === true);
                 }
 
-                this.$set(this.VueForms_validation_registry, key, status);
+                this.$set(this.VueForms_validation_registry, key, status === true);
             },
             register: function register(key, status) {
-                this.$set(this.VueForms_validation_registry, key, status);
+                this.$set(this.VueForms_validation_registry, key, status === true);
             },
             unregister: function unregister(key) {
-                this.VueForms_validation_registry = _.omitBy(this.VueForms_validation_registry, function (value, aKey) {
+                this.VueForms_validation_registry = _lodash2.default.omitBy(this.VueForms_validation_registry, function (value, aKey) {
                     return key === aKey;
                 });
             },
@@ -10511,7 +10525,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 this.VueForm_validation_internalRules[key] = rule;
             },
             getStatus: function getStatus(key) {
-                return _.get(this.VueForms_validation_registry, key);
+                return _lodash2.default.get(this.registry, key) === true;
             }
         }
     });
@@ -18671,7 +18685,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         methods: {
             makeVfUuid: function makeVfUuid() {
-                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                return 'xxxxxxxx-xxxx'.replace(/[xy]/g, function (c) {
                     var r = Math.random() * 16 | 0,
                         v = c == 'x' ? r : r & 0x3 | 0x8;
                     return v.toString(16);
@@ -19910,6 +19924,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     //
     //
     //
+    //
+    //
+    //
+    //
+    //
 
 
     var defaults = {
@@ -19996,7 +20015,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.errors, _Mixins.dates],
+        mixins: [_Mixins.errors, _Mixins.dates, _Mixins.uuid],
 
         props: {
             properties: {
@@ -20031,7 +20050,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         data: function data() {
             return {
-                id: 'daterange-' + Math.floor(Math.random() * 9999),
                 picker: null,
                 rootPicker: null,
                 range: null
@@ -20098,7 +20116,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 var config = _.assign({}, options, this.config);
 
-                this.rootPicker = $('#' + this.id).daterangepicker(config, function (start, end, label) {
+                this.rootPicker = $('#' + this.vf_uid).daterangepicker(config, function (start, end, label) {
                     _this2.$_emitDates(start, end);
                 }).on('cancel.daterangepicker', function (ev, picker) {
                     _this2.clear();
@@ -20177,11 +20195,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         value: true
     });
     exports.default = {
-        mixins: [_Mixins.props, _Mixins.errors, _Mixins.dates],
+        mixins: [_Mixins.props, _Mixins.errors, _Mixins.dates, _Mixins.uuid],
 
         data: function data() {
             return {
-                id: 'daterange-' + Math.floor(Math.random() * 9999),
                 picker: null
             };
         },
@@ -20225,7 +20242,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 var config = _.assign({}, options, this.config);
                 config.singleDatePicker = true;
 
-                this.rootPicker = $('#' + this.id).daterangepicker(config, function (start, end, label) {
+                this.rootPicker = $('#' + this.vf_uid).daterangepicker(config, function (start, end, label) {
                     _this2.$_emitDates(start);
                 }).on('cancel.daterangepicker', function (ev, picker) {
                     _this2.clear();
@@ -23159,10 +23176,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.$validation.update(this.property, newVal);
         }
       },
+      validated: function validated(newVal) {
+        this.$_checkValidated(newVal);
+      },
       blurred: function blurred(newVal) {
-        if (_lodash2.default.isString(this.validated)) {
-          this.vfErrors = this.validated;
-        } else if (this.validated === true) {
+        if (newVal === true) {
+          this.$_checkValidated(this.validated);
+        }
+      }
+    },
+
+    methods: {
+      $_checkValidated: function $_checkValidated(validated) {
+        if (_lodash2.default.isString(validated)) {
+          this.vfErrors = validated;
+        } else if (validated === true) {
           this.vfErrors = null;
         }
       }
@@ -23188,9 +23216,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               console.error("[VueForms Validation] Rules array must only contain functions.");
               return false;
             }
-            var success = rule(this.value);
-            if (success !== false) {
-              return success;
+            var passes = rule(this.value);
+            if (passes !== true) {
+              return passes;
             }
           }
         }
@@ -23242,14 +23270,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.default = {
         data: function data() {
             return {
-                aValue: null
+                aValue: this.value
             };
         },
         mounted: function mounted() {
             var _this = this;
 
             this.$nextTick(function () {
-                if (_this.value) {
+                if (_this.value !== _this.aValue) {
                     _this.aValue = _this.value;
                 }
             });
@@ -23333,9 +23361,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return Boolean(this.errors && this.typeErrors.length);
             },
             displayErrors: function displayErrors() {
-                return this.hasError || this.warningMessage;
+                return this.hasError || this.warning;
             },
-            warningMessage: function warningMessage() {
+            warning: function warning() {
                 var message = _lodash2.default.get(this, 'vfErrors');
                 if (_lodash2.default.isString(message)) {
                     return message;
@@ -24468,10 +24496,10 @@ var render = function() {
           ],
           staticClass: "form-control",
           attrs: {
-            type: "email",
-            placeholder: _vm.placeholder,
+            type: "text",
             name: _vm.property,
             id: _vm.property,
+            placeholder: _vm.placeholder,
             disabled: _vm.disabled || !_vm.enabled
           },
           domProps: { value: _vm.aValue },
@@ -24511,13 +24539,19 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _vm.displayErrors
-          ? _c("form-errors", {
-              attrs: {
-                errors: _vm.errors,
-                warning: _vm.warningMessage,
-                property: _vm.property
-              }
-            })
+          ? _c(
+              "form-errors",
+              _vm._b(
+                {},
+                "form-errors",
+                {
+                  errors: _vm.errors,
+                  warning: _vm.warning,
+                  property: _vm.property
+                },
+                false
+              )
+            )
           : _vm._e(),
         _vm._v(" "),
         !!_vm.$slots["help"]
@@ -24625,9 +24659,21 @@ var render = function() {
       _vm._v(" "),
       _c("small", [_vm._v("Current File: " + _vm._s(_vm.value))]),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -24782,9 +24828,21 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      })
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e()
     ],
     1
   )
@@ -24890,25 +24948,42 @@ var render = function() {
           min: _vm.min,
           max: _vm.max,
           id: _vm.property,
-          placeholder: _vm.placeholder
+          placeholder: _vm.placeholder,
+          number: ""
         },
         domProps: { value: _vm.aValue },
         on: {
+          blur: [
+            _vm.onBlur,
+            function($event) {
+              _vm.$forceUpdate()
+            }
+          ],
+          focus: _vm.onFocus,
           input: function($event) {
             if ($event.target.composing) {
               return
             }
             _vm.aValue = _vm._n($event.target.value)
-          },
-          blur: function($event) {
-            _vm.$forceUpdate()
           }
         }
       }),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -25021,6 +25096,8 @@ var render = function() {
         },
         domProps: { value: _vm.aValue },
         on: {
+          blur: _vm.onBlur,
+          focus: _vm.onFocus,
           input: function($event) {
             if ($event.target.composing) {
               return
@@ -25030,9 +25107,21 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -25341,9 +25430,21 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -25486,9 +25587,21 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -25770,10 +25883,20 @@ var render = function() {
             )
           : _vm._e(),
       _vm._v(" "),
-      _vm.errors
-        ? _c("form-errors", {
-            attrs: { errors: _vm.errors, property: _vm.property }
-          })
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
         : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
@@ -25960,9 +26083,21 @@ var render = function() {
             })
           ),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -26185,10 +26320,20 @@ var render = function() {
             })
           ),
       _vm._v(" "),
-      _vm.errors
-        ? _c("form-errors", {
-            attrs: { errors: _vm.errors, property: _vm.property }
-          })
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
         : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
@@ -28699,10 +28844,20 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm.errors
-        ? _c("form-errors", {
-            attrs: { errors: _vm.errors, property: _vm.property }
-          })
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
         : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
@@ -28809,10 +28964,20 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm.errors
-        ? _c("form-errors", {
-            attrs: { errors: _vm.errors, property: _vm.property }
-          })
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
         : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
@@ -28954,7 +29119,8 @@ var render = function() {
       _c("div", { staticClass: "input-group" }, [
         _c("input", {
           staticClass: "form-control",
-          attrs: { id: _vm.id, type: "text", name: _vm.label }
+          attrs: { id: _vm.vf_uid, type: "text", name: _vm.label },
+          on: { blur: _vm.onBlur, focus: _vm.onFocus }
         }),
         _vm._v(" "),
         _c(
@@ -29114,7 +29280,8 @@ var render = function() {
       _c("div", { staticClass: "input-group date" }, [
         _c("input", {
           staticClass: "form-control",
-          attrs: { id: _vm.id, type: "text" }
+          attrs: { id: _vm.vf_uid, type: "text" },
+          on: { blur: _vm.onBlur, focus: _vm.onFocus }
         }),
         _vm._v(" "),
         _c("span", { staticClass: "input-group-addon" }, [
@@ -29125,9 +29292,21 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("form-errors", {
-        attrs: { errors: _vm.errors, property: _vm.property }
-      }),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
       _vm._v(" "),
       !!_vm.$slots["help"]
         ? _c("p", { staticClass: "help-block" }, [
@@ -38757,44 +38936,65 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-group" }, [
-    _vm.label
-      ? _c("label", { attrs: { for: _vm.vf_uid } }, [
-          _vm._v(_vm._s(_vm.label) + ":")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.showInfo
-      ? _c("p", { staticClass: "help-block" }, [_vm._m(0)])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("textarea", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.aValue,
-          expression: "aValue"
-        }
-      ],
-      attrs: { id: _vm.vf_uid },
-      domProps: { value: _vm.aValue },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
+  return _c(
+    "div",
+    { staticClass: "form-group" },
+    [
+      _vm.label
+        ? _c("label", { attrs: { for: _vm.vf_uid } }, [
+            _vm._v(_vm._s(_vm.label) + ":")
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showInfo
+        ? _c("p", { staticClass: "help-block" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("textarea", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.aValue,
+            expression: "aValue"
           }
-          _vm.aValue = $event.target.value
+        ],
+        attrs: { id: _vm.vf_uid },
+        domProps: { value: _vm.aValue },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.aValue = $event.target.value
+          }
         }
-      }
-    }),
-    _vm._v(" "),
-    !!_vm.$slots["help"]
-      ? _c("p", { staticClass: "help-block" }, [
-          _c("small", [_vm._t("help")], 2)
-        ])
-      : _vm._e()
-  ])
+      }),
+      _vm._v(" "),
+      _vm.displayErrors
+        ? _c(
+            "form-errors",
+            _vm._b(
+              {},
+              "form-errors",
+              {
+                errors: _vm.errors,
+                warning: _vm.warning,
+                property: _vm.property
+              },
+              false
+            )
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      !!_vm.$slots["help"]
+        ? _c("p", { staticClass: "help-block" }, [
+            _c("small", [_vm._t("help")], 2)
+          ])
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

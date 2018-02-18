@@ -19,7 +19,7 @@
                 :errors='errors'>
                   <template slot='help'>
                     <b>[Current Val: {{ `${model.text_required}` }}]</b>
-                    Validator Status <code>{{ `${$validation.registry.text_required}` }}</code>
+                    Validator Status <code>{{ `${$validation.getStatus('text_required')}` }}</code>
                   </template>
               </form-text>
 
@@ -39,7 +39,7 @@
               :rules='[$validation.rules.email]'>
                 <template slot='help'>
                   <b>[Current Val: {{ `${model.email}` }}]</b>
-                  Validator Status <code>{{ `${$validation.registry.email}` }}</code> This uses <code>:rules='[$validation.rules.email]'</code>
+                  Validator Status <code>{{ `${$validation.getStatus('email')}` }}</code> This uses <code>:rules='[$validation.rules.email]'</code>
                 </template>
             </form-text>
 
@@ -50,7 +50,7 @@
               :rules='[$validation.rules.url]'>
                 <template slot='help'>
                   <b>[Current Val: {{ `${model.url}` }}]</b>
-                  Validator Status <code>{{ `${$validation.registry.url}` }}</code> This uses <code>:rules='[$validation.rules.url]'</code>
+                  Validator Status <code>{{ `${$validation.getStatus('url')}` }}</code> This uses <code>:rules='[$validation.rules.url]'</code>
                 </template>
             </form-text>
 
@@ -61,7 +61,7 @@
               :rules='[$validation.rules.number]'>
                 <template slot='help'>
                   <b>[Current Val: {{ `${model.form_number}` }}]</b>
-                  Validator Status <code>{{ `${$validation.registry.form_number}` }}</code> This uses <code>:rules='[$validation.rules.number]'</code>
+                  Validator Status <code>{{ `${$validation.getStatus('form_number')}` }}</code> This uses <code>:rules='[$validation.rules.number]'</code>
                 </template>
             </form-number>
 
@@ -69,11 +69,12 @@
               v-model='model.password'
               property='password'
               :confirm='model.password_confirm'
-              :rules='[(val)=>{ return !!val && (val === model.password_confirm)}]'
+              :required='true'
+              :rules='[$validation.rules.match(model.password_confirm, "password confirm")]'
               :errors='errors'>
                   <template slot='help'>
                     <b>[Current Val: {{ `${model.password}` }}]</b>
-                    Validator Status <code>{{ `${$validation.registry.password}` }}</code> This uses <code>:rules='[(val)=>{ return doSomething...})]'</code>
+                    Validator Status <code>{{ `${$validation.getStatus('password')}` }}</code> This uses <code>:rules='[$validation.rules.match(model.password_confirm)]'</code>
                   </template>
             </form-password>
 
@@ -281,16 +282,21 @@
         <div class="col-md-4">
             <form-panel>
               <form-checkbox label='Show All Elements' v-model='showElementsAll' property='showElementsAll'></form-checkbox>
-              <form-checkbox label='Fake Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
+              <form-checkbox label='Fake Server Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
             </form-panel>
 
             <form-section heading='Validation'>
+              <button class='btn btn-default' :disabled='$validation.fails'>You Can Click Me When Valid</button>
+
               <p>Validation Passes: <code>{{ $validation.passes }}</code> </p>
               <p>Validation Fails: <code>{{ $validation.fails }}</code> </p>
               <h4>Faling Props</h4>
               <p v-for='(value, key) in $validation.failing'><code>{{key}}</code></p>
 
-              <button class='btn btn-default' :disabled='$validation.fails'>You Can Click Me When Valid</button>
+              <form-checkbox label='Show validation registry' v-model='showValidationRegistry' property='showValidationRegistry'></form-checkbox>
+
+              <p v-if='showValidationRegistry' v-for='(value, key) in $validation.registry'><label>{{ key }}: </label><code>{{value}}</code></p>
+
             </form-section>
 
             <h4>Properties</h4>
@@ -319,6 +325,7 @@ export default {
       showModal: false,
       showElementsAll: true,
       showFakeErrors: false,
+      showValidationRegistry: false,
 
       options: [
         {value: "opt1", text: 'Option 1'},
@@ -376,6 +383,10 @@ export default {
     }
   },
   computed: {
+    console() {
+      return window.console
+    },
+
     errors() {
       if (!this.showFakeErrors) return null
       return {

@@ -3,7 +3,10 @@
         <label class="control-label" :for='property'>{{ aLabel }}</label>
         <input type="file" :name="property" :id="property" :multiple="multiple">
         <small>Current File: {{ value }}</small>
-        <form-errors :errors='errors' :property='property'></form-errors>
+        <form-errors
+            v-if='displayErrors'
+            v-bind="{errors, warning, property}">
+        </form-errors>
         <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>

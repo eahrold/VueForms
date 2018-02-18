@@ -2,13 +2,23 @@
     <div class="form-group" :class='formClass'>
         <label class="control-label" :for='label'>{{ aLabel }}</label>
         <div class='input-group date'>
-            <input :id='id' type='text' class="form-control" />
+            <input
+                @blur='onBlur'
+                @focus='onFocus'
+                :id='vf_uid'
+                type='text'
+                class="form-control" />
             <span class="input-group-addon">
                 <span @click='clear' class="glyphicon glyphicon-remove-circle"></span>
             </span>
         </div>
-        <form-errors :errors='errors' :property='property'></form-errors>
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <form-errors
+            v-if='displayErrors'
+            v-bind="{errors, warning, property}">
+        </form-errors>
+        <p v-if="!!$slots['help']" class="help-block">
+            <small><slot name='help'></slot></small>
+        </p>
     </div>
 </template>
 <script>
@@ -17,14 +27,13 @@ var $ = require('jquery');
 var moment = require('moment');
 require('bootstrap-daterangepicker')
 
-import { props, errors, dates } from './Mixins';
+import { props, errors, dates, uuid } from './Mixins';
 
 export default {
-    mixins: [ props, errors, dates ],
+    mixins: [ props, errors, dates, uuid ],
 
     data () {
         return {
-            id: 'daterange-' + Math.floor(Math.random() * 9999),
             picker: null
         }
     },
@@ -65,7 +74,7 @@ export default {
             const config = _.assign({}, options, this.config)
             config.singleDatePicker = true
 
-            this.rootPicker = $('#'+this.id).daterangepicker(config,
+            this.rootPicker = $('#'+this.vf_uid).daterangepicker(config,
             (start, end, label) => {
                 this.$_emitDates(start);
             }).on('cancel.daterangepicker', (ev, picker)=>{

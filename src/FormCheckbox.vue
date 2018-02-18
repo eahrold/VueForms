@@ -2,12 +2,16 @@
     <div class="form-group" :class='formClass'>
         <div class="checkbox">
             <label class="control-label" :for="'checkbox-' + property">
-                <input v-model='aValue'
-                   :id="'checkbox-' + property"
-                   type="checkbox">{{ aLabel }}
+                <input
+                    v-model='aValue'
+                    :id="'checkbox-' + property"
+                    type="checkbox">{{ aLabel }}
             </label>
         </div>
-        <form-errors :errors='errors' :property='property'></form-errors>
+        <form-errors
+            v-if='displayErrors'
+            v-bind="{errors, warning, property}">
+        </form-errors>
         <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>

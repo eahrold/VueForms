@@ -18,7 +18,13 @@
     <div class="form-group" :class='formClass'>
         <label class="control-label" :for='label'>{{ label }}: </label>
         <div class="input-group">
-            <input class='form-control' :id='id' type="text" :name="label"/>
+            <input
+                @blur='onBlur'
+                @focus='onFocus'
+                class='form-control'
+                :id='vf_uid'
+                type="text"
+                :name="label"/>
             <span @click='clear' class="input-group-addon">
                 <i class="fa fa-times-circle-o" aria-hidden="true"></i>
             </span>
@@ -33,10 +39,10 @@ var $ = require('jquery');
 var moment = require('moment');
 require('bootstrap-daterangepicker');
 
-import { errors, dates } from './Mixins';
+import { errors, dates, uuid } from './Mixins';
 
 export default {
-    mixins: [ errors, dates ],
+    mixins: [ errors, dates, uuid ],
 
     props: {
         properties: {
@@ -69,7 +75,6 @@ export default {
 
     data () {
         return {
-            id: 'daterange-' + Math.floor(Math.random() * 9999),
             picker: null,
             rootPicker: null,
             range: null,
@@ -149,7 +154,7 @@ export default {
 
             const config = _.assign({}, options, this.config)
 
-            this.rootPicker = $('#'+this.id).daterangepicker(
+            this.rootPicker = $('#'+this.vf_uid).daterangepicker(
                 config,
             (start, end, label) => {
                 this.$_emitDates(start, end);
