@@ -32,10 +32,6 @@ import _ from 'lodash'
 
 import { props, errors, values } from './Mixins';
 
-const isImage = function(filename) {
-    return (/\.(gif|jpe?g|tiff|png)$/i).test(filename)
-}
-
 export default {
     mixins: [ props, errors, values ],
 

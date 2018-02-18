@@ -71,7 +71,7 @@ export default {
                 if (startDate.isValid()) options.startDate = startDate
             } else invalid = true
 
-            const config = _.assign({}, options, this.config)
+            const config = _.assign({}, options, this.dateConfig)
             config.singleDatePicker = true
 
             this.rootPicker = $('#'+this.vf_uid).daterangepicker(config,

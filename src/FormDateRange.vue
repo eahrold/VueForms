@@ -152,7 +152,7 @@ export default {
                 if (endDate.isValid()) options.endDate = endDate
             } else invalid = true
 
-            const config = _.assign({}, options, this.config)
+            const config = _.assign({}, options, this.dateConfig)
 
             this.rootPicker = $('#'+this.vf_uid).daterangepicker(
                 config,
