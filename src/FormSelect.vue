@@ -1,7 +1,7 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" v-if='label' :for='property'>{{ aLabel }}</label>
-        <select v-model='aValue' :name='property'>
+        <label class="control-label" v-if='label' :for='vf_uid'>{{ aLabel }}</label>
+        <select v-model='aValue' :id='vf_uid' :name='property'>
             <option v-if='!required' :value="null">Please Choose...</option>
             <option v-for='(opt, idx) in options' :key='idx' :value="opt.value || idx">{{ opt.text || opt.name || opt }}</option>
         </select>
@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
     props: {
         required: {
             type: Boolean,

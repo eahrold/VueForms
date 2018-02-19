@@ -1,16 +1,8 @@
-/**
- * Borrowed Heavily from
- * https://github.com/fareez-ahamed/autocomplete-vuejs2
- */
-
-<style scoped>
-.dropdown-menu {
-    overflow-y: scroll;
-    max-height: 10em;
-}
-</style>
-
 <template>
+<!--
+Borrowed Heavily from
+https://github.com/fareez-ahamed/autocomplete-vuejs2
+-->
 <div class="form-group" :class='formClass'>
     <div style="position:relative" :class="{'open':openSuggestion}">
         <label :for='property'>{{ aLabel }}: </label>
@@ -33,10 +25,10 @@
 
 <script>
 
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
 
     props: {
         suggestions: {
@@ -114,3 +106,11 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.dropdown-menu {
+    overflow-y: scroll;
+    max-height: 10em;
+}
+</style>

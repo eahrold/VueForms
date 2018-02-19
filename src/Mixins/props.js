@@ -1,6 +1,9 @@
 import _ from 'lodash'
 
+import uuid from './uuid'
+
 export default {
+    mixins: [ uuid ],
     props: {
         value: {
             required: true

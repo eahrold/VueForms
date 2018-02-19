@@ -17,6 +17,7 @@
 import { props, errors, values } from './Mixins';
 // import VueTinymce from './Vue/VueTinymce.vue'
 
+import { core } from './Mixins';
 import VueTinymce from '@tinymce/tinymce-vue';
 
 
@@ -35,7 +36,7 @@ export default {
         'vue-tinymce' : VueTinymce
     },
 
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
     props: {
         rows: {
             required: false,

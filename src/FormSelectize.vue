@@ -1,6 +1,6 @@
 <template>
     <div class='form-group' :class='formClass'>
-        <label class="control-label" v-if='label !== ""':for='id'>{{ aLabel }}</label>
+        <label class="control-label" v-if='label !== ""' :for='id'>{{ aLabel }}</label>
         <select v-if='multiple && options'
             :id='id'
             :name='property'
@@ -94,7 +94,7 @@ export default {
     data () {
         return {
             aValue: this.multiple ? [] : null,
-            id: 'selectize-' + Math.floor(Math.random() * 9999)
+            id: this.vf_uid
         }
     },
 

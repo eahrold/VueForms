@@ -12,10 +12,10 @@
 
 <script>
 
-import { props, errors, values, options, uuid } from './Mixins';
+import { core, options } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values, options ],
+    mixins: [ core, options ],
 
     props: {
         color: {

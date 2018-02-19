@@ -1,7 +1,7 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='property'>{{ aLabel }}</label>
-        <textarea :id="property" :rows='rows' v-model='aValue' class="form-control" :disabled='disabled' :placeholder='placeholder'></textarea>
+        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
+        <textarea :id="vf_uid" :rows='rows' v-model='aValue' class="form-control" :disabled='disabled' :placeholder='placeholder'></textarea>
         <form-errors
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
@@ -12,10 +12,10 @@
 
 <script>
 
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
 
     props: {
         rows: {

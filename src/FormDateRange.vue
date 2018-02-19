@@ -1,22 +1,19 @@
-/**
- *  Date Range Picker Component
- *
- *  Usage:
- *   <form-daterange
- *      :start='start_prop'
- *      @start='start_prop = arguments[0]'
- *      :end='end_prop'
- *      @end='end_prop = arguments[0]'
- *      :properties="['start_prop', 'end_prop']"
- *      label='Some Label'>
- *   </form-daterange>
- *
- */
-
-
 <template>
+<!--
+Date Range Picker Component
+
+Usage:
+<form-daterange
+   :start='start_prop'
+   @start='start_prop = arguments[0]'
+   :end='end_prop'
+   @end='end_prop = arguments[0]'
+   :properties="['start_prop', 'end_prop']"
+   label='Some Label'>
+</form-daterange>
+ -->
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='label'>{{ label }}: </label>
+        <label class="control-label" :for='vf_uid'>{{ label }}: </label>
         <div class="input-group">
             <input
                 @blur='onBlur'

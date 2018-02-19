@@ -1,6 +1,6 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='label'>{{ aLabel }}</label>
+        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
         <div class='input-group date'>
             <input
                 @blur='onBlur'

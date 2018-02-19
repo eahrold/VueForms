@@ -30,10 +30,10 @@
 
 import _ from 'lodash'
 
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
 
     props: {
         endpoint: {

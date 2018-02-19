@@ -1,7 +1,7 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='property'>{{ aLabel }}</label>
-        <input type="file" :name="property" :id="property" :multiple="multiple">
+        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
+        <input type="file" :name="property" :id="vf_uid" :multiple="multiple">
         <small>Current File: {{ value }}</small>
         <form-errors
             v-if='displayErrors'
@@ -13,10 +13,10 @@
 
 <script>
 
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
 
     props : {
         multiple: {

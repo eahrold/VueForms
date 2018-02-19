@@ -1,9 +1,9 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='property'>{{ aLabel }} </label>
+        <label class="control-label" :for='vf_uid'>{{ aLabel }} </label>
         <input
             type="password"
-            :id="property"
+            :id="vf_uid"
             v-model='aValue'
             class="form-control"
             :placeholder="placeholder"
@@ -20,10 +20,10 @@
 
 <script>
 
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
     props: {
         disabled: {
             type: Boolean,

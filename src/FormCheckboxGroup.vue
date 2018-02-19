@@ -3,10 +3,10 @@
         <label :for='property'>{{ aLabel }}</label>
         <div v-if='!inline' class='form-group-checkbox'>
             <div class='checkbox' v-for='(opt, idx) in options'>
-                <label class="control-label" :for="'checkbox-'+property+'-'+idx">
+                <label class="control-label" :for="`${vf_uid}-${idx}`">
                     <input type="checkbox"
                     :name="'checkbox-'+property+'-'+idx"
-                    :id="'checkbox-'+property+'-'+idx"
+                    :id="`${vf_uid}-${idx}`"
                     :value="opt.value || idx"
                     v-model='aValue'>
                     {{ opt.text || opt.name || opt }}
@@ -16,10 +16,10 @@
         </div>
 
         <div v-else class='form-group-checkbox'>
-            <label v-for='(opt, idx) in options' class="checkbox-inline control-label" :for="'checkbox-'+property+'-'+idx">
+            <label v-for='(opt, idx) in options' class="checkbox-inline control-label" :for="`${vf_uid}-${idx}`">
                 <input type="checkbox"
                 :name="'checkbox-'+property+'-'+idx"
-                :id="'checkbox-'+property+'-'+idx"
+                :id="`${vf_uid}-${idx}`"
                 :value="opt.value || idx"
                 v-model='aValue'>
                 {{ opt.text || opt.name || opt }}
@@ -36,10 +36,10 @@
 
 <script>
 
-import { props, errors, values, options } from './Mixins';
+import { core, options } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values, options ],
+    mixins: [ core, options ],
 
     props: {
         inline: {

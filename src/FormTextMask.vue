@@ -1,8 +1,8 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label :for='property'>{{ aLabel }}: </label>
+        <label :for='vf_uid'>{{ aLabel }}: </label>
         <div class='text' :class='groupClass'>
-            <the-mask @keydown.tab="autocomplete" :id="property" :placeholder='placeholder' v-model='aValue' :name='property' :mask="mask" class="form-control" :disabled='!enabled'/>
+            <the-mask @keydown.tab="autocomplete" :id="vf_uid" :placeholder='placeholder' v-model='aValue' :name='property' :mask="mask" class="form-control" :disabled='!enabled'/>
 
             <span v-if='lockable' class="input-group-addon">
                 <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
@@ -19,11 +19,11 @@
 <script>
 
 import { TheMask } from 'vue-the-mask'
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
     components: { TheMask },
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
 
     props: {
         mask: {

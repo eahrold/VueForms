@@ -25,7 +25,7 @@
 
 <script>
 
-import { props, errors, values } from './Mixins';
+import { errors, values } from './Mixins';
 
 export default {
     mixins: [ errors, values ],

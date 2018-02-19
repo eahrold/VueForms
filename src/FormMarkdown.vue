@@ -18,13 +18,13 @@
 
 <script>
 
-import { props, errors, values, uuid } from './Mixins';
+import { core } from './Mixins';
 import _ from 'lodash';
 
 const SimpleMDE = require('simplemde');
 
 export default {
-    mixins: [ props, errors, values, uuid ],
+    mixins: [ core ],
 
     props: {
         showInfo: {

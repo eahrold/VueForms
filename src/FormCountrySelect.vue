@@ -1,15 +1,26 @@
 <template>
-    <form-selectize  width='100%' :multiple='false' v-model='aValue' :property='property' :options='options' :label='label' :errors='errors' :disabled='disabled' :required='required'></form-selectize>
+    <form-selectize
+        v-model='aValue'
+        v-bind='{
+            property,
+            options,
+            label,
+            errors,
+            disabled,
+            required,
+        }'
+        :multiple='false'
+        width='100%' />
 </template>
 
 <script>
 
 import { countryCodes } from './DataSources';
 
-import { props, errors, values } from './Mixins';
+import { core } from './Mixins';
 
 export default {
-    mixins: [ props, errors, values ],
+    mixins: [ core ],
 
     data () {
         return {
