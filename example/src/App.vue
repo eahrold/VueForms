@@ -1,10 +1,10 @@
 <template>
   <div id='app' class="container-fluid">
     <div class="row h-100">
-        <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
-
         <div class="col-md-8 h-100 o-scroll">
           <form-section heading='Core Types'>
+            <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
+
             <template v-if='showElementsAll'>
               <form-text
                 v-model='model.text'
@@ -276,6 +276,7 @@
           </form-panel>
 
           <form-section heading='Advanced Text Editors'>
+            <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
             <form-markdown label='Markdown' v-model='model.markdown' property='markdown'></form-markdown>
           </form-section>
         </div>

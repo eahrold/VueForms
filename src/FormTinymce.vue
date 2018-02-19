@@ -5,8 +5,9 @@
         <form-file-gallery
             v-if='showModal'
             @choose='chooseFile'
-            property='tinymce_file_gallery'
+            @close='closeFilePicker'
             src-key='path'
+            :add-meta='true'
             :endpoint='$vfconfig.filesEndpoint("images")'
           :errors='errors'>
         </form-file-gallery>
@@ -30,10 +31,17 @@ import VueTinymce from '@tinymce/tinymce-vue';
 import { core } from './Mixins';
 import FormFileGallery from './FormFileGallery'
 
-const imageTemplate = function({path, caption}) {
-    let imgTemplate = `<img src="${path}" />`
+const imageTemplate = function({path, caption, alt, width, height}) {
+    const attrs = _.reduce({src: path, alt, width, height}, (result, value, key)=>{
+        if (value) {
+            result += `${[key]}="${value}" `
+        }
+        return result;
+    } ,'')
+    let imgTemplate = `<img ${attrs} />`
+
     if(_.isString(caption)) {
-        return `<figure class="image"><img src="${path}" /><figcaption><p>${caption}</p></figcaption></figure>`
+        return `<figure class="image">${imgTemplate}<figcaption><p>${caption.replace(/(?:\r\n|\r|\n)/g, '<br />')}</p></figcaption></figure>`
     }
     return imgTemplate;
 }

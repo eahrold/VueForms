@@ -10,13 +10,26 @@
             </div>
             </transition>
 
-            <div v-for='(file, idx) in files' @click='choose(file)' :key='idx' class="col-md-4 text-center">
-                <form-panel>
-                    <img v-if='isImage(fileSrc(file))' class='img-thumbnail gallery' :src="fileSrc(file)">
-                    <i style='font-size: 3em' class="fa fa-file-o fa-3x" v-else aria-hidden="true"></i>
-                    <p>{{ fileSrc(file) }}</p>
-                </form-panel>
+            <transition name='fade' mode="out-in">
+            <div class='row' key='meta' v-if='selected'>
+                <form-file-edit v-model='selected' :src='fileSrc(selected)' property='selected'>
+                    <div slot='after' class="text-right">
+                        <button class="btn btn-default" @click='selected = null'>Back</button>
+                        <button class="btn btn-primary ml-1" @click='complete(selected)'>Insert</button>
+                    </div>
+                </form-file-edit>
             </div>
+            <div class='row' key='gallery' v-else>
+                <div v-for='(file, idx) in files' @click='choose(file, $event)' :key='idx' class="col-md-4 text-center">
+                    <form-panel>
+                        <img v-if='isImage(fileSrc(file))' class='img-thumbnail gallery' :src="fileSrc(file)">
+                        <i v-else style='font-size: 3em' class="fa fa-file-o fa-3x" aria-hidden="true"></i>
+                        <p>{{ fileSrc(file) }}</p>
+                    </form-panel>
+                </div>
+            </div>
+            </transition>
+
         </div>
     </form-modal>
 </template>
@@ -24,8 +37,13 @@
 <script type="text/javascript">
 
 import _ from 'lodash'
+import FormFileEdit from './FormFileEdit'
 
 export default {
+    components: {
+        'form-file-edit': FormFileEdit
+    },
+
     props: {
         headers: {
             type: Object,
@@ -39,13 +57,18 @@ export default {
             type: String,
             default: "path"
         },
+        addMeta: {
+            type: Boolean,
+            default: false,
+        }
     },
 
     data() {
         return {
             errorMsg: null,
             files: [],
-            pagination: {}
+            pagination: {},
+            selected: null,
         }
     },
 
@@ -65,9 +88,7 @@ export default {
 
     methods: {
         isImage(filename) {
-            const test = (/\.(gif|jpe?g|tiff|png)$/i).test(filename)
-            console.log("TESTING", filename, test)
-            return _.isString(filename) && test
+            return _.isString(filename) && (/\.(gif|jpe?g|tiff|png)$/i).test(filename)
         },
 
         fileSrc(file) {
@@ -78,14 +99,20 @@ export default {
             }
         },
 
-        choose(file) {
-            let value = null;
-            if(_.isObject(file)){
-                value = _.get(file, this.srcKey)
-            } else if (_.isString(file)) {
-                value = file
+        choose(file, event) {
+            if(this.addMeta) {
+                const size = {
+                    width: event.target.naturalWidth,
+                    height: event.target.naturalHeight,
+                    constrain: true,
+                }
+                return this.selected = _.assign(size, file);
             }
-            this.$emit('choose', value)
+            this.complete(file)
+        },
+
+        complete(file) {
+            this.$emit('choose', file)
             this.$emit('close')
         },
 
@@ -94,7 +121,6 @@ export default {
 
             var request = new XMLHttpRequest()
             request.onload=({target})=>{
-                console.log("RT", target.responseText);
                 this.files = JSON.parse(target.responseText)
             };
             request.onerror=({target})=>{
@@ -113,9 +139,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.img-thumbnail.gallery {}
-
-.img-thumbnail.selected {
-    max-height: 50px;
+.ml-1 {
+    margin-left: 1em;
 }
+
+/*.img-thumbnail.gallery {}*/
+
+@import url('./styles/transitions.css')
 </style>

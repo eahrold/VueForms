@@ -92,7 +92,7 @@ export default {
 
 .modal-wrapper {
   display: table-cell;
-  /*vertical-align: middle;*/
+  position: relative;
   height: 100%;
   overflow: scroll;
 }

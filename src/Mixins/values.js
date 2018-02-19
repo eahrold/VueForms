@@ -1,14 +1,15 @@
 export default {
     data() {
         return {
-            aValue: this.value
+            aValue: this.value,
+            vfPristine: this.value
         }
     },
 
     mounted() {
         this.$nextTick(() => {
             if (this.value !== this.aValue) {
-                this.aValue = this.value;
+                this.aValue = this.vfPristine = this.value;
             }
         });
     },
