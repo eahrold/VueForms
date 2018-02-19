@@ -16,7 +16,7 @@
 
 import _ from 'lodash'
 
-import { core } from './Mixins';
+import { core } from './mixins';
 import FormFileGallery from './FormFileGallery'
 
 export default {

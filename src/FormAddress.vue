@@ -48,7 +48,7 @@
 
 <script>
 
-import { core } from './Mixins'
+import { core } from './mixins'
 import FormStateSelect from './FormStateSelect'
 import FormCountrySelect from './FormCountrySelect'
 

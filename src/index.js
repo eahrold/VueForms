@@ -5,12 +5,12 @@ import {
     dates,
     options,
     formData,
-} from './Mixins'
+} from './mixins'
 
 import {
     validation,
     vfconfig
-} from './Prototypes'
+} from './prototypes'
 
 import FormText from './FormText'
 import FormFile from './FormFile'
@@ -134,7 +134,7 @@ export const VueFormHelpers = {
     }
 }
 
-export { ValidationSyncMixin, ValidationEvents } from './Prototypes/validation'
+export { ValidationSyncMixin, ValidationEvents } from './prototypes/validation'
 
 export {
     FormText,

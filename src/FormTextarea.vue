@@ -12,7 +12,7 @@
 
 <script>
 
-import { core } from './Mixins';
+import { core } from './mixins';
 
 export default {
     mixins: [ core ],

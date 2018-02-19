@@ -36,7 +36,7 @@
 
 <script>
 
-import { core, options } from './Mixins';
+import { core, options } from './mixins';
 
 export default {
     mixins: [ core, options ],

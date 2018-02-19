@@ -1,6 +1,6 @@
 import Vue from "Vue"
 
-import mimeTypes from '../DataSources/SupportedMimeTypes'
+import mimeTypes from '../data_sources/SupportedMimeTypes'
 
 const DEFAULT_DATE_FORMAT = 'MM/DD/YYYY'
 const DEFAULT_TIME_FORMAT = 'h:mm A'

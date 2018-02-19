@@ -27,10 +27,10 @@ var $ = require('jquery');
 var moment = require('moment');
 require('bootstrap-daterangepicker')
 
-import { props, errors, dates, uuid } from './Mixins';
+import { props, errors, dates, vf_uid } from './mixins';
 
 export default {
-    mixins: [ props, errors, dates, uuid ],
+    mixins: [ props, errors, dates, vf_uid ],
 
     data () {
         return {

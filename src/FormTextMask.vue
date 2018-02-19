@@ -19,7 +19,7 @@
 <script>
 
 import { TheMask } from 'vue-the-mask'
-import { core } from './Mixins';
+import { core } from './mixins';
 
 export default {
     components: { TheMask },

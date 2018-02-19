@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { dropzone } from './Mixins'
+import { dropzone } from './mixins'
 export default {
     mixins: [ dropzone ]
 }

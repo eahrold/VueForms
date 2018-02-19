@@ -1,9 +1,9 @@
 import _ from 'lodash'
 
-import uuid from './uuid'
+import vf_uid from './vf_uid'
 
 export default {
-    mixins: [ uuid ],
+    mixins: [ vf_uid ],
     props: {
         value: {
             required: true

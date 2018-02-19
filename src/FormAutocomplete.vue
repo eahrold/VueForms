@@ -25,7 +25,7 @@ https://github.com/fareez-ahamed/autocomplete-vuejs2
 
 <script>
 
-import { core } from './Mixins';
+import { core } from './mixins';
 
 export default {
     mixins: [ core ],

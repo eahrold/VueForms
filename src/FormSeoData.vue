@@ -19,7 +19,7 @@
 
 <script>
 
-import { props, errors } from './Mixins';
+import { props, errors } from './mixins';
 
 export default {
 

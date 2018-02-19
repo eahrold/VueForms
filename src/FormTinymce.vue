@@ -28,7 +28,7 @@
 
 import _ from 'lodash'
 import VueTinymce from '@tinymce/tinymce-vue';
-import { core } from './Mixins';
+import { core } from './mixins';
 import FormFileGallery from './FormFileGallery'
 
 const imageTemplate = function({path, caption, alt, width, height}) {
@@ -72,14 +72,11 @@ export default {
     },
 
     props: {
-        rows: {
-            required: false,
-            default: 3
-        },
         tinymceConfig: {
             type: Object,
             required: false
         },
+
         apiKey: {
             type: String,
             required: false

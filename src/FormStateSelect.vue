@@ -16,9 +16,9 @@
 
 <script>
 
-import { states } from './DataSources';
+import { states } from './data_sources';
 
-import { core } from './Mixins';
+import { core } from './mixins';
 
 export default {
     mixins: [ core ],

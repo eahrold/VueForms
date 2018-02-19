@@ -4,9 +4,9 @@
 
 <script>
 
-import { prefixes } from './DataSources/Honorifics';
+import { prefixes } from './data_sources/Honorifics';
 
-import { core } from './Mixins';
+import { core } from './mixins';
 
 export default {
     mixins: [ core ],

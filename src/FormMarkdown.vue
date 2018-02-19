@@ -18,7 +18,7 @@
 
 <script>
 
-import { core } from './Mixins';
+import { core } from './mixins';
 import _ from 'lodash';
 
 const SimpleMDE = require('simplemde');

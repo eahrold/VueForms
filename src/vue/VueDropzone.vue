@@ -10,10 +10,10 @@
 const Dropzone = require('dropzone')
 Dropzone.autoDiscover = false
 
-import uuid from '../Mixins/uuid'
+import vf_uid from '../mixins/vf_uid'
 
 export default {
-    mixins: [ uuid ],
+    mixins: [ vf_uid ],
 
     props: {
         value: {

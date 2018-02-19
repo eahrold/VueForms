@@ -26,10 +26,10 @@ var elFinderBrowser = function (field_name, url, type, win) {
 }
 
 import _ from 'lodash'
-import { uuid } from '../Mixins'
+import { vf_uid } from '../mixins'
 
 export default {
-    mixins: [ uuid ],
+    mixins: [ vf_uid ],
 
     props: {
         value: {
