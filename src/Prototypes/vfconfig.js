@@ -28,11 +28,12 @@ export default new Vue({
                     'advlist autolink lists link image charmap print preview hr anchor pagebreak',
                     'searchreplace wordcount visualchars',
                     'searchreplace visualblocks fullscreen textcolor contextmenu',
-                    'insertdatetime media table contextmenu paste imagetools'
+                    'insertdatetime media table contextmenu paste imagetools code'
                 ],
-                toolbar: `undo redo | insert  | bold italic | alignleft aligncenter alignright alignjustify |
-                    bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code`,
-                css: ''
+                toolbar: `undo redo | insert code  | bold italic | alignleft aligncenter alignright alignjustify |
+                    bullist numlist outdent indent | link image vf_image_picker | styleselect fontselect fontsizeselect forecolor | visualblocks code`,
+                css: '',
+                menubar: true,
             }
         },
     },

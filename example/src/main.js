@@ -25,8 +25,8 @@ let tinymceConfig = {
     ],
     imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
     toolbar: `
-        undo redo | insert | bold italic | alignleft aligncenter alignright alignjustify |
-        bullist numlist outdent indent | link image | styleselect fontselect fontsizeselect forecolor | visualblocks code
+        undo redo | insert code | bold italic | alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | link image vf_image_picker | styleselect fontselect fontsizeselect forecolor | visualblocks code
     `,
     menubar: false,
     css: ''

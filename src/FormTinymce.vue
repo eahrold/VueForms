@@ -1,7 +1,18 @@
 <template>
     <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='property'>{{ aLabel }}</label>
+        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
+
+        <form-file-gallery
+            v-if='showModal'
+            @choose='chooseFile'
+            property='tinymce_file_gallery'
+            src-key='path'
+            :endpoint='$vfconfig.filesEndpoint("images")'
+          :errors='errors'>
+        </form-file-gallery>
+
         <vue-tinymce :api-key="_apiKey" v-model='aValue' :init='init'></vue-tinymce>
+
 
         <form-errors
             v-if='displayErrors'
@@ -14,11 +25,18 @@
 
 <script>
 
-import { props, errors, values } from './Mixins';
-// import VueTinymce from './Vue/VueTinymce.vue'
-
-import { core } from './Mixins';
+import _ from 'lodash'
 import VueTinymce from '@tinymce/tinymce-vue';
+import { core } from './Mixins';
+import FormFileGallery from './FormFileGallery'
+
+const imageTemplate = function({path, caption}) {
+    let imgTemplate = `<img src="${path}" />`
+    if(_.isString(caption)) {
+        return `<figure class="image"><img src="${path}" /><figcaption><p>${caption}</p></figcaption></figure>`
+    }
+    return imgTemplate;
+}
 
 
 const defaults = {
@@ -33,16 +51,24 @@ const defaults = {
 
 export default {
     components: {
-        'vue-tinymce' : VueTinymce
+        'form-file-gallery': FormFileGallery,
+        'vue-tinymce': VueTinymce
     },
 
     mixins: [ core ],
+    data() {
+        return {
+            showModal: false,
+            editor: null
+        }
+    },
+
     props: {
         rows: {
             required: false,
             default: 3
         },
-        config: {
+        tinymceConfig: {
             type: Object,
             required: false
         },
@@ -52,14 +78,47 @@ export default {
         }
     },
 
+    methods: {
+        closeFilePicker() {
+            this.showModal = false;
+        },
+
+        openFilePicker() {
+            this.showModal = true
+        },
+
+        chooseFile(file) {
+            let content;
+            if(_.isObject(file)) {
+                content = file
+            } else if(_.isString(file)) {
+                content = {path: file}
+            }
+            this.editor.insertContent(imageTemplate(content))
+            this.closeFilePicker()
+        },
+    },
+
     computed:{
         _apiKey() {
             return this.apiKey || _.get(this.$vfconfig, 'tinymce.apiKey')
         },
 
         init() {
-            return this.config ||
-                _.assign({}, defaults, _.get(this.$vfconfig, 'tinymce.config', {}))
+            if(this.tinymceConfig) return tinymceConfig;
+
+            let init = {
+              setup:(editor)=>{
+                this.editor = editor;
+                editor.addButton('vf_image_picker', {
+                    text: "Image Gallery",
+                    icon: 'image',
+                    tooltip: "Insert Image",
+                    onclick: this.openFilePicker
+                });
+              }
+            }
+            return  _.assign(init, defaults, _.get(this.$vfconfig, 'tinymce.config', {}))
         }
     }
 
