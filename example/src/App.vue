@@ -3,7 +3,19 @@
     <div class="row h-100">
         <div class="col-md-8 h-100 o-scroll">
           <form-section heading='Core Types'>
-            <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
+<!--             <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
+ -->
+            <form-alert></form-alert>
+            <form-panel class="row">
+              <div class="col-md-4">
+                <button class='btn btn-default' @click='toast'>Click To Show Alert</button>
+                <button class='btn btn-default' @click='confirm'>Click To Confirm</button>
+              </div>
+              <div class="col-md-8">
+                <form-selectize v-model='status' :options='statuses' property='status' label='Alert Status Level'></form-selectize>
+                <form-selectize v-model='position' :options='positions' property='position' label='Position'></form-selectize>
+              </div>
+            </form-panel>
 
             <template v-if='showElementsAll'>
               <form-text
@@ -333,6 +345,9 @@ export default {
       showElementsAll: true,
       showFakeErrors: false,
       showValidationRegistry: false,
+      alertMessage: null,
+      status: 'success',
+      position: 'top',
 
       options: [
         {value: "opt1", text: 'Option 1'},
@@ -394,6 +409,30 @@ export default {
       return window.console
     },
 
+    statuses() {
+      return {
+        'success' : 'Success',
+        'info' : 'Info',
+        'warning' : 'Warning',
+        'danger' : 'Danger',
+      }
+    },
+
+    positions() {
+      return {
+        'top' : 'Top',
+        'bottom' : 'Bottom',
+      }
+    },
+
+    messages() {
+        return [
+          'Oops... something went wrong.',
+          'Please call back later.',
+          'are you sure you wanted to do that?'
+        ]
+    },
+
     errors() {
       if (!this.showFakeErrors) return null
       return {
@@ -401,6 +440,23 @@ export default {
           text_required: ['text is required here'],
           email: ['you need a better email address'],
       }
+    }
+  },
+  methods: {
+    confirm() {
+      this.$vfalert.confirm(this.randomMessage(), this.status, { position: this.position}).then(()=>{
+        alert("Confirmed")
+      }).catch(()=>{
+        alert("Cancelled")
+      })
+    },
+
+    toast() {
+      this.$vfalert.toast(this.randomMessage(), this.status, { position: this.position})
+    },
+
+    randomMessage() {
+      return _.sample(this.messages)
     }
   }
 }
