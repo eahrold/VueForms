@@ -202,6 +202,6 @@ export default {
 }
 </script>
 
-<style type="text/css">
-    @import url('~bootstrap-daterangepicker/daterangepicker.css');
+<style lang='css'>
+    @import url('~bootstrap-daterangepicker/daterangepicker.css')
 </style>
