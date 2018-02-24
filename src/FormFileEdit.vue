@@ -10,6 +10,7 @@
         <form-number :min='0' :value='aValue.width' @input='updateWidth' placeholder='auto' property='width' />
         <form-number :min='0' :value='aValue.height' @input='updateHeight' placeholder='auto' property='height' />
         <form-checkbox v-model='aValue.constrain' property='constrain' />
+        <form-select v-model='aValue.align' :options='alignment' property='align' />
         <form-textarea :rows='2' v-model='aValue.caption' property='caption' />
         <slot name='after'></slot>
     </div>
@@ -35,6 +36,10 @@ export default {
             return {
                 width: "200px",
                 height:`${200 * (this.aValue.height/this.aValue.width)}px`}
+        },
+
+        alignment() {
+            return [{value: 'left', text: "Left Aligned"}, {value: 'right', text: 'Right Aligned'}]
         }
     },
 

@@ -31,8 +31,9 @@ import VueTinymce from '@tinymce/tinymce-vue';
 import { core } from './mixins';
 import FormFileGallery from './FormFileGallery'
 
-const imageTemplate = function({path, caption, alt, width, height}) {
-    const attrs = _.reduce({src: path, alt, width, height}, (result, value, key)=>{
+const imageTemplate = function({path, caption, alt, width, height, align}) {
+    const style=''
+    const attrs = _.reduce({src: path, alt, width, height, align}, (result, value, key)=>{
         if (value) {
             result += `${[key]}="${value}" `
         }
