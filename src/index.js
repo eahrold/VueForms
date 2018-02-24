@@ -9,7 +9,8 @@ import {
 
 import {
     validation,
-    vfconfig
+    vfconfig,
+    vfalert,
 } from './prototypes'
 
 import FormText from './FormText'
@@ -50,6 +51,7 @@ import FormGroup from './FormGroup'
 import FormSection from './FormSection'
 
 import FormLoader from './FormLoader'
+import FormAlert from './FormAlert'
 import FormModal from './FormModal'
 import FormProgressBar from './FormProgressBar'
 import FormErrors from './FormErrors'
@@ -128,8 +130,10 @@ export const VueFormHelpers = {
         Vue.component('form-errors', FormErrors)
         Vue.component('form-save-button', FormSaveButton)
         Vue.component('form-modal', FormModal)
+        Vue.component('form-alert', FormAlert)
         Vue.component('form-progress-bar', FormProgressBar)
 
+        Vue.prototype.$vfalert = vfalert
         Vue.prototype.$validation = validation
     }
 }

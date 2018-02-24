@@ -1,23 +1,23 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <span @click='$emit("close")' class="modal-close close">x</span>
+  <transition name="vf-modal">
+    <div class="vf-modal-mask">
+      <div class="vf-modal-wrapper">
+        <div class="vf-modal-container">
+          <span @click='$emit("close")' class="vf-modal-close close">x</span>
 
-          <div v-if='!!$slots.header' class="modal-header">
+          <div v-if='!!$slots.header' class="vf-modal-header">
             <h4>
               <slot name="header"></slot>
             </h4>
           </div>
 
-          <div class="modal-body clearfix">
+          <div class="vf-modal-body clearfix">
             <slot name="body">
               default body
             </slot>
           </div>
 
-          <div v-if='!hideFooter' class="modal-footer">
+          <div v-if='!hideFooter' class="vf-modal-footer">
             <slot name="footer">
               <button class="btn btn-default" @click="$emit('close')">
                 Close
@@ -60,8 +60,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.modal-mask {
+<style lang='css' scoped>
+.vf-modal-mask {
   position: fixed;
   z-index: 2000;
   top: 0;
@@ -74,36 +74,33 @@ export default {
   overflow: scroll;
 }
 
-.modal-mask.modal-rounded > .modal-wrapper > .modal-container {
+.vf-modal-mask.vf-modal-rounded > .vf-modal-wrapper > .vf-modal-container {
   border-radius: 3em;
 }
 
-.modal-mask.modal-large > .modal-wrapper > .modal-container {
+.vf-modal-mask.vf-modal-large > .vf-modal-wrapper > .vf-modal-container {
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
 }
 
-.modal-mask.modal-small > .modal-wrapper > .modal-container {
+.vf-modal-mask.vf-modal-small > .vf-modal-wrapper > .vf-modal-container {
   width: 60%;
   margin-left: 20%;
   margin-right: 20%;
 }
 
-.modal-wrapper {
+.vf-modal-wrapper {
   display: table-cell;
   position: relative;
   height: 100%;
   overflow: scroll;
 }
 
-.modal-container {
-  position: absolute;
+.vf-modal-container {
+  position: relative;
   width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin: 5% 10%;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
@@ -111,43 +108,40 @@ export default {
   transition: all .3s ease;
 }
 
-.modal-close {
+.vf-modal-sm .vf-modal-container {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vf-modal-close {
   z-index: 2;
   cursor: pointer;
 }
 
-.modal-header h3 {
+.vf-modal-header h3 {
   margin-top: 0;
   color: #42b983;
 }
 
-.modal-body {
+.vf-modal-body {
   margin: 20px 0;
 }
 
-.modal-default-button {
+.vf-modal-default-button {
   float: right;
 }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
+.vf-modal-enter {
   opacity: 0;
 }
 
-.modal-leave-active {
+.vf-modal-leave-active {
   opacity: 0;
 }
 
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
+.vf-modal-enter .vf-modal-container,
+.vf-modal-leave-active .vf-modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
