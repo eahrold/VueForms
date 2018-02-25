@@ -10,7 +10,7 @@
             <form-text class='col-md-4' label='City' v-model='aValue.city' :property='`${property}.city`'></form-text>
             <form-state-select class='col-md-4' label='State' v-if='stateSelect' v-model='aValue.state' :property='`${property}.state`'></form-state-select>
             <form-text v-else class='col-md-4' label='State' v-model='aValue.state' :property='`${property}.state`'></form-text>
-            <form-text-mask class='col-md-4' label='Zip' v-model='aValue.zip' placeholder='55555-5555' :property='`${property}.zip`' mask='#####-####'></form-text-mask>
+            <form-text-mask class='col-md-4' label='Postal Code' v-model='aValue.postal_code' placeholder='55555-5555' :property='`${property}.postal_code`' mask='#####-####'></form-text-mask>
         </div>
 
         <div class="row">
