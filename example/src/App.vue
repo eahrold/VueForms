@@ -1,325 +1,13 @@
 <template>
   <div id='app' class="container-fluid">
     <div class="row h-100">
-        <div class="col-md-8 h-100 o-scroll">
-          <form-section heading='Core Types'>
-<!--             <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
- -->
-            <form-alert></form-alert>
-            <form-panel class="row">
-              <div class="form-group">
-                <button class='btn btn-default' @click='toast'>Click To Toast</button>
-                <button class='btn btn-default' @click='alert'>Click To Alert</button>
-                <button class='btn btn-default' @click='confirm'>Click To Confirm</button>
-              </div>
-              <div class="form-group">
-                <form-selectize class="col-md-6" v-model='status' :options='statuses' property='status' label='Status'></form-selectize>
-                <form-selectize class="col-md-6" v-model='position' :options='positions' property='position' label='Position'></form-selectize>
-              </div>
-            </form-panel>
-
-            <template v-if='showElementsAll'>
-              <form-text
-                v-model='model.text'
-                property='text'
-                :errors='errors'
-                placeholder='First Name (Placeholder Example)'>
-                  <template slot='help'><b>[Current Val: {{ `${model.text}` }}]</b> </template>
-              </form-text>
-
-              <form-text
-                v-model='model.text_required'
-                :required='true'
-                property='text_required'
-                :errors='errors'>
-                  <template slot='help'>
-                    <b>[Current Val: {{ `${model.text_required}` }}]</b>
-                    Validator Status <code>{{ `${$validation.getStatus('text_required')}` }}</code>
-                  </template>
-              </form-text>
-
-              <form-text
-                v-model='model.text_prepopulated'
-                property='text_prepopulated'
-                :errors='errors'
-                placeholder='Now Empty (Placeholder Example)'>
-                  <template slot='help'><b>[Current Val: {{ `${model.text_prepopulated}` }}]</b> </template>
-              </form-text>
-            </template>
-
-            <form-text
-              v-model='model.email'
-              property='email'
-              :errors='errors'
-              :rules='[$validation.rules.email]'>
-                <template slot='help'>
-                  <b>[Current Val: {{ `${model.email}` }}]</b>
-                  Validator Status <code>{{ `${$validation.getStatus('email')}` }}</code> This uses <code>:rules='[$validation.rules.email]'</code>
-                </template>
-            </form-text>
-
-            <form-text
-              v-model='model.url'
-              property='url'
-              :errors='errors'
-              :rules='[$validation.rules.url]'>
-                <template slot='help'>
-                  <b>[Current Val: {{ `${model.url}` }}]</b>
-                  Validator Status <code>{{ `${$validation.getStatus('url')}` }}</code> This uses <code>:rules='[$validation.rules.url]'</code>
-                </template>
-            </form-text>
-
-            <form-number
-              v-model='model.form_number'
-              property='form_number'
-              :errors='errors'
-              :rules='[$validation.rules.number]'>
-                <template slot='help'>
-                  <b>[Current Val: {{ `${model.form_number}` }}]</b>
-                  Validator Status <code>{{ `${$validation.getStatus('form_number')}` }}</code> This uses <code>:rules='[$validation.rules.number]'</code>
-                </template>
-            </form-number>
-
-            <form-password
-              v-model='model.password'
-              property='password'
-              :confirm='model.password_confirm'
-              :required='true'
-              :rules='[$validation.rules.match(model.password_confirm, "password confirm")]'
-              :errors='errors'>
-                  <template slot='help'>
-                    <b>[Current Val: {{ `${model.password}` }}]</b>
-                    Validator Status <code>{{ `${$validation.getStatus('password')}` }}</code> This uses <code>:rules='[$validation.rules.match(model.password_confirm)]'</code>
-                  </template>
-            </form-password>
-
-            <form-password
-              v-model='model.password_confirm'
-              property='password_confirm'
-              :errors='errors'>
-                <template v-if='(model.password_confirm !== null) && (model.password !== model.password_confirm)' slot='help'>Password and Confirm must match</template>
-            </form-password>
-
-            <form-textarea
-              v-model='model.text_area'
-              property='text_area'
-              :errors='errors'>
-            </form-textarea>
-          </form-section>
-
-          <form-section heading='Array Types'>
-            <form-selectize
-              v-model='model.selectize_multiple'
-              property='selectize_multiple'
-              :multiple='true'
-              :inline='inline'
-              :options='options'
-              :errors='errors'>
-                  <template slot='help'>
-                    <b>Current Val: {{ model.selectize_multiple }}</b>
-                  </template>
-            </form-selectize>
-
-            <form-slider
-              v-model='inline'
-              property='inline'
-              label='Show Checkbox and Radio Selects Inline'>
-            </form-slider>
-
-            <form-checkbox
-              label='Show Checkbox and Radio Selects Inline'
-              v-model='inline'
-              property='inline'>
-            </form-checkbox>
-
-            <form-checkbox-group
-              v-model='model.checkbox_group'
-              property='checkbox_group'
-              :inline='inline'
-              :options='options'
-              :errors='errors'>
-                  <template slot='help'><b>Current Val: {{ model.checkbox_group }}</b> </template>
-            </form-checkbox-group>
-
-            <form-checkbox-group
-              v-model='model.checkbox_group_from_array'
-              property='checkbox_group_from_array'
-              :inline='inline'
-              :options='optionsArray'
-              :errors='errors'>
-                  <template slot='help'><b>Current Val: {{ model.checkbox_group_from_array }}</b> </template>
-            </form-checkbox-group>
-
-            <form-radio-button
-              v-model='model.radio_select'
-              property='radio_select'
-              :inline='inline'
-              :options='options'
-              :errors='errors' >
-                <template slot='help'><b>Current Val: {{ model.radio_select }}</b> </template>
-            </form-radio-button>
-
-            <form-options-list
-              v-model='model.options_list'
-              property='options_list'
-              :options='options'
-              key-by='text'
-              :errors='errors'>
-            </form-options-list>
-          </form-section>
-
-          <form-section heading='Date and Time'>
-          <form-date
-            v-model='model.date'
-            property='date'
-            :errors='errors'>
-              <template slot='help'><b>Current Val: {{ model.date }}</b> </template>
-          </form-date>
-
-          <form-date
-            v-model='model.date_time'
-            property='date_time'
-            :time-picker='true'
-            :errors='errors'>
-              <template slot='help'><b>Current Val: {{ model.date_time }}</b> </template>
-          </form-date>`
-
-          <form-daterange
-            :start.sync='model.start'
-            :end.sync='model.end'
-            :properties="['start', 'end']"
-            label="Date Range"
-            :errors='errors'
-            >
-              <template slot='help'><b>Current Val: {{ model.start }} - {{ model.end }}</b> </template>
-            </form-daterange>
-
-          <form-daterange
-            :start.sync='model.start_time'
-            :end.sync='model.end_time'
-            :properties="['start_time', 'end_time']"
-            label="Date Range With Time"
-            :time-picker="true"
-            :errors='errors'
-            >
-              <template slot='help'><b>Current Val: {{ model.start_time }} - {{ model.end_time }}</b> </template>
-            </form-daterange>
-
-          </form-section>
-
-          <form-address
-            v-model='model.address'
-            property='address'
-            :include-coordinates='true'
-            :errors='errors'>
-              <template slot='help'>use the `include-coordinated` prop to conditionally display Lat &amp; Lng</template>
-          </form-address>
-          <!-- <form-seo label='SEO DATA' v-model='model.seo' property='seo'></form-seo> -->
-
-          <form-section heading='Dropzone and File'>
-            <form-file-picker
-              v-model='model.file_picker'
-              property='file_picker'
-              src-key='path'
-              btn-text="Choose an example document"
-              :errors='errors'>
-            </form-file-picker>
-
-            <form-file-picker
-              v-model='model.file_picker_2'
-              property='file_picker_2'
-              src-key='path'
-              btn-text="Choose a Vue.js logo"
-              :endpoint='$vfconfig.filesEndpoint("images")'
-              :errors='errors'>
-            </form-file-picker>
-
-            <form-dropzone
-                v-model='model.dropzone'
-                label='File'
-                property='images'
-                type='SOME_MODEL_TYPE'
-                :file-types='$vfconfig.fileTypes.any'
-                :id='model.id'
-                :errors='errors'>
-            </form-dropzone>
-
-            <form-dropzone-button
-                v-model='model.dropzone'
-                label='File'
-                property='images'
-                type='SOME_MODEL_TYPE'
-                :limit='3'
-                :file-types='$vfconfig.fileTypes.any'
-                :id='model.id'
-                :errors='errors'>
-            </form-dropzone-button>
-          </form-section>
-
-          <form-panel>
-            <button class="btn btn-default" @click='showModal = true'>Launch An Example Modal</button>
-            <form-modal @close='showModal = false' v-if='showModal'>
-                <template slot='header'>Reset Your Password</template>
-                <template slot='body'>
-                    <form-text
-                      v-model='model.email'
-                      property='email'
-                      :errors='errors'>
-                    </form-text>
-
-                    <div class="row">
-                      <form-password class='col-md-6'
-                        v-model='model.password'
-                        property='password'
-                        :errors='errors'
-                      />
-                      <form-password
-                        class='col-md-6'
-                        v-model='model.password_confirm'
-                        property='password_confirm'
-                        :errors='errors'
-                      />
-                    </div>
-                </template>
-            </form-modal>
-          </form-panel>
-
-          <form-section heading='Advanced Text Editors'>
-            <form-tinymce label='Tinymce' v-model='model.tinymce' property='tinymce'></form-tinymce>
-            <form-markdown label='Markdown' v-model='model.markdown' property='markdown'></form-markdown>
-          </form-section>
-        </div>
-
-        <div class="col-md-4 h-100 o-scroll">
-            <form-panel>
-              <form-checkbox label='Show All Elements' v-model='showElementsAll' property='showElementsAll'></form-checkbox>
-              <form-checkbox label='Fake Server Response Errors' v-model='showFakeErrors' property='showFakeErrors'></form-checkbox>
-            </form-panel>
-
-            <form-section heading='Validation'>
-              <form-panel>
-                <p>Validation Passes: <code>{{ $validation.passes }}</code> </p>
-                <p>Validation Fails: <code>{{ $validation.fails }}</code> </p>
-              </form-panel>
-
-              <form-panel>
-                <h4>Faling Props</h4>
-                <p v-for='(value, key) in $validation.failing'><code>{{key}}</code></p>
-              </form-panel>
-
-              <form-checkbox label='Show validation registry' v-model='showValidationRegistry' property='showValidationRegistry'></form-checkbox>
-              <form-panel v-if='showValidationRegistry'>
-                <p v-for='(value, key) in $validation.registry'><label>{{ key }}: </label><code>{{value}}</code></p>
-              </form-panel>
-
-              <button class='btn btn-default' :disabled='$validation.fails'>You Can Click Me When Valid</button>
-
-            </form-section>
-
-            <form-section heading='Properties'>
-                <p v-for='(value, key) in model'><b>{{key}}: </b>{{ value }}</p>
-            </form-section>
-        </div>
+        <Main v-model='model' :show='show'></Main>
+        <AsideRight :model='model'>
+          <template slot='toggles'>
+              <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
+              <form-checkbox label='Fake Server Response Errors' v-model='show.showFakeErrors' property='showFakeErrors'></form-checkbox>
+          </template>
+        </AsideRight>
     </div>
   </div>
 </template>
@@ -327,9 +15,14 @@
 <script>
 
 import { ValidationSyncMixin } from 'vue-forms'
+import { AsideRight, Main } from './components'
 
 export default {
   name: 'App',
+  components: {
+    AsideRight,
+    Main
+  },
 
   mixins: [
     ValidationSyncMixin,
@@ -337,26 +30,10 @@ export default {
 
   data() {
     return {
-      inline: false,
-      showModal: false,
-      showElementsAll: true,
-      showFakeErrors: false,
-      showValidationRegistry: false,
-      alertMessage: null,
-      status: 'success',
-      position: 'top',
-
-      options: [
-        {value: "opt1", text: 'Option 1'},
-        {value: "opt2", text: 'Option 2'},
-        {value: "opt3", text: 'Option 3'}
-      ],
-
-      optionsArray: [
-        'Option 1',
-        'Option 2',
-        'Option 3',
-      ],
+      show: {
+        showElementsAll: true,
+        showFakeErrors: false,
+      },
 
       model: {
         id: 12345,
@@ -377,10 +54,13 @@ export default {
         selectize_multiple: [],
         checkbox_group: [],
         checkbox_group_from_array: [],
+        segmented_control_info: 0,
+        segmented_control: 0,
         options_list: [],
 
         radio_select: null,
         radio_select_from_array: null,
+
         tinymce: null,
 
         date: null,
@@ -401,67 +81,6 @@ export default {
       },
     }
   },
-  computed: {
-    console() {
-      return window.console
-    },
-
-    statuses() {
-      return {
-        'success' : 'Success',
-        'info' : 'Info',
-        'warning' : 'Warning',
-        'danger' : 'Danger',
-      }
-    },
-
-    positions() {
-      return {
-        'top' : 'Top',
-        'bottom' : 'Bottom',
-      }
-    },
-
-    messages() {
-        return [
-          'Oops... something went wrong.',
-          'Please call back later.',
-          'Are you sure you wanted to do that?',
-          'Who are you?',
-          'Really?'
-        ]
-    },
-
-    errors() {
-      if (!this.showFakeErrors) return null
-      return {
-          text: ['that text is too long'],
-          text_required: ['text is required here'],
-          email: ['you need a better email address'],
-      }
-    }
-  },
-  methods: {
-    confirm(event, message) {
-      this.$vfalert.confirm(message || this.randomMessage(), this.status).then(()=>{
-        this.confirm(null, `${this.randomMessage()}. We could do this all day, click cancel to break out.`)
-      }).catch(()=>{
-         this.alert(null, "You cancelled loop.")
-      })
-    },
-
-    alert(event, message) {
-      this.$vfalert.alert(message || this.randomMessage(), this.status, { timeout: 3000})
-    },
-
-    toast() {
-      this.$vfalert.toast(this.randomMessage(), this.status, { position: this.position, timeout: 3000})
-    },
-
-    randomMessage() {
-      return _.sample(this.messages)
-    }
-  }
 }
 </script>
 

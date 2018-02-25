@@ -5,7 +5,7 @@
             <div class='checkbox' v-for='(opt, idx) in options'>
                 <label class="control-label" :for="`${vf_uid}-${idx}`">
                     <input type="checkbox"
-                    :name="'checkbox-'+property+'-'+idx"
+                    :name="property"
                     :id="`${vf_uid}-${idx}`"
                     :value="opt.value || idx"
                     v-model='aValue'>
@@ -18,7 +18,7 @@
         <div v-else class='form-group-checkbox'>
             <label v-for='(opt, idx) in options' class="checkbox-inline control-label" :for="`${vf_uid}-${idx}`">
                 <input type="checkbox"
-                :name="'checkbox-'+property+'-'+idx"
+                :name="property"
                 :id="`${vf_uid}-${idx}`"
                 :value="opt.value || idx"
                 v-model='aValue'>

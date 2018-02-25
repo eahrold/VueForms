@@ -1,6 +1,6 @@
 <template>
-    <div class="form-section">
-        <h4 class='section-title'><slot name='heading'>{{ heading }}</slot></h4>
+    <div class="vf-form-section">
+        <h4 class='vf-section-title'><slot name='heading'>{{ heading }}</slot></h4>
         <div class="row">
             <slot></slot>
         </div>
@@ -19,17 +19,16 @@ export default {
 </script>
 
 <style scoped>
-
-.form-section {
+.vf-form-section {
     margin-top: 1em;
 }
 
-.form-section > .row {
+.vf-form-section > .row {
     margin-left: 0;
     margin-right: 0
 }
 
-.form-section .section-title {
+.vf-form-section .vf-section-title {
     width: 100%;
     padding-bottom: 1em;
     border-bottom: 1px solid #eeeeee;

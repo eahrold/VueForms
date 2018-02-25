@@ -1,12 +1,14 @@
 <template>
-    <div class="segmented-control" style="width: 100%">
-        <template v-for='(opt, idx) in options'>
-            <input v-model='aValue' :value='idx' type="radio" :name="'sc-1-'+vf_uid" :id="'sc-1-'+vf_uid+'-'+idx" checked>
-        </template>
+    <div>
+        <div class="segmented-control" :class='`text-${type}`'>
+            <template v-for='(opt, idx) in options'>
+                <input v-model='aValue' :value='idx' type="radio" :name="property" :id="'sc-1-'+vf_uid+'-'+idx">
+            </template>
 
-        <template v-for='(opt, idx) in options'>
-            <label :for="'sc-1-'+vf_uid+'-'+idx" :data-value="opt">{{ opt }}</label>
-        </template>
+            <template v-for='(opt, idx) in options'>
+                <label :for="'sc-1-'+vf_uid+'-'+idx" :data-value="opt">{{ opt }}</label>
+            </template>
+        </div>
     </div>
 </template>
 
@@ -18,16 +20,21 @@ export default {
     mixins: [ core, options ],
 
     props: {
-        color: {
+        type: {
             type: String,
-            default: "#1B5293"
+            default: 'primary'
         }
     },
 
     data () {
         return {
-            aValue: 0,
+            aValue: this.value || 0,
         }
     },
+
 }
 </script>
+
+<style lang='css' scoped>
+@import url('styles/segmented-control.css')
+</style>

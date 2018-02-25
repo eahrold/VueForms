@@ -30,16 +30,19 @@
             v-for='(message, idx) in messages'
             :style='{"z-index": message.zIndex}'
             class="alert alert-dismissable"
-            :class='alertClass(message)'>
+            :class='toastClass(message)'>
           <a href="#" class="close" @click.stop.prevent='dismiss(message, true)' aria-label="close">&times;</a>
-          <span>{{ message.text }}</span>
+          <span v-html='message.text'></span>
           <slot></slot>
         </div>
     </transition-group>
 
     <form-modal class='vf-modal-sm' v-if='alert' @close='closeAlert'>
-        <div slot='body'>{{ alert.message }}</div>
-        <div v-if='alert.callback' slot='footer'>
+        <div slot='body' class='text-center'>
+            <h1 v-if='!!alert.status'><i class="fa fa-3x" :class='alertIconClass' aria-hidden="true"></i></h1>
+            <h4 v-html='alert.message'></h4>
+        </div>
+        <div v-if='alert.callback' class='text-right' slot='footer'>
             <div class="btn btn-danger" @click='alert.callback(false)'>Cancel</div>
             <div class="btn btn-default" @click='alert.callback(true)'>OK</div>
         </div>
@@ -53,7 +56,7 @@
 import _ from 'lodash'
 
 import { vf_uid } from './mixins';
-import { types } from './prototypes/vfalert'
+import { types, statuses } from './prototypes/vfalert'
 
 export default {
     mixins: [ vf_uid ],
@@ -71,7 +74,7 @@ export default {
 
         status: {
             type: String,
-            default: 'success'
+            default: statuses.SUCCESS
         },
 
         dismisses: {
@@ -104,6 +107,24 @@ export default {
     },
 
     computed: {
+        alertIconClass() {
+            let status = statuses.SUCCESS
+            switch(_.get(this.alert, 'status')) {
+                case statuses.SUCCESS:
+                    status='check-circle'
+                    break
+                case statuses.INFO:
+                    status='info-circle'
+                    break
+                case statuses.WARNING:
+                case statuses.DANGER:
+                    status='exclamation-triangle'
+                    break
+                default:
+                    break
+            }
+            return [`fa-${status}`, `text-${this.alert.status}`]
+        }
     },
 
     //----------------------------------------------------------
@@ -153,7 +174,7 @@ export default {
     // Non-Reactive Properties
     //-------------------------------------------------------
     methods: {
-        alertClass(message) {
+        toastClass(message) {
             const status = _.get(message, 'status', this.status)
             const position = _.get(message, 'position', this.position)
             console.log({status, position});
@@ -172,8 +193,11 @@ export default {
         },
 
         onConfirm(message, options, callback) {
+            const { status, position, timeout } = _.isObject(options) ? options : {}
+
             this.alert={
                 message,
+                status,
                 callback:(status)=>{
                     this.alert = null
                     callback(status)
@@ -184,11 +208,13 @@ export default {
 
 
         onAlert(message, options) {
+            const { status, timeout } = _.isObject(options) ? options : {}
+
             clearTimeout(this.alertTimer)
             this.alert={
                 message,
+                status,
             }
-            const timeout = _.get(options, 'timeout');
             if(_.isNumber(timeout)){
                 this.alertTimer = setTimeout(t=>this.closeAlert(),timeout)
             }
