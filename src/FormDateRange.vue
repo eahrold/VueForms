@@ -4,10 +4,8 @@ Date Range Picker Component
 
 Usage:
 <form-daterange
-   :start='start_prop'
-   @start='start_prop = arguments[0]'
-   :end='end_prop'
-   @end='end_prop = arguments[0]'
+   :start.sync='start_prop'
+   :end.sync='end_prop'
    :properties="['start_prop', 'end_prop']"
    label='Some Label'>
 </form-daterange>
@@ -118,8 +116,8 @@ export default {
 
     methods : {
         $_emitDates(start, end) {
-            this.$emit('start', this.$_makeFormattedDate(start));
-            this.$emit('end', this.$_makeFormattedDate(end));
+            this.$emit('update:start', this.$_makeFormattedDate(start));
+            this.$emit('update:end', this.$_makeFormattedDate(end));
         },
 
         load () {
