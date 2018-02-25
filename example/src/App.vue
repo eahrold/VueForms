@@ -7,13 +7,14 @@
  -->
             <form-alert></form-alert>
             <form-panel class="row">
-              <div class="col-md-4">
-                <button class='btn btn-default' @click='toast'>Click To Show Alert</button>
+              <div class="form-group">
+                <button class='btn btn-default' @click='toast'>Click To Toast</button>
+                <button class='btn btn-default' @click='alert'>Click To Alert</button>
                 <button class='btn btn-default' @click='confirm'>Click To Confirm</button>
               </div>
-              <div class="col-md-8">
-                <form-selectize v-model='status' :options='statuses' property='status' label='Alert Status Level'></form-selectize>
-                <form-selectize v-model='position' :options='positions' property='position' label='Position'></form-selectize>
+              <div class="form-group">
+                <form-selectize class="col-md-6" v-model='status' :options='statuses' property='status' label='Status'></form-selectize>
+                <form-selectize class="col-md-6" v-model='position' :options='positions' property='position' label='Position'></form-selectize>
               </div>
             </form-panel>
 
@@ -184,10 +185,8 @@
           </form-date>`
 
           <form-daterange
-            :start='model.start'
-            :end='model.end'
-            @start='model.start = arguments[0]'
-            @end='model.end = arguments[0]'
+            :start.sync='model.start'
+            :end.sync='model.end'
             :properties="['start', 'end']"
             label="Date Range"
             :errors='errors'
@@ -196,10 +195,8 @@
             </form-daterange>
 
           <form-daterange
-            :start='model.start_time'
-            :end='model.end_time'
-            @start='model.start_time = arguments[0]'
-            @end='model.end_time = arguments[0]'
+            :start.sync='model.start_time'
+            :end.sync='model.end_time'
             :properties="['start_time', 'end_time']"
             label="Date Range With Time"
             :time-picker="true"
@@ -429,7 +426,9 @@ export default {
         return [
           'Oops... something went wrong.',
           'Please call back later.',
-          'are you sure you wanted to do that?'
+          'Are you sure you wanted to do that?',
+          'Who are you?',
+          'Really?'
         ]
     },
 
@@ -443,16 +442,20 @@ export default {
     }
   },
   methods: {
-    confirm() {
-      this.$vfalert.confirm(this.randomMessage(), this.status, { position: this.position}).then(()=>{
-        alert("Confirmed")
+    confirm(event, message) {
+      this.$vfalert.confirm(message || this.randomMessage(), this.status).then(()=>{
+        this.confirm(null, `${this.randomMessage()}. We could do this all day, click cancel to break out.`)
       }).catch(()=>{
-        alert("Cancelled")
+         this.alert(null, "You cancelled loop.")
       })
     },
 
+    alert(event, message) {
+      this.$vfalert.alert(message || this.randomMessage(), this.status, { timeout: 3000})
+    },
+
     toast() {
-      this.$vfalert.toast(this.randomMessage(), this.status, { position: this.position})
+      this.$vfalert.toast(this.randomMessage(), this.status, { position: this.position, timeout: 3000})
     },
 
     randomMessage() {
@@ -462,7 +465,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang='css'>
 @import url('bootstrap/dist/css/bootstrap.min.css');
 #app {
   height: 100vh;

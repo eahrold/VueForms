@@ -1,26 +1,31 @@
-<style scoped lang="css">
-@import url('styles/transitions.css')
+<style lang="scss" scoped>
 
 .vf-alert {
     position: fixed;
     right: 2em;
+    top: 0em;
     z-index: 1000;
     transition: all .3s ease;
 }
 
-.vf-alert.top {
-    top: 2em;
+.vf-alert .alert.top {
+    position: fixed;
+    right: 2em;
+    top: 1em;
 }
 
-.vf-alert.bottom {
-    bottom: 2em;
+.vf-alert .alert.bottom {
+    position: fixed;
+    right: 2em;
+    bottom: 1em;
 }
 
+@import url('styles/transitions.css')
 </style>
 
 <template>
-    <div>
-    <transition-group class='vf-alert' :name='animation'>
+    <div class='vf-alert'>
+    <transition-group :name='animation'>
         <div :key='message.hash'
             v-for='(message, idx) in messages'
             :style='{"z-index": message.zIndex}'
@@ -31,13 +36,15 @@
           <slot></slot>
         </div>
     </transition-group>
-    <form-modal class='vf-modal-sm' v-if='alert'>
+
+    <form-modal class='vf-modal-sm' v-if='alert' @close='closeAlert'>
         <div slot='body'>{{ alert.message }}</div>
-        <div slot='footer'>
+        <div v-if='alert.callback' slot='footer'>
             <div class="btn btn-danger" @click='alert.callback(false)'>Cancel</div>
             <div class="btn btn-default" @click='alert.callback(true)'>OK</div>
         </div>
     </form-modal>
+
     </div>
 </template>
 
@@ -92,6 +99,7 @@ export default {
             alert: null,
             _timer: null,
             count: 1000,
+            alertTimer: null,
         }
     },
 
@@ -101,18 +109,21 @@ export default {
     //----------------------------------------------------------
     // Events
     //-------------------------------------------------------
-    mounted() {
+    created() {
+        this.alertTimer = null
+        this.toastTimer = null
+    },
 
+    mounted() {
         if (this.$vfalert && _.isFunction(this.$vfalert.$on)) {
             this.$vfalert.$on(types.ALERT, this.onAlert)
             this.$vfalert.$on(types.TOAST, this.onToast)
             this.$vfalert.$on(types.CONFIRM, this.onConfirm)
-
         }
     },
 
     beforeDestroy() {
-        if (this.$vfalert && _.isFunction(this.$vfalert.$off) ) {
+        if (this.$vfalert && _.isFunction(this.$vfalert.$off)) {
             this.$vfalert.$off(types.ALERT, this.onAlert)
             this.$vfalert.$off(types.TOAST, this.onToast)
             this.$vfalert.$off(types.CONFIRM, this.onConfirm)
@@ -152,6 +163,14 @@ export default {
             ]
         },
 
+        closeAlert() {
+            if(!!this.alert && _.isFunction(this.alert.callback)) {
+                this.alert.callback(false)
+            }
+            this.alert = null
+            clearTimeout(this.alertTimer)
+        },
+
         onConfirm(message, options, callback) {
             this.alert={
                 message,
@@ -160,10 +179,19 @@ export default {
                     callback(status)
                 }
             }
+            return false;
         },
 
 
-        onAlert(text, options) {
+        onAlert(message, options) {
+            clearTimeout(this.alertTimer)
+            this.alert={
+                message,
+            }
+            const timeout = _.get(options, 'timeout');
+            if(_.isNumber(timeout)){
+                this.alertTimer = setTimeout(t=>this.closeAlert(),timeout)
+            }
             return false;
         },
 

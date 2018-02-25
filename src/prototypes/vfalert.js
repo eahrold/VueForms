@@ -8,24 +8,29 @@ export const types = {
 
 const methods = {
     toast(message, status, options) {
-        const { position } = _.isObject(options) ? options : {}
-        this.$emit(types.TOAST, message, {status,  position })
+        const { position, timeout } = _.isObject(options) ? options : {}
+        this.$emit(types.TOAST, message, {status,  position, timeout })
     },
 
-    success(message) {
-        this.$emit(types.ALERT, message, {status: 'success'})
+    success(message, options) {
+        return this.alert(message, 'success', options);
     },
 
-    info(message) {
-        this.$emit(types.ALERT, message, {status: 'success'})
+    info(message, options) {
+        return this.alert(message, 'info', options);
     },
 
-    warn(message) {
-        this.$emit(types.ALERT, message, {status: 'success'})
+    warn(message, options) {
+        return this.alert(message, 'warn', options);
     },
 
-    error() {
-        this.$emit(types.ALERT, message, {status: 'success'})
+    error(message, options) {
+        return this.alert(message, 'error', options);
+    },
+
+    alert(message, status, options) {
+        const { timeout } = _.isObject(options) ? options : {}
+        this.$emit(types.ALERT, message, {status, timeout})
     },
 
     confirm(message, {}) {
