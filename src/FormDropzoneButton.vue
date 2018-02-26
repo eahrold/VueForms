@@ -5,7 +5,7 @@
             <div v-if='id'>
 
                 <div class="row">
-                    <label class="col-xs-12">{{ label }} </label>
+                    <label class="col-xs-12">{{ label }}</label>
                 </div>
 
                 <div class="row">

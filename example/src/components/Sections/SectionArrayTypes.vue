@@ -1,43 +1,10 @@
 <template>
   <form-section heading='Array Types'>
-    <form-selectize
-      v-model='model.selectize_multiple'
-      property='selectize_multiple'
-      :multiple='true'
-      :inline='inline'
-      :options='options'
-      :errors='errors'>
-          <template slot='help'>
-            <b>Current Val: {{ model.selectize_multiple }}</b>
-          </template>
-    </form-selectize>
-
     <form-slider
       v-model='inline'
       property='inline'
       label='Show Checkbox and Radio Selects Inline'>
     </form-slider>
-
-    <form-segmented-control
-      v-model='model.segmented_control_info'
-      :options='optionsArray'
-      property='segmented_control_info'
-      type='success'
-      label='Segmented Control'>
-    </form-segmented-control>
-
-    <form-segmented-control
-      v-model='model.segmented_control'
-      :options='optionsArray'
-      property='segmented_control'
-      label='Segmented Control'>
-    </form-segmented-control>
-
-    <form-checkbox
-      label='Show Checkbox and Radio Selects Inline'
-      v-model='inline'
-      property='inline'>
-    </form-checkbox>
 
     <form-checkbox-group
       v-model='model.checkbox_group'
@@ -66,6 +33,33 @@
         <template slot='help'><b>Current Val: {{ model.radio_select }}</b> </template>
     </form-radio-button>
 
+    <form-segmented-control
+      v-model='model.segmented_control_info'
+      :options='optionsArray'
+      property='segmented_control_info'
+      :type='status'
+      label='Segmented Control'>
+    </form-segmented-control>
+
+    <form-segmented-control
+      v-model='model.segmented_control'
+      :options='optionsArray'
+      property='segmented_control'
+      label='Segmented Control'>
+    </form-segmented-control>
+
+    <form-selectize
+      v-model='model.selectize_multiple'
+      property='selectize_multiple'
+      :multiple='true'
+      :inline='inline'
+      :options='options'
+      :errors='errors'>
+          <template slot='help'>
+            <b>Current Val: {{ model.selectize_multiple }}</b>
+          </template>
+    </form-selectize>
+
     <form-options-list
       v-model='model.options_list'
       property='options_list'
@@ -86,7 +80,8 @@ export default {
     props: {
         options: {},
         optionsArray: {},
-        inline: {}
+        inline: {},
+        status: {},
     }
 }
 </script>

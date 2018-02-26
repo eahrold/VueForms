@@ -135,7 +135,7 @@ export default {
         this.dropzone.destroy();
       }
 
-      console.log("loading dz with max number of files", this.maxNumberOfFiles);
+      // console.log("loading dz with max number of files", this.maxNumberOfFiles);
       if (!this.useCustomDropzoneOptions) {
         this.dropzone = new Dropzone(element, this.__dzOptoions)
       } else {

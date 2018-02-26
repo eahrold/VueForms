@@ -2,8 +2,8 @@
 <div class="col-md-8 h-100 o-scroll">
 
   <SectionCore id='section-core' v-model='model' v-bind='{show, errors,}'/>
-  <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, options, optionsArray, inline}' />
-  <SectionAlert id='section-alert' v-model='model' v-bind='{errors, statuses, positions, messages}' />
+  <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, status, options, optionsArray, inline}' />
+  <SectionAlert id='section-alert' v-model='model' v-bind='{fakeErrors, status, statuses, positions, messages}' />
   <SectionDateTime id='section-date-time' v-model='model' v-bind='{errors,}' />
   <SectionFile id='section-file' v-model='model' v-bind='{errors,}' />
   <SectionFeatures id='section-feature' v-model='model' v-bind='{errors,}' />
@@ -45,6 +45,9 @@ export default {
     show: {
       type: Object,
     },
+
+    statuses: {},
+    status: {},
   },
 
  data() {
@@ -77,15 +80,6 @@ export default {
       return window.console
     },
 
-    statuses() {
-      return {
-        'success' : 'Success',
-        'info' : 'Info',
-        'warning' : 'Warning',
-        'danger' : 'Danger',
-      }
-    },
-
     positions() {
       return {
         'top' : 'Top',
@@ -99,17 +93,34 @@ export default {
           'Please call back later.',
           'Are you sure you wanted to do that?',
           'Who are you?',
-          'Really?'
+          'Really?',
+          this.lipsum
         ]
     },
 
-    errors() {
-      if (!this.show.showFakeErrors) return null
+    lipsum() {
+      return `
+<b>Here's some text</b> It automatically truncates after 1000 characters.
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed congue aliquet facilisis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur sit amet tortor vitae orci elementum bibendum sit amet eget neque. Nullam vestibulum quam cursus urna feugiat blandit. In ac molestie lacus. Etiam tristique libero placerat eros vulputate, non consectetur lorem pulvinar. Suspendisse finibus ex molestie arcu commodo tempor. Fusce elementum leo ac purus finibus mollis. Vivamus tincidunt pellentesque augue quis bibendum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed laoreet sem odio, non rhoncus eros convallis nec. Sed in lacinia tortor. Ut a imperdiet nisi, tincidunt pretium dui. Etiam ornare at velit ut dignissim.
+</p>
+<p>
+Suspendisse eget commodo ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras ut placerat felis. Quisque id metus nisi. Sed et feugiat sem, sed pharetra urna. Curabitur dignissim euismod risus, ac vestibulum ante. Nunc turpis felis, hendrerit quis urna a, porta elementum mi. Nullam libero dui, blandit nec tortor a, cursus tempor nibh. Sed hendrerit nibh nec nisi tempor pellentesque. Praesent tincidunt mollis est id fermentum.
+</p>
+`
+    },
+
+    fakeErrors() {
       return {
           text: ['that text is too long'],
           text_required: ['text is required here'],
           email: ['you need a better email address'],
       }
+    },
+
+    errors() {
+      if (!this.show.showFakeErrors) return null
+      return this.fakeErrors
     }
   },
 

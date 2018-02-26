@@ -1,28 +1,3 @@
-<style lang="scss" scoped>
-
-.vf-alert {
-    position: fixed;
-    right: 2em;
-    top: 0em;
-    z-index: 1000;
-    transition: all .3s ease;
-}
-
-.vf-alert .alert.top {
-    position: fixed;
-    right: 2em;
-    top: 1em;
-}
-
-.vf-alert .alert.bottom {
-    position: fixed;
-    right: 2em;
-    bottom: 1em;
-}
-
-@import url('styles/transitions.css')
-</style>
-
 <template>
     <div class='vf-alert'>
     <transition-group :name='animation'>
@@ -31,7 +6,7 @@
             :style='{"z-index": message.zIndex}'
             class="alert alert-dismissable"
             :class='toastClass(message)'>
-          <a href="#" class="close" @click.stop.prevent='dismiss(message, true)' aria-label="close">&times;</a>
+          <a href="#" class="close" @click.stop.prevent='dismissToast(message, true)' aria-label="close">&times;</a>
           <span v-html='message.text'></span>
           <slot></slot>
         </div>
@@ -41,6 +16,9 @@
         <div slot='body' class='text-center'>
             <h1 v-if='!!alert.status'><i class="fa fa-3x" :class='alertIconClass' aria-hidden="true"></i></h1>
             <h4 v-html='alert.message'></h4>
+            <ul class='list-unstyled text-danger' v-if='flattenedAlertErrors.length'>
+                <li class='list-item' v-for='(error, key) in flattenedAlertErrors'><b>{{ error }}</b></li>
+            </ul>
         </div>
         <div v-if='alert.callback' class='text-right' slot='footer'>
             <div class="btn btn-danger" @click='alert.callback(false)'>Cancel</div>
@@ -59,6 +37,7 @@ import { vf_uid } from './mixins';
 import { types, statuses } from './prototypes/vfalert'
 
 export default {
+
     mixins: [ vf_uid ],
 
     props: {
@@ -100,7 +79,6 @@ export default {
         return {
             messages: [],
             alert: null,
-            _timer: null,
             count: 1000,
             alertTimer: null,
         }
@@ -124,6 +102,15 @@ export default {
                     break
             }
             return [`fa-${status}`, `text-${this.alert.status}`]
+        },
+
+        flattenedAlertErrors() {
+            const errors = _.flatten(_.values(_.get(this.alert, 'errors', {})))
+            const left = errors.splice(5);
+            if(left.length) {
+                return errors.concat(`...and ${left.length} more`)
+            }
+            return errors;
         }
     },
 
@@ -163,7 +150,7 @@ export default {
                 this.messages.unshift(message)
 
                 setTimeout(()=>{
-                    this.dismiss(message)
+                    this.dismissToast(message)
                 }, this.timeout)
             }
         }
@@ -174,16 +161,9 @@ export default {
     // Non-Reactive Properties
     //-------------------------------------------------------
     methods: {
-        toastClass(message) {
-            const status = _.get(message, 'status', this.status)
-            const position = _.get(message, 'position', this.position)
-            console.log({status, position});
-            return [
-                `alert-${status}`,
-                position
-            ]
-        },
-
+        //----------------------------------------------------------
+        // Alert
+        //-------------------------------------------------------
         closeAlert() {
             if(!!this.alert && _.isFunction(this.alert.callback)) {
                 this.alert.callback(false)
@@ -206,19 +186,37 @@ export default {
             return false;
         },
 
+        onAlert(text, options) {
+            const { status, timeout, errors, max } = _.isObject(options) ? options : {}
+            let message = `${text}`.substring(0, max || 997)
 
-        onAlert(message, options) {
-            const { status, timeout } = _.isObject(options) ? options : {}
+            if(text.length !== message.length) {
+                message+='...'
+            }
 
             clearTimeout(this.alertTimer)
             this.alert={
                 message,
                 status,
+                errors,
             }
             if(_.isNumber(timeout)){
                 this.alertTimer = setTimeout(t=>this.closeAlert(),timeout)
             }
             return false;
+        },
+
+        //----------------------------------------------------------
+        // Toast
+        //-------------------------------------------------------
+        toastClass(message) {
+            const status = _.get(message, 'status', this.status)
+            const position = _.get(message, 'position', this.position)
+            console.log({status, position});
+            return [
+                `alert-${status}`,
+                position
+            ]
         },
 
         onToast(text, options) {
@@ -237,13 +235,13 @@ export default {
             if(timeout === false)return;
 
             setTimeout(()=>{
-                this.dismiss(message, true)
+                this.dismissToast(message, true)
             }, timeout || this.timeout)
 
             return false;
         },
 
-        dismiss(message, force) {
+        dismissToast(message, force) {
             if(this.dismisses || force === true) {
                 this.messages = _.filter(this.messages, (msg)=>{return msg.hash != message.hash})
                 if(this.messages.length === 0)this.count=1000 // Reset the count once everything is dismissed
@@ -253,3 +251,28 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+
+.vf-alert {
+    position: fixed;
+    right: 2em;
+    top: 0em;
+    z-index: 1000;
+    transition: all .3s ease;
+}
+
+.vf-alert .alert.top {
+    position: fixed;
+    right: 2em;
+    top: 1em;
+}
+
+.vf-alert .alert.bottom {
+    position: fixed;
+    right: 2em;
+    bottom: 1em;
+}
+
+@import url('styles/transitions.css')
+</style>

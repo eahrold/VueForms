@@ -2,7 +2,7 @@
     <div class="form-group upload">
         <transition name='fade'>
             <div v-if='id'>
-                <label>{{ label }} </label>
+                <label>{{ label }}</label>
                 <vue-dropzone
                     :existing='value'
                     :url="requestEndpoint"

@@ -133,14 +133,13 @@ export default {
     },
 
     methods: {
-
-        dzError(file, response) {
-            console.error('FormDropzone Error:', response);
+        dzError(file, response, xhr) {
+            console.error('FormDropzone Error:', response, xhr);
             this.error = response
 
             this.progress = 0;
-            if (this.$alerter && _.isFunction(this.$alerter.errorResponse)) {
-                this.$alerter.errorResponse(response);
+            if (this.$vfalert && _.isFunction(this.$vfalert.errorResponse)) {
+                this.$vfalert.errorResponse(response, 'There was a problem with with Dropzone', xhr);
             }
 
             this.$emit('error', response);

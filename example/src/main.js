@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 window.$ = window.jQuery = require('jquery')
-require('bootstrap')
+require('bootstrap-sass')
 
 import moment from 'moment'
 window.moment = moment

@@ -1,9 +1,10 @@
 <template>
   <div id='app' class="container-fluid">
     <div class="row h-100">
-        <Main v-model='model' :show='show'></Main>
+        <Main v-model='model' v-bind='{statuses, status, show}'></Main>
         <AsideRight :model='model'>
           <template slot='toggles'>
+              <form-selectize class="col-md-6" v-model='status' :options='statuses' property='status' label='Status'></form-selectize>
               <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
               <form-checkbox label='Fake Server Response Errors' v-model='show.showFakeErrors' property='showFakeErrors'></form-checkbox>
           </template>
@@ -30,6 +31,8 @@ export default {
 
   data() {
     return {
+      status: 'success',
+
       show: {
         showElementsAll: true,
         showFakeErrors: false,
@@ -81,11 +84,24 @@ export default {
       },
     }
   },
+
+  computed: {
+    statuses() {
+      return {
+        'success' : 'Success',
+        'info' : 'Info',
+        'warning' : 'Warning',
+        'danger' : 'Danger',
+      }
+    },
+  }
 }
 </script>
 
-<style lang='css'>
-@import url('bootstrap/dist/css/bootstrap.min.css');
+<style lang='scss'>
+$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+
 #app {
   height: 100vh;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
