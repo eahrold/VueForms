@@ -18,17 +18,18 @@ module.exports = merge(require('./webpack.base'), {
     },
 
     externals: [
-        "bootstrap-daterangepicker",
+        "@tinymce/tinymce-vue",
         "bootstrap-sass",
+        "bootstrap-daterangepicker",
         "bootstrap-select",
         "dropzone",
-        "eonasdan-bootstrap-datetimepicker",
         "fontawesome",
         "jquery",
-        "jquery-mask-plugin",
         "lodash",
         "moment",
-        "vue"
+        "simplemde",
+        "vue",
+        "vue-the-mask"
     ],
 
     plugins: [
