@@ -1,5 +1,5 @@
 <template>
-    <form-modal @close='$emit("close")'>
+    <form-modal @close="$emit('close')">
         <div slot='body' class="row">
             <transition name='fade'>
             <div class='col-md-12 alert alert-danger alert-dismissible text-center' v-if='errorMsg' role='alert'>
@@ -29,7 +29,6 @@
                 </div>
             </div>
             </transition>
-
         </div>
     </form-modal>
 </template>

@@ -3,7 +3,7 @@
     <div class="vf-modal-mask">
       <div class="vf-modal-wrapper">
         <div class="vf-modal-container">
-          <span @click='$emit("close")' class="vf-modal-close close">x</span>
+          <span @click="$emit('close')" class="vf-modal-close close">x</span>
 
           <div v-if='!!$slots.header' class="vf-modal-header clearfix">
             <h4>

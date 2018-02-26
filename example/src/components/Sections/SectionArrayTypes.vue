@@ -41,13 +41,6 @@
       label='Segmented Control'>
     </form-segmented-control>
 
-    <form-segmented-control
-      v-model='model.segmented_control'
-      :options='optionsArray'
-      property='segmented_control'
-      label='Segmented Control'>
-    </form-segmented-control>
-
     <form-selectize
       v-model='model.selectize_multiple'
       property='selectize_multiple'

@@ -48,6 +48,7 @@ export default {
 
     statuses: {},
     status: {},
+    fakeErrors: {},
   },
 
  data() {
@@ -108,14 +109,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed congue aliquet faci
 Suspendisse eget commodo ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras ut placerat felis. Quisque id metus nisi. Sed et feugiat sem, sed pharetra urna. Curabitur dignissim euismod risus, ac vestibulum ante. Nunc turpis felis, hendrerit quis urna a, porta elementum mi. Nullam libero dui, blandit nec tortor a, cursus tempor nibh. Sed hendrerit nibh nec nisi tempor pellentesque. Praesent tincidunt mollis est id fermentum.
 </p>
 `
-    },
-
-    fakeErrors() {
-      return {
-          text: ['that text is too long'],
-          text_required: ['text is required here'],
-          email: ['you need a better email address'],
-      }
     },
 
     errors() {

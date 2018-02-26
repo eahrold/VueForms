@@ -4,11 +4,15 @@
             v-if='showModal'
             v-bind='{srcKey, endpoint, headers}'
             @choose='choose'
-            ></form-file-gallery>
+            @close='close'>
+        </form-file-gallery>
 
         <button class='btn btn-default' @click='open'>{{ btnText }}</button>
-        <span v-if='isImage(this.aValue)'><img class='img-thumbnail selected' style="height: 2.4em" :src="this.aValue"> {{ this.aValue }}</span>
-        <span v-else-if='this.aValue'><i class="fa fa-file-o" aria-hidden="true"></i> {{ this.aValue }}</span>
+        <span v-if='isImage(aValue)'><img class='img-thumbnail selected' style="height: 2.4em" :src="aValue"> {{ aValue }}</span>
+        <span v-else-if='aValue'><i class="fa fa-file-o" aria-hidden="true"></i> {{ aValue }}</span>
+        <transition name='fade'>
+            <a v-if='aValue' @click='aValue = null' class='pull-right text-danger' href="#"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+        </transition>
     </div>
 </template>
 
@@ -69,8 +73,13 @@ export default {
             } else if (_.isString(file)) {
                 this.aValue = file
             }
-            this.showModal = false;
+
+            this.close()
         },
+
+        close() {
+            this.showModal = false;
+        }
     },
 }
 </script>

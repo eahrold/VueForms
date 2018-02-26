@@ -1,12 +1,12 @@
 <template>
   <div id='app' class="container-fluid">
     <div class="row h-100">
-        <Main v-model='model' v-bind='{statuses, status, show}'></Main>
+        <Main v-model='model' v-bind='{statuses, status, show, fakeErrors}'></Main>
         <AsideRight :model='model'>
           <template slot='toggles'>
-              <form-selectize class="col-md-6" v-model='status' :options='statuses' property='status' label='Status'></form-selectize>
+              <form-selectize v-model='status' :options='statuses' property='status' :label='false'></form-selectize>
               <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
-              <form-checkbox label='Fake Server Response Errors' v-model='show.showFakeErrors' property='showFakeErrors'></form-checkbox>
+              <form-checkbox label='Fake Server Response Errors' :value='show.showFakeErrors' @input='toggleFakeErrors' property='showFakeErrors'></form-checkbox>
           </template>
         </AsideRight>
     </div>
@@ -86,6 +86,14 @@ export default {
   },
 
   computed: {
+    fakeErrors() {
+      return {
+          text: ['that text is too long'],
+          text_required: ['text is required here'],
+          email: ['you need a better email address'],
+      }
+    },
+
     statuses() {
       return {
         'success' : 'Success',
@@ -94,6 +102,15 @@ export default {
         'danger' : 'Danger',
       }
     },
+  },
+
+  methods: {
+    toggleFakeErrors(newVal) {
+      this.show.showFakeErrors = newVal;
+      if (newVal) {
+        this.$vfalert.error("The form is invalid", { errors: this.fakeErrors})
+      }
+    }
   }
 }
 </script>
