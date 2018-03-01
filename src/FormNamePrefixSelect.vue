@@ -1,5 +1,5 @@
 <template>
-    <form-selectize placeholder='Choose...' label='Prefix' width='100%' :multiple='false' v-model='aValue' :property='property' :options='prefixes' :errors='errors'></form-selectize>
+    <form-select placeholder='Choose...' label='Prefix' width='100%' :multiple='false' v-model='aValue' :property='property' :options='prefixes' :errors='errors'></form-select>
 </template>
 
 <script>

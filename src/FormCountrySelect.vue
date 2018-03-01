@@ -1,5 +1,5 @@
 <template>
-    <form-selectize
+    <form-select
         v-model='aValue'
         v-bind='{
             property,

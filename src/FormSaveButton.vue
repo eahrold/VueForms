@@ -83,7 +83,7 @@
 
       }
       70% {
-        background: purple;
+        opacity: 0.8;
       }
         100% {
       }

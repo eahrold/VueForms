@@ -1,5 +1,5 @@
 <template>
-    <form-selectize
+    <form-select
         v-model='aValue'
         v-bind='{
             property,
@@ -11,7 +11,7 @@
         }'
         :multiple='false'
         width='100%'>
-    </form-selectize>
+    </form-select>
 </template>
 
 <script>

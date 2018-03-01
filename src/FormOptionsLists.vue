@@ -62,6 +62,11 @@ export default {
             required: false
         },
 
+        describeByKey: {
+            type: String,
+            required: false
+        },
+
         searchable: {
             type: Boolean,
             default: true,
@@ -101,7 +106,7 @@ export default {
 
     mounted() {
         this.aValue = this.value.map( (entry, index) => {
-            return _.assign({}, entry, { order: index+1, fixed: true });
+            return _.assign({}, entry, { order: index+1, fixed: false });
         });
 
         this.aOptions = this.options.map( (entry, index) => {
@@ -129,8 +134,8 @@ export default {
         },
 
         elementDescription(element) {
-            if (this.keyBy) {
-                return _.get(element, this.keyBy, element.id);
+            if (this.describeByKey) {
+                return _.get(element, this.describeByKey, element.id);
             }
             return element.name || element.title || element.slug || element.id
         }

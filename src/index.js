@@ -31,6 +31,7 @@ import FormRadioButton from './FormRadioButton'
 import FormCheckboxGroup from './FormCheckboxGroup'
 import FormSegmentedControl from './FormSegmentedControl'
 import FormOptionsLists from './FormOptionsLists'
+import FormOptionsListsScoped from './FormOptionsListsScoped'
 
 import FormTextarea from './FormTextarea'
 import FormTinymce from './FormTinymce'
@@ -88,6 +89,7 @@ export const VueForms = {
         Vue.component('form-file-picker', FormFilePicker)
 
         Vue.component('form-options-list', FormOptionsLists)
+        Vue.component('form-options-list-scoped', FormOptionsListsScoped)
 
     }
 }
@@ -167,6 +169,7 @@ export {
     FormCheckboxGroup,
     FormSegmentedControl,
     FormOptionsLists,
+    FormOptionsListsScoped,
 
     FormDateRange,
     FormDate,

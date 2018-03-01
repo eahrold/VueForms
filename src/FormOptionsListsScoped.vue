@@ -55,6 +55,11 @@ export default {
             required: false
         },
 
+        describeByKey: {
+            type: String,
+            required: false
+        },
+
         searchable: {
             type: Boolean,
             default: true,
@@ -111,8 +116,8 @@ export default {
         },
 
         elementDescription(element) {
-            if (this.keyBy) {
-                return _.get(element, this.keyBy, element.id);
+            if (this.describeByKey) {
+                return _.get(element, this.describeByKey, element.id);
             }
             return element.name || element.title || element.slug || element.id
         }
