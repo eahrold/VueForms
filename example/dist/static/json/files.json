@@ -1,5 +1,5 @@
 [
-    {"id": 1, "path": "/assets/logo_1.png"}
-    {"id": 2, "path": "/assets/logo_2.png"}
-    {"id": 3, "path": "/assets/logo_3.png"}
+    {"id": 1, "name": "Document 1", "path": "/static/docs/fake.docx"},
+    {"id": 2, "name": "Document 2", "path": "/static/docs/fake.pdf"},
+    {"id": 3, "name": "Document 3", "path": "/static/docs/fake.xls"}
 ]

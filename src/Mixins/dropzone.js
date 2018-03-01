@@ -178,7 +178,13 @@ export default {
             };
 
             if (file.id) {
-                var endpoint = this.base + "/" + file.id;
+                const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload');
+                if (_.isEmpty(base)) {
+                    console.error("[FORM DROPZONE] No base path set.")
+                    return;
+                }
+
+                var endpoint = `${base}/${file.id}`
                 this.$http.delete(endpoint).then(success, error);
             }
         },

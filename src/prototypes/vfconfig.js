@@ -45,6 +45,11 @@ export default new Vue({
     },
 
     methods: {
+        csfrToken() {
+            const token = document.head.querySelector('meta[name="csrf-token"]');
+            if(token)return token.content
+        },
+
         filesEndpoint(key) {
             const files = _.get(this, 'endpoints.files');
             if (_.isObject(files)) {

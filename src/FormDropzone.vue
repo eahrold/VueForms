@@ -14,11 +14,11 @@
                     @success="dzAdded"
                     @removed="dzRemoved">
                 </vue-dropzone>
-                <span class="help-block">{{ dzHelpText }}</span>
-                <span v-if='helpText' class="help-block">{{ helpText }}</span>
+                <small class="help-block form-text">{{ dzHelpText }}</small>
+                <small v-if='helpText' class="help-block form-text">{{ helpText }}</small>
             </div>
             <div v-else>
-                <span class="help-block">File upload is available after initial save.</span>
+                <small class="help-block form-text">File upload is available after initial save.</small>
             </div>
         </transition>
     </div>

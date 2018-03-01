@@ -19,7 +19,7 @@
 
           <div v-if='!hideFooter' class="vf-modal-footer clearfix">
             <slot name="footer">
-              <button class="btn btn-default vf-modal-default-button" @click="$emit('close')">
+              <button class="btn btn-primary vf-modal-default-button" @click="$emit('close')">
                 Close
               </button>
             </slot>

@@ -1,12 +1,15 @@
 <template>
-    <form :id='name' :name='name' :enctype="enctype">
+    <form :id='vf_uid' v-bind='{name, enctype, novalidate}'>
         <input type='hidden' id='_method' name='_method' v-model="method"/>
+        <input v-if='vf_csfrToken' type='hidden' name='_token' :value='vf_csfrToken'>
         <slot></slot>
         <form-save-button v-if='saves' :saving='saving' :is-dirty='isDirty' @save='save'></form-save-button>
     </form>
 </template>
 
 <script>
+import { vf_uid } from './mixins'
+
 export default {
     props: {
         saves: {
@@ -24,6 +27,11 @@ export default {
             required: true
         },
 
+        csfrToken: {
+            type: [String, Boolean],
+            required: false
+        },
+
         method: {
             type: String,
             default: "POST"
@@ -32,6 +40,11 @@ export default {
         multipart: {
             type: Boolean,
             default: false
+        },
+
+        novalidate: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -70,18 +83,11 @@ export default {
     },
 
     computed : {
-        isValid() {
-            const children = this.$children.filter((child)=>{
-                return child.required;
-            })
-
-            const valid = false;
-            for (var i = children.length - 1; i >= 0; i--) {
-                if(!children[i].isValid === false) {
-                    return false
-                }
+        vf_csfrToken() {
+            if ( _.isString(this.csfrToken) ) return this.csfrToken;
+            if ( this.csfrToken !== false && this.$vfconfig) {
+                return this.$vfconfig.csfrToken();
             }
-            return true
         },
 
         enctype () {

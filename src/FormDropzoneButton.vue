@@ -31,8 +31,8 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <span class="help-block">{{ dzHelpText }}</span>
-                        <span v-if='helpText' class="help-block">{{ helpText }}</span>
+                        <small class="help-block form-text">{{ dzHelpText }}</small>
+                        <small v-if='helpText' class="help-block form-text">{{ helpText }}</small>
                     </div>
                 </div>
 
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div v-else>
-                <span class="help-block">File upload is available after initial save.</span>
+                <small class="help-block form-text">File upload is available after initial save.</small>
             </div>
         </transition>
     </div>

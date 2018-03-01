@@ -8,9 +8,11 @@
                 :id='vf_uid'
                 type='text'
                 class="form-control" />
-            <span class="input-group-addon">
-                <span @click='clear' class="glyphicon glyphicon-remove-circle"></span>
-            </span>
+                <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </span>
+                </a>
         </div>
         <form-errors
             v-if='displayErrors'

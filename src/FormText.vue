@@ -8,11 +8,13 @@
                 :name='property'
                 :id="vf_uid"
                 :placeholder='placeholder'
+                :required='required'
+                :disabled='disabled || !enabled'
                 @blur='onBlur'
                 @focus='onFocus'
                 @keydown.tab="autocomplete"
                 class="form-control"
-                :disabled='disabled || !enabled'>
+                >
             <span v-if='lockable' class="input-group-addon">
                 <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
             </span>

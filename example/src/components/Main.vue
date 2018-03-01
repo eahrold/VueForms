@@ -1,8 +1,9 @@
 <template>
 <div class="col-md-8 h-100 o-scroll">
+  <h1>Vue Forms</h1>
 
   <SectionCore id='section-core' v-model='model' v-bind='{show, errors,}'/>
-  <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, status, options, optionsArray, inline}' />
+  <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, status, options, optionsArray}' />
   <SectionAlert id='section-alert' v-model='model' v-bind='{fakeErrors, status, statuses, positions, messages}' />
   <SectionDateTime id='section-date-time' v-model='model' v-bind='{errors,}' />
   <SectionFile id='section-file' v-model='model' v-bind='{errors,}' />
@@ -14,6 +15,8 @@
 <script type="text/javascript">
 
 import _ from 'lodash'
+
+import VueSelect from './VueSelect.vue'
 
 import {
   SectionCore,
@@ -33,7 +36,8 @@ export default {
     SectionDateTime,
     SectionFeatures,
     SectionFile,
-    SectionAdvancedText
+    SectionAdvancedText,
+    VueSelect,
   },
 
   props: {
@@ -53,7 +57,6 @@ export default {
 
  data() {
     return {
-      inline: false,
       showModal: false,
 
       options: [

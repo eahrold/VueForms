@@ -1,11 +1,14 @@
 <template>
     <aside class="col-md-4 h-100 o-scroll">
-        <form-panel>
-            <div class="list-group">
-                <a v-for='(section, idx) in sections' @click.prevent.stop='scrollTo(section)' href="#" class="list-group-item">{{section}}</a>
-            </div>
+        <form-section>
+           <ul class="navbar-nav">
+                <li v-for='(section, idx) in sections'>
+                    <a @click.prevent.stop='scrollTo(section)' href="#" class="nav-item">{{section}}</a>
+                </li>
+            </ul>
+
             <slot name='toggles'></slot>
-        </form-panel>
+        </form-section>
 
         <form-section heading='Validation'>
           <form-panel>

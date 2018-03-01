@@ -41,6 +41,9 @@
       label='Segmented Control'>
     </form-segmented-control>
 
+    <form-select-many v-model='model.options_item' property='options_item' v-bind='{options, errors}'></form-select-many>
+    <form-select-many v-model='model.options_list' :multiple='true' property='options_list' v-bind='{options, errors}'></form-select-many>
+
     <form-selectize
       v-model='model.selectize_multiple'
       property='selectize_multiple'
@@ -73,8 +76,13 @@ export default {
     props: {
         options: {},
         optionsArray: {},
-        inline: {},
         status: {},
+    },
+
+    data() {
+      return {
+        inline: false,
+      }
     }
 }
 </script>

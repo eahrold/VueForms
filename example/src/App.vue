@@ -4,9 +4,9 @@
         <Main v-model='model' v-bind='{statuses, status, show, fakeErrors}'></Main>
         <AsideRight :model='model'>
           <template slot='toggles'>
-              <form-selectize v-model='status' :options='statuses' property='status' :label='false'></form-selectize>
               <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
               <form-checkbox label='Fake Server Response Errors' :value='show.showFakeErrors' @input='toggleFakeErrors' property='showFakeErrors'></form-checkbox>
+              <form-select v-model='status' :options='statuses' property='status' :label='false'></form-select>
           </template>
         </AsideRight>
     </div>
@@ -100,6 +100,7 @@ export default {
         'info' : 'Info',
         'warning' : 'Warning',
         'danger' : 'Danger',
+        'primary' : 'Primary',
       }
     },
   },
@@ -116,16 +117,32 @@ export default {
 </script>
 
 <style lang='scss'>
-$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
-@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+
+/* For Bootstrap 3 */
+// $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+// @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+
+/* For Bootstrap 4 */
+@import '~bootstrap/scss/bootstrap';
+
 
 #app {
   height: 100vh;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  padding: 2em;
+  padding-right: 2em;
+  padding-left: 2em;
+  background: rgba(209, 199, 179, 0.24);
+}
+
+.vf-form-section {
+  background: white;
+  padding: 1em;
+  margin-bottom: 2em;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .h-100 {
@@ -133,6 +150,7 @@ $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
 }
 .o-scroll {
   overflow: scroll;
+  padding-top: 2em;
 }
 
 </style>

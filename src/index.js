@@ -1,4 +1,5 @@
 import {
+    core,
     props,
     errors,
     values,
@@ -23,6 +24,8 @@ import FormSlider from './FormSlider'
 import FormCheckbox from './FormCheckbox'
 
 import FormSelect from './FormSelect'
+import FormSelectMany from './FormSelectMany'
+
 import FormSelectize from './FormSelectize'
 import FormRadioButton from './FormRadioButton'
 import FormCheckboxGroup from './FormCheckboxGroup'
@@ -32,6 +35,7 @@ import FormOptionsLists from './FormOptionsLists'
 import FormTextarea from './FormTextarea'
 import FormTinymce from './FormTinymce'
 import FormMarkdown from './FormMarkdown'
+import FormCkeditor from './FormCkeditor'
 
 import FormDateRange from './FormDateRange'
 import FormDate from './FormDate'
@@ -77,6 +81,8 @@ export const VueForms = {
 
         Vue.component('form-tinymce', FormTinymce)
         Vue.component('form-markdown', FormMarkdown)
+        Vue.component('form-ckeditor', FormCkeditor)
+
         Vue.component('form-dropzone', FormDropzone)
         Vue.component('form-dropzone-button', FormDropzoneButton)
         Vue.component('form-file-picker', FormFilePicker)
@@ -103,6 +109,7 @@ export const VueFormsCore = {
         Vue.component('form-checkbox', FormCheckbox)
 
         Vue.component('form-select', FormSelect)
+        Vue.component('form-select-many', FormSelectMany)
 
         Vue.component('form-radio-button', FormRadioButton)
         Vue.component('form-checkbox-group', FormCheckboxGroup)
@@ -155,6 +162,7 @@ export {
 
     FormSelect,
     FormSelectize,
+    FormSelectMany,
     FormRadioButton,
     FormCheckboxGroup,
     FormSegmentedControl,
@@ -180,6 +188,7 @@ export {
     FormProgressBar,
     FormModal,
 
+    core,
     values,
     props,
     errors,

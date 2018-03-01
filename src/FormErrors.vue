@@ -8,12 +8,12 @@
 </style>
 <template>
 <transition name='fade'>
-    <ul v-if='hasError || hasWarning' class='error list-unstyled'>
+    <ul v-if='hasError || hasWarning' class='error list-unstyled pull-right'>
         <li v-if='hasError' v-for='err in typeErrors'>
-            <span class="help-block">{{ err }}</span>
+            <small class="help-block form-text text-danger">{{ err }}</small>
         </li>
         <li v-if='!hasError && hasWarning'>
-            <span class="help-block">{{ this.warning }}</span>
+            <small class="help-block form-text text-warning">{{ this.warning }}</small>
         </li>
     </ul>
 </transition>

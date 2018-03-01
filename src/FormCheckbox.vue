@@ -1,8 +1,9 @@
 <template>
-    <div class="form-group" :class='formClass'>
+    <div class="form-group form-check" :class='formClass'>
         <div class="checkbox">
-            <label class="control-label" :for="'checkbox-' + property">
+            <label class="control-label form-check-label" :for="'checkbox-' + property">
                 <input
+                    class="form-check-input"
                     v-model='aValue'
                     :id="'checkbox-' + property"
                     type="checkbox">{{ aLabel }}

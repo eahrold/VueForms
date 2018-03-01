@@ -20,9 +20,11 @@ Usage:
                 :id='vf_uid'
                 type="text"
                 :name="label"/>
-            <span @click='clear' class="input-group-addon">
-                <i class="fa fa-times-circle-o" aria-hidden="true"></i>
-            </span>
+            <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </span>
+            </a>
         </div>
         <form-errors v-for='(property, idx) in properties' :key='idx' :errors='errors' :property='property'></form-errors>
         <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
