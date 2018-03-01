@@ -2,8 +2,8 @@
     <form-panel>
         <template slot='heading'>Address</template>
         <div class="row">
-            <form-text class='col-md-12' label='Line 1' v-model='aValue.address_line1' :property='`${property}.address_line1`'></form-text>
-            <form-text class='col-md-12' label='Line 2' v-model='aValue.address_line2' :property='`${property}.address_line2`'></form-text>
+            <form-text class='col-md-12' label='Line 1' v-model='aValue.line_1' :property='`${property}.line_1`'></form-text>
+            <form-text class='col-md-12' label='Line 2' v-model='aValue.line_2' :property='`${property}.line_2`'></form-text>
         </div>
 
         <div class="row">
@@ -73,7 +73,7 @@ export default {
 
     data () {
         return {
-            aValue: { address_line1: '', address_line2: '', city: '', state: '', zip: '', lat: null, lng: null }
+            aValue: { line_1: '', line_2: '', city: '', state: '', postal_code: '', lat: null, lng: null }
         }
     }
 }
