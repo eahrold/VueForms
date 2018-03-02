@@ -50,12 +50,12 @@ export default {
             required: true
         },
 
-        keyBy: {
+        valueKey: {
             type: String,
             required: false
         },
 
-        describeByKey: {
+        textKey: {
             type: String,
             required: false
         },
@@ -116,8 +116,8 @@ export default {
         },
 
         elementDescription(element) {
-            if (this.describeByKey) {
-                return _.get(element, this.describeByKey, element.id);
+            if (this.textKey) {
+                return _.get(element, this.textKey, element.id);
             }
             return element.name || element.title || element.slug || element.id
         }
@@ -141,7 +141,7 @@ export default {
         },
 
         availableOptions() {
-            const opts = _.differenceBy(this.aOptions, this.aValue, 'id');
+            const opts = _.differenceBy(this.aOptions, this.aValue, this.valueKey);
             if (!_.isEmpty(this.optSearch)) {
                 return _.filter(opts, (opt)=>{
                     return JSON.stringify(opt).indexOf(this.optSearch) !== -1;

@@ -22,7 +22,7 @@
         </div>
         <div v-if='alert.callback' class='text-right' slot='footer'>
             <div class="btn btn-danger" @click='alert.callback(false)'>Cancel</div>
-            <div class="btn btn-default" @click='alert.callback(true)'>OK</div>
+            <div class="btn btn-default btn-primary" @click='alert.callback(true)'>OK</div>
         </div>
     </form-modal>
 

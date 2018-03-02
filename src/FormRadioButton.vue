@@ -7,9 +7,9 @@
                     <input type="radio"
                         :name="property"
                         :id="`${vf_uid}-${idx}`"
-                        v-bind:value="opt.value || idx"
+                        :value="opt"
                         v-model='aValue'>
-                    {{ opt.text || opt.name || opt }}
+                    {{ optionDescription(opt) }}
                 </label>
                 <br>
             </div>
@@ -20,9 +20,9 @@
                 <input type="radio"
                 :name="property"
                 :id="`${vf_uid}-${idx}`"
-                :value="opt.value || idx"
+                :value="opt"
                 v-model='aValue'>
-                {{ opt.text || opt.name || opt }}
+                {{ optionDescription(opt) }}
             </label>
         </div>
         <form-errors

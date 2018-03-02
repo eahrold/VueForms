@@ -13,7 +13,7 @@
         <small class="help-text">Current Items</small>
         <vue-draggable class="value-container" :class='valueListClass' v-model="aValue" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
             <transition-group name="no" class="list-group draggable-list" tag="ul">
-                <li class="list-group-item" v-for="element in aValue" :key="element[keyBy]">
+                <li class="list-group-item" v-for="element in aValue" :key="element[valueKey]">
                     <a class='badge' @click.prevent.stop="fixElement(element)"><i :class="elementIcon(element)" aria-hidden="true"></i></a>
                         {{ elementDescription(element) }}
                 </li>
@@ -29,7 +29,7 @@
 
         <vue-draggable class="value-container" :class='optionsListClass' :value="availableOptions" :options="dragOptions" :move="onMove">
             <transition-group name="no" class="list-group draggable-list" tag="ul">
-                <li class="list-group-item" v-for="element in availableOptions" :key="element[keyBy]">
+                <li class="list-group-item" v-for="element in availableOptions" :key="element[valueKey]">
                     <a class='badge' @click.prevent.stop="fixElement(element)"><i :class="elementIcon(element)" aria-hidden="true"></i></a>
                         {{ elementDescription(element) }}
                 </li>
@@ -57,12 +57,12 @@ export default {
             required: false
         },
 
-        keyBy: {
+        textKey: {
             type: String,
             required: false
         },
 
-        describeByKey: {
+        valueKey: {
             type: String,
             required: false
         },
@@ -134,8 +134,8 @@ export default {
         },
 
         elementDescription(element) {
-            if (this.describeByKey) {
-                return _.get(element, this.describeByKey, element.id);
+            if (this.textKey) {
+                return _.get(element, this.textKey, element.id);
             }
             return element.name || element.title || element.slug || element.id
         }
@@ -159,7 +159,7 @@ export default {
         },
 
         availableOptions() {
-            const opts = _.differenceBy(this.aOptions, this.aValue, this.keyBy);
+            const opts = _.differenceBy(this.aOptions, this.aValue, this.valueKey);
             if (!_.isEmpty(this.optSearch)) {
                 return _.filter(opts, (opt)=>{
                     return JSON.stringify(opt).indexOf(this.optSearch) !== -1;

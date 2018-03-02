@@ -6,11 +6,11 @@
                     <a @click.prevent.stop='scrollTo(section)' href="#" class="nav-item">{{section}}</a>
                 </li>
             </ul>
-
             <slot name='toggles'></slot>
         </form-section>
 
         <form-section heading='Validation'>
+
           <form-panel>
             <p>Validation Passes: <code>{{ $validation.passes }}</code> </p>
             <p>Validation Fails: <code>{{ $validation.fails }}</code> </p>
@@ -26,7 +26,14 @@
             <p v-for='(value, key) in $validation.registry'><label>{{ key }}: </label><code>{{value}}</code></p>
           </form-panel>
 
-          <button class='btn btn-default' :disabled='$validation.fails'>You Can Click Me When Valid</button>
+            <form-save-button
+                :deletable='true'
+                :saving='saving'
+                :disabled='$validation.fails'
+                @remove='remove'
+                label='You can click when valid'
+                @save='save'>
+            </form-save-button>
 
         </form-section>
 
@@ -55,6 +62,7 @@ export default {
     //-------------------------------------------------------
     data() {
         return {
+            saving: false,
             showValidationRegistry: false,
         }
     },
@@ -84,6 +92,22 @@ export default {
     // Non-Reactive Properties
     //-------------------------------------------------------
     methods: {
+        save() {
+            this.saving = true;
+            setTimeout(()=>{
+                this.saving = false;
+                this.$vfalert.success("Saved!")
+            },1000)
+        },
+
+        remove() {
+            this.saving = true;
+            setTimeout(()=>{
+                this.saving = false;
+                this.$vfalert.warning("Deleted!")
+            },1000)
+        },
+
         scrollTo(section) {
             window.document
                 .getElementById(`section-${section}`)

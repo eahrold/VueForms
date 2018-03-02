@@ -1,6 +1,9 @@
 <template>
-    <form-panel>
-        <template slot='heading'>Address</template>
+    <form-section heading='Address'>
+        <div v-if="!!$slots['before']" class="row">
+            <slot name='before'></slot>
+        </div>
+
         <div class="row">
             <form-text class='col-md-12' label='Line 1' v-model='aValue.line_1' :property='`${property}.line_1`'></form-text>
             <form-text class='col-md-12' label='Line 2' v-model='aValue.line_2' :property='`${property}.line_2`'></form-text>
@@ -41,8 +44,12 @@
             </form-number>
         </div>
 
+        <div v-if="!!$slots['after']" class="row">
+            <slot name='after'></slot>
+        </div>
+
         <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
-    </form-panel>
+    </form-section>
 </template>
 
 

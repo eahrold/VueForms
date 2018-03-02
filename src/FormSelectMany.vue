@@ -17,7 +17,7 @@
 <div class="form-group" :class='formClass'>
     <label v-if='label' class="control-label">{{ aLabel }}</label>
     <div class="dropdown">
-      <button class="btn btn-light dropdown-toggle" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-light dropdown-toggle btn-block" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ selected }}
       </button>
       <div class="dropdown-menu" :aria-labelledby="vf_uid">
@@ -26,7 +26,7 @@
             <input class='form-control' placeholder="Search..." v-model='search'>
         </div>
         <form class='dropdown-content-wrapper'>
-            <label class='dropdown-item' v-for='(opt, idx) in _filtered' :for='`vf-sel-${vf_uid}-${idx}`' :class='optClass(opt)'>{{ opt.text }}
+            <label class='dropdown-item' v-for='(opt, idx) in _filtered' :for='`vf-sel-${vf_uid}-${idx}`' :class='optClass(opt)'>{{ opt[textKey] }}
                 <input v-if='multiple' class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='checkbox' v-model='aValue' :value='opt'>
                 <input v-else class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='radio' v-model='aValue' :value='opt'>
                 <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true"></i>
@@ -49,7 +49,7 @@ import { core } from './mixins';
 export default {
     mixins: [ core ],
     props: {
-        keyBy: {
+        textKey: {
             type: String,
             default: 'text'
         },
@@ -111,17 +111,17 @@ export default {
 
             const regex = new RegExp(this.search, "i")
             return _.filter(this.options, (opt)=>{
-                return opt[this.keyBy].match(regex)
+                return opt[this.textKey].match(regex)
             })
         },
 
         selected() {
             if (!_.isEmpty(this.aValue)) {
                 if( ! this.multiple) {
-                    let text = _.get(this.aValue, this.keyBy)
+                    let text = _.get(this.aValue, this.textKey)
                     if(text)return text
                 } else {
-                    let take = _.take(this.aValue, this.maxDisplayItems).map((item)=>{return item[this.keyBy]})
+                    let take = _.take(this.aValue, this.maxDisplayItems).map((item)=>{return item[this.textKey]})
                     if(this.aValue.length > take.length) {
                         take.push(`(and ${this.aValue.length - take.length} more...)`)
                     }
@@ -146,7 +146,7 @@ export default {
         isSelected(opt) {
             return this.multiple ?
                 (this.optIndex(opt) !== -1) :
-                opt[this.keyBy] === _.get(this.value, this.keyBy)
+                opt[this.textKey] === _.get(this.value, this.textKey)
 
         },
     },

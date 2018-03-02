@@ -1,23 +1,23 @@
 <template>
     <div class="form-group row">
         <div class="col-md-12 text-right">
-            <div v-if='deletable' @click='remove()'
-                class="btn btn-danger btn-delete"
+            <button v-if='deletable' @click='remove()'
+                class="btn btn-danger btn-delete btn-block"
                 :class="{ 'active': saving }"
                 :disabled="saving">
                 <i v-if='saving' class="fa fa-spinner fa-spin"></i>
                 Delete
-            </div>
+            </button>
 
             <slot name='before'></slot>
 
-            <div @click='save()'
-                class="btn btn-primary btn-save"
+            <button @click='save()'
+                class="btn btn-primary btn-save btn-block"
                 :class="{ 'active': saving, 'btn-dirty' : isDirty }"
-                :disabled="saving">
+                :disabled="saving || disabled">
                 <i v-if='saving' class="fa fa-spinner fa-spin"></i>
                 {{ (saving ? "Saving..." : label) }}
-            </div>
+            </button>
 
             <slot name='after'></slot>
 
@@ -43,6 +43,11 @@
                 default: false
             },
 
+            disabled: {
+                type: Boolean,
+                default: false
+            },
+
             label: {
                 type: String,
                 default: "Save"
@@ -61,7 +66,18 @@
             },
 
             remove() {
-                if (confirm("Are you sure you want to delete this item?")) {
+                const message = "Are you sure you want to delete this item?"
+
+                if(this.$vfalert) {
+                    this.$vfalert.confirm(message).then((status)=>{
+                        this.$emit('remove');
+                    }).catch(()=>{
+                        this.$vfalert.success("Cancelled. The item is safe.")
+                    })
+                    return;
+                }
+
+                if (confirm(message)) {
                     this.$emit('remove');
                 }
             }
@@ -70,22 +86,27 @@
 </script>
 
 <style scoped>
-    .btn.btn-save {
-        min-width: 110px;
-    }
+button:disabled,
+button[disabled]{
+    cursor: not-allowed;
+}
 
-    .btn.btn-dirty {
-      -webkit-animation: pulse 1.5s infinite;
-    }
+.btn.btn-save {
+    min-width: 110px;
+}
 
-    @-webkit-keyframes pulse {
-      0% {
+.btn.btn-dirty {
+  -webkit-animation: pulse 1.5s infinite;
+}
 
-      }
-      70% {
-        opacity: 0.8;
-      }
-        100% {
-      }
-    }
+@-webkit-keyframes pulse {
+  0% {
+
+  }
+  70% {
+    opacity: 0.8;
+  }
+    100% {
+  }
+}
 </style>
