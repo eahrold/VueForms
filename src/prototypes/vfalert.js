@@ -63,8 +63,11 @@ const methods = {
                 return reject()
             })
         })
-
     },
+
+    hasFormAlert() {
+        return !!window.document.getElementById('vf-form-alert-panel');
+    }
 }
 
 

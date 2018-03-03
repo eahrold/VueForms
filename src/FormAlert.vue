@@ -1,5 +1,5 @@
 <template>
-    <div class='vf-alert'>
+    <div id='vf-form-alert-panel' class='vf-alert'>
     <transition-group :name='animation'>
         <div :key='message.hash'
             v-for='(message, idx) in messages'

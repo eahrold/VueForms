@@ -68,7 +68,7 @@
             remove() {
                 const message = "Are you sure you want to delete this item?"
 
-                if(this.$vfalert) {
+                if(this.$vfalert && this.$vfalert.hasFormAlert()) {
                     this.$vfalert.confirm(message).then((status)=>{
                         this.$emit('remove');
                     }).catch(()=>{
