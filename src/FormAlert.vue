@@ -20,9 +20,9 @@
                 <li class='list-item' v-for='(error, key) in flattenedAlertErrors'><b>{{ error }}</b></li>
             </ul>
         </div>
-        <div v-if='alert.callback' class='text-right' slot='footer'>
-            <div class="btn btn-danger" @click='alert.callback(false)'>{{ alert.cancelText || 'Cancel'}}</div>
-            <div class="btn btn-default btn-primary" @click='alert.callback(true)'>{{ alert.confirmText || 'OK'}}</div>
+        <div v-if='alert.promise' class='text-right' slot='footer'>
+            <div class="btn btn-danger" @click='alert.promise.cancel({status: "cancelled"})'>{{ alert.cancelText || 'Cancel'}}</div>
+            <div class="btn btn-default btn-primary" @click='alert.promise.confirm({status: "confirmed"})'>{{ alert.confirmText || 'OK'}}</div>
         </div>
     </form-modal>
 
@@ -173,19 +173,21 @@ export default {
             clearTimeout(this.alertTimer)
         },
 
-        onConfirm(message, options, callback) {
+        onConfirm(message, options, {fulfill, reject}) {
             const { status, confirmText, cancelText } = _.isObject(options) ? options : {}
+            // console.log({message, options, promise})
 
-            this.alert={
-                message,
-                status,
-                confirmText,
-                cancelText,
-                callback:(status)=>{
-                    this.alert = null
-                    callback(status)
+            new Promise((confirm, cancel)=>{
+                 this.alert={
+                    message,
+                    status,
+                    confirmText,
+                    cancelText,
+                    promise: {confirm, cancel}
                 }
-            }
+            }).then(fulfill).catch(reject)
+            .then(()=>{this.alert = null})
+
             return false;
         },
 

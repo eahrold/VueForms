@@ -32,7 +32,7 @@ const methods = {
         return this.alert(message, statuses.INFO, options);
     },
 
-    warn(message, options) {
+    warning(message, options) {
         return this.alert(message, statuses.WARNING, options);
     },
 
@@ -56,12 +56,7 @@ const methods = {
 
     confirm(message, status, options) {
         return new Promise((fulfill, reject)=>{
-            this.$emit(types.CONFIRM, message, {...options, status, }, (aStatus)=>{
-                if (aStatus) {
-                    return fulfill()
-                }
-                return reject()
-            })
+            this.$emit(types.CONFIRM, message, {...options, status, }, {fulfill, reject},)
         })
     },
 
