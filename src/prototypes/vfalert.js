@@ -54,9 +54,9 @@ const methods = {
         return this.alert(message, statuses.DANGER, {errors, });
     },
 
-    confirm(message, status) {
+    confirm(message, status, options) {
         return new Promise((fulfill, reject)=>{
-            this.$emit(types.CONFIRM, message, {status, }, (aStatus)=>{
+            this.$emit(types.CONFIRM, message, {...options, status, }, (aStatus)=>{
                 if (aStatus) {
                     return fulfill()
                 }

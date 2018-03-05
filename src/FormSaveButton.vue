@@ -69,7 +69,11 @@
                 const message = "Are you sure you want to delete this item?"
 
                 if(this.$vfalert && this.$vfalert.hasFormAlert()) {
-                    this.$vfalert.confirm(message).then((status)=>{
+                    let buttons = {
+                        confirmText: "Yes delete this",
+                        cancelText: "No, I pressed the wrong button"
+                    }
+                    this.$vfalert.confirm(message, 'warning', buttons).then((status)=>{
                         this.$emit('remove');
                     }).catch(()=>{
                         this.$vfalert.success("Cancelled. The item is safe.")

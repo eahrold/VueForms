@@ -100,7 +100,13 @@ export const VueForms = {
 export const VueFormsCore = {
     install(Vue, option) {
         vfconfig.configure(option)
-        Vue.prototype.$vfconfig = vfconfig
+
+        Object.defineProperty(Vue.prototype, '$vfconfig', {
+          get () {
+            return vfconfig
+          }
+        })
+
 
         Vue.component('form-text', FormText)
 
@@ -142,8 +148,17 @@ export const VueFormHelpers = {
         Vue.component('form-alert', FormAlert)
         Vue.component('form-progress-bar', FormProgressBar)
 
-        Vue.prototype.$vfalert = vfalert
-        Vue.prototype.$validation = validation
+        Object.defineProperty(Vue.prototype, '$vfalert', {
+          get () {
+            return vfalert
+          }
+        })
+
+        Object.defineProperty(Vue.prototype, '$validation', {
+          get () {
+            return validation
+          }
+        })
     }
 }
 

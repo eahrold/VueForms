@@ -96,7 +96,15 @@ export default {
             this.saving = true;
             setTimeout(()=>{
                 this.saving = false;
-                this.$vfalert.success("Saved!")
+                const buttons = {
+                    cancelText: "Close",
+                    confirmText: "Keep Working on this"
+                }
+                this.$vfalert.confirm("Saved!", 'success', buttons).then(()=>{
+                    this.$vfalert.success("Ok we'll keep working")
+                }).catch(()=>{
+                    this.$vfalert.info("Add nav back logic here...")
+                })
             },1000)
         },
 

@@ -21,8 +21,8 @@
             </ul>
         </div>
         <div v-if='alert.callback' class='text-right' slot='footer'>
-            <div class="btn btn-danger" @click='alert.callback(false)'>Cancel</div>
-            <div class="btn btn-default btn-primary" @click='alert.callback(true)'>OK</div>
+            <div class="btn btn-danger" @click='alert.callback(false)'>{{ alert.cancelText || 'Cancel'}}</div>
+            <div class="btn btn-default btn-primary" @click='alert.callback(true)'>{{ alert.confirmText || 'OK'}}</div>
         </div>
     </form-modal>
 
@@ -35,6 +35,7 @@ import _ from 'lodash'
 
 import { vf_uid } from './mixins';
 import { types, statuses } from './prototypes/vfalert'
+
 
 export default {
 
@@ -173,11 +174,13 @@ export default {
         },
 
         onConfirm(message, options, callback) {
-            const { status, position, timeout } = _.isObject(options) ? options : {}
+            const { status, confirmText, cancelText } = _.isObject(options) ? options : {}
 
             this.alert={
                 message,
                 status,
+                confirmText,
+                cancelText,
                 callback:(status)=>{
                     this.alert = null
                     callback(status)
