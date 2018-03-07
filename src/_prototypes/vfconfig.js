@@ -4,6 +4,7 @@ import mimeTypes from '../data_sources/SupportedMimeTypes'
 
 const DEFAULT_DATE_FORMAT = 'MM/DD/YYYY'
 const DEFAULT_TIME_FORMAT = 'h:mm A'
+const DEFAULT_DATE_VALUE_FORMAT = "Y-M-D HH:mm:ss"
 
 export default new Vue({
     data: {
@@ -12,9 +13,11 @@ export default new Vue({
             upload: null,
             files: null,
         },
+
         format: {
             date: DEFAULT_DATE_FORMAT,
-            time: DEFAULT_TIME_FORMAT
+            time: DEFAULT_TIME_FORMAT,
+            dateValueFormat: null, // Format to return
         },
 
         dropzone: {
@@ -47,7 +50,7 @@ export default new Vue({
     methods: {
         csfrToken() {
             const token = document.head.querySelector('meta[name="csrf-token"]');
-            if(token)return token.content
+            if (token) return token.content
         },
 
         filesEndpoint(key) {
@@ -72,6 +75,7 @@ export default new Vue({
 
             this.format.date = _.get(format, 'date', DEFAULT_DATE_FORMAT)
             this.format.time = _.get(format, 'time', DEFAULT_TIME_FORMAT)
+            this.format.dateValueFormat = _.get(format, 'dateValueFormat', null)
 
             this.endpoints.upload = _.get(endpoints, 'upload', null)
             this.endpoints.files = _.get(endpoints, 'files', null)

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import VueDropzone from '../Vue/VueDropzone'
+import VueDropzone from '../vue/VueDropzone'
 
 export default {
     components: {

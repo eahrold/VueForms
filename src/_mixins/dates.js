@@ -42,6 +42,11 @@ export default {
             type: Boolean,
             default: true
         },
+
+        valueFormat: {
+            type: String,
+            required: false,
+        }
     },
 
     methods: {
@@ -49,9 +54,9 @@ export default {
             if (!moment || !moment.isValid()) return null;
 
             if (this.timePicker) {
-                return moment.format(this.valueFormat)
+                return moment.format(this.dateValueFormat)
             }
-            return moment.startOf('day').format(this.valueFormat)
+            return moment.startOf('day').format(this.dateValueFormat)
         },
 
         safeDate(string) {
@@ -78,6 +83,10 @@ export default {
     },
 
     computed: {
+        dateValueFormat() {
+            return this.valueFormat || _.get(this, '$vfconfig.format.dateValueFormat', null);
+        },
+
         params() {
             var date = this.safeDate(this.value);
             return {
