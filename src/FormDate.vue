@@ -25,9 +25,10 @@
 </template>
 <script>
 
+
 var $ = require('jquery');
-var moment = require('moment');
 require('bootstrap-daterangepicker')
+var moment = require('moment');
 
 import { props, errors, dates, vf_uid } from './mixins';
 

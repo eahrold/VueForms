@@ -50,6 +50,9 @@ let options = {
       //apiKey: "YOUR_API_KEY", // We use this under the hood https://github.com/tinymce/tinymce-vue
       config: tinymceConfig
     },
+    format: {
+        // dateValueFormat: 'll',
+    },
     endpoints: {
         upload: '/example/api/upload',
         files:  {

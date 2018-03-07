@@ -75,6 +75,7 @@ export default {
         start_time: null,
         end_time: null,
 
+        status: 2,
 
         file: null,
         dropzone: null,

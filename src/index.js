@@ -5,6 +5,7 @@ import {
     values,
     dates,
     options,
+    vf_uid,
     formData,
 } from './mixins'
 
@@ -99,7 +100,7 @@ export const VueForms = {
  */
 export const VueFormsCore = {
     install(Vue, option) {
-        vfconfig.configure(option)
+        vfconfig.configure(option || {})
 
         Object.defineProperty(Vue.prototype, '$vfconfig', {
           get () {
@@ -163,6 +164,7 @@ export const VueFormHelpers = {
 }
 
 export { ValidationSyncMixin, ValidationEvents } from './prototypes/validation'
+export { default as VueDropzone } from './vue/VueDropzone'
 
 export {
     FormText,
@@ -212,6 +214,8 @@ export {
     errors,
     dates,
     options,
+    vf_uid,
+
     formData,
 
     validation,
