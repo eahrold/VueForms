@@ -120,11 +120,11 @@ export default {
 <style lang='scss'>
 
 /* For Bootstrap 3 */
-// $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
-// @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
-/* For Bootstrap 4 */
-@import '~bootstrap/scss/bootstrap';
+// /* For Bootstrap 4 */
+// @import '~bootstrap/scss/bootstrap';
 
 
 #app {

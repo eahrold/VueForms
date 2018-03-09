@@ -1,9 +1,9 @@
 <template>
     <aside class="col-md-4 h-100 o-scroll">
         <form-section>
-           <ul class="navbar-nav">
-                <li v-for='(section, idx) in sections'>
-                    <a @click.prevent.stop='scrollTo(section)' href="#" class="nav-item">{{section}}</a>
+           <ul class="list-group">
+                <li class="list-group-item" @click.prevent.stop='scrollTo(section)' v-for='(section, idx) in sections'>
+                    <a  href="javascript:void(0)">{{section}}</a>
                 </li>
             </ul>
             <slot name='toggles'></slot>

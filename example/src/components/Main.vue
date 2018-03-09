@@ -1,14 +1,13 @@
 <template>
 <div class="col-md-8 h-100 o-scroll">
   <h1>Vue Forms</h1>
+  <SectionAdvancedText id='section-advanced-text-editor' v-model='model' v-bind='{errors,}' />
   <SectionFeatures id='section-feature' v-model='model' v-bind='{errors,}' />
-
   <SectionCore id='section-core' v-model='model' v-bind='{show, errors,}'/>
   <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, status, options, optionsArray}' />
   <SectionAlert id='section-alert' v-model='model' v-bind='{fakeErrors, status, statuses, positions, messages}' />
   <SectionDateTime id='section-date-time' v-model='model' v-bind='{errors,}' />
   <SectionFile id='section-file' v-model='model' v-bind='{errors,}' />
-  <SectionAdvancedText id='section-advanced-text-editor' v-model='model' v-bind='{errors,}' />
 </div>
 </template>
 
