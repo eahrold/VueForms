@@ -15,6 +15,11 @@ import {
     vfalert,
 } from './prototypes'
 
+import {
+    dateFormats,
+    fileTypes,
+} from './data_sources'
+
 import FormText from './FormText'
 import FormFile from './FormFile'
 import FormTextMask from './FormTextMask'
@@ -215,9 +220,11 @@ export {
     dates,
     options,
     vf_uid,
-
     formData,
 
     validation,
     vfconfig,
+
+    dateFormats,
+    fileTypes
 }

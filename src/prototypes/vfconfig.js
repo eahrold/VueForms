@@ -4,7 +4,6 @@ import mimeTypes from '../data_sources/SupportedMimeTypes'
 
 const DEFAULT_DATE_FORMAT = 'MM/DD/YYYY'
 const DEFAULT_TIME_FORMAT = 'h:mm A'
-const DEFAULT_DATE_VALUE_FORMAT = "Y-M-D HH:mm:ss"
 
 export default new Vue({
     data: {

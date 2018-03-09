@@ -15,7 +15,7 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
-import { VueForms } from 'vue-forms'
+import { VueForms, dateFormats } from 'vue-forms'
 
 let tinymceConfig = {
     plugins: [
@@ -51,7 +51,7 @@ let options = {
       config: tinymceConfig
     },
     format: {
-        // dateValueFormat: 'll',
+        dateValueFormat: dateFormats.LARAVEL_TIMESTAMP_FORMAT,
     },
     endpoints: {
         upload: '/example/api/upload',

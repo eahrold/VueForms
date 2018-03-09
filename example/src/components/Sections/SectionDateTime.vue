@@ -1,5 +1,13 @@
 <template>
   <form-section heading='Date and Time'>
+
+  <form-text
+    v-model='model.date'
+    property='date'
+    :rules='$validation.rules.date'
+    :required='true'>
+  </form-text>
+
   <form-date
     v-model='model.date'
     property='date'

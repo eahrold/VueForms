@@ -50,13 +50,31 @@ export default {
     },
 
     methods: {
-        $_makeFormattedDate(moment) {
-            if (!moment || !moment.isValid()) return null;
+        $_makeFormattedDate(aMoment) {
+            if (!aMoment || !aMoment.isValid()) return null;
 
             if (this.timePicker) {
-                return moment.format(this.dateValueFormat)
+                return aMoment.format(this.dateValueFormat)
             }
-            return moment.startOf('day').format(this.dateValueFormat)
+            return aMoment.utc().startOf('day').format(this.dateValueFormat)
+        },
+
+        updateStart(aMoment) {
+            if (aMoment.isValid()) {
+                if ( ! this.timePicker) {
+                    aMoment = aMoment.utc().startOf('day')
+                }
+                this.picker.setStartDate(aMoment);
+            }
+        },
+
+        updateEnd(aMoment) {
+            if (aMoment.isValid()) {
+                if ( ! this.timePicker) {
+                    aMoment = aMoment.utc().startOf('day')
+                }
+                this.picker.setEndDate(aMoment);
+            }
         },
 
         safeDate(string) {
@@ -67,22 +85,17 @@ export default {
             return moment({});
         },
 
-        updateStart(string) {
-            var date = moment(string);
-            if (date.isValid()) {
-                this.picker.data('daterangepicker').setStartDate(date);
-            }
-        },
-
-        updateEnd(string) {
-            var date = moment(string);
-            if (date.isValid()) {
-                this.picker.data('daterangepicker').setEndDate(date);
-            }
-        }
     },
 
     computed: {
+        pickerLocaleFormat() {
+            var format = (_.get(this.$vfconfig, 'format.date') || 'MM/DD/YYYY')
+            if(this.timePicker) {
+                format += ` ${_.get(this.$vfconfig, 'format.time') || 'h:mm A' }`
+            }
+            return format
+        },
+
         dateValueFormat() {
             return this.valueFormat || _.get(this, '$vfconfig.format.dateValueFormat', null);
         },

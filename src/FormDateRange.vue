@@ -123,22 +123,18 @@ export default {
         },
 
         load () {
-            var format = 'MM/DD/YYYY'
-            if(this.timePicker) {
-                format += ' h:mm A'
-            }
 
             var options = {
                 locale: {
                     cancelLabel: 'Clear',
-                    format,
+                    format: this.pickerLocaleFormat,
                 },
                 autoUpdateInput: this.autoApply,
                 timePicker: this.timePicker,
                 timePickerIncrement: this.timePickerIncrement,
             }
-            var invalid = false;
 
+            var invalid = false;
             if(this.start) {
                 const startDate = moment(this.start);
                 if (startDate.isValid()) options.startDate = startDate
@@ -170,21 +166,14 @@ export default {
             this.$_emitDates(null, null)
             this.rootPicker.val('');
         },
-
-        updateStart(aMoment) {
-            if( aMoment.isValid()) {
-                this.picker.setStartDate(aMoment)
-            }
-        },
-
-        updateEnd(aMoment) {
-            if (aMoment.isValid()) {
-                this.picker.setEndDate(aMoment)
-            }
-        }
     },
 
     watch : {
+        timePicker(change){
+            this.load()
+            this.$_emitDates(moment(this.start), moment(this.end));
+        },
+
         start (change) {
             this.updateStart(moment(change))
             if( change === null ) {

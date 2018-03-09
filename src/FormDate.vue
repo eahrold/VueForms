@@ -53,15 +53,10 @@ export default {
         },
 
         load () {
-            var format = 'MM/DD/YYYY'
-            if(this.timePicker) {
-                format += ' h:mm A'
-            }
-
             var options = {
                 locale: {
                     cancelLabel: 'Clear',
-                    format,
+                    format: this.pickerLocaleFormat,
                 },
                 autoUpdateInput: this.autoApply,
                 timePicker: this.timePicker,
@@ -95,16 +90,16 @@ export default {
             this.$emit('input', null);
             this.rootPicker.val('');
         },
-
-        updateStart(aMoment) {
-            if( aMoment.isValid()) {
-                this.picker.setStartDate(aMoment)
-            }
-        },
     },
 
     watch : {
-       value (change) {
+        timePicker(){
+            this.load()
+            this.$_emitDates(moment(this.start));
+
+        },
+
+        value (change) {
             this.updateStart(moment(change))
         },
     }

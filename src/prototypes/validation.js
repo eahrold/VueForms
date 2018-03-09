@@ -85,8 +85,6 @@ export default new Vue({
                     return `${lang.MATCH} ${label || "other value"}`
                 }
             },
-
-
         }
     },
 
