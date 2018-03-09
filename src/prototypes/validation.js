@@ -1,5 +1,6 @@
 import Vue from "Vue"
 import _ from 'lodash'
+import moment from 'moment'
 
 const VALIDATION_EVENT_REGISTRY_CHANGED = 'VALIDATION_EVENT_REGISTRY_CHANGED'
 
@@ -31,7 +32,8 @@ const lang = {
     NUMBER: "The value must be a number",
     EMAIL: "The value must be a valid email address",
     URL: "The value must be a valid, secure url (https://)",
-    MATCH: "Does not match"
+    MATCH: "Does not match",
+    DATE: "The value must be a valid date",
 }
 
 export default new Vue({
@@ -68,6 +70,13 @@ export default new Vue({
                 return lang.URL
             },
 
+            date: function(value) {
+                if (moment(value).isValid()) {
+                    return true
+                }
+                return lang.DATE
+            },
+
             match: function(compared, label) {
                 return function(value) {
                     if (compared == value) {
@@ -75,7 +84,9 @@ export default new Vue({
                     }
                     return `${lang.MATCH} ${label || "other value"}`
                 }
-            }
+            },
+
+
         }
     },
 
