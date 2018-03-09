@@ -56,6 +56,79 @@ const imageTemplate = function({path, caption, alt, width, height, align}) {
     return imgTemplate;
 }
 
+class FileUploadAdapter {
+    constructor(loader, {endpoint, headers}) {
+        this.loader = loader
+        this.endpoint = endpoint
+        this.config = { headers, }
+    }
+
+    responseHandler({target}) {
+
+        const success = (target.status === 200) || (target.status === 201)
+        try {
+            const json = JSON.parse(target.responseText)
+            return {
+                success,
+                default: json.data.src
+            }
+        } catch (e) {
+            return {
+                success,
+                message: "There was a problem uploading the file."
+            }
+        }
+    }
+
+    errorHandler({target}) {
+        return {
+            success: false,
+            message: "There was a problem uploading the file."
+        }
+    }
+
+    upload() {
+        const data = new FormData();
+        data.append('file', this.loader.file);
+
+        return new Promise((fulfill, reject) => {
+            const XHR = new XMLHttpRequest();
+
+            // Set up our request
+            XHR.open('POST', this.endpoint);
+
+            _.forOwn(this.config.headers, (value,key)=>{
+                XHR.setRequestHeader(key, value);
+            })
+
+            // Define what happens on successful data submission
+            XHR.addEventListener('load', (event)=>{
+                const response = this.responseHandler(event)
+
+                if(response.success) {
+                    console.log("Fulfilling", response);
+
+                    return fulfill(response)
+                }
+                return reject(response.message)
+            });
+
+            // Define what happens in case of error
+            XHR.addEventListener('error', (event)=>{
+                const response = this.errorHandler(event)
+                reject(response)
+            });
+
+            // Send our FormData object; HTTP headers are set automatically
+            XHR.send(data);
+        });
+    }
+
+    abort() {
+        //
+    }
+}
+
 
 export default {
     components: {
@@ -91,7 +164,7 @@ export default {
             toolbar: [ "undo", "redo", "bold", "italic", "blockquote", "imagetextalternative", "insertimage", "headings", "imagestylefull", "imagestyleside", "link", "numberedlist", "bulletedlist"],
             ckfinder: {
                 // eslint-disable-next-line max-len
-                uploadUrl: 'https://pretend.com'
+                // uploadUrl: 'http://pretend.com'
             },
             image: {
                 // You need to configure the image toolbar too, so it uses the new style buttons.
@@ -114,15 +187,42 @@ export default {
             .create( document.getElementById(this.vf_uid),config)
             .then( editor => {
                 this.editor = editor;
-                console.log(Array.from( editor.ui.componentFactory.names()))
+                // console.log(Array.from( editor.ui.componentFactory.names()))
 
                 editor.document.on('changesDone', (evt, data) => {
                     this.$emit('input', this._last=editor.getData())
                 });
+
+                editor.plugins.get('FileRepository').createAdapter = (loader) => {
+                    const config = {
+                        'headers': this._headers,
+                        'endpoint': this._endpoint
+                    }
+                    return new FileUploadAdapter(loader, config);
+                };
+
             })
             .catch( error => {
                 console.error( error );
             });
+    },
+
+    computed: {
+        _headers() {
+            return this.headers || this.$vfconfig.headers
+        },
+
+        _endpoint() {
+            return this.endpoint || this.$vfconfig.endpoints.upload
+        }
+    },
+
+    watch: {
+        value(newVal) {
+            if(newVal !== this._last) {
+                this.editor.setData(newVal);
+            }
+        }
     },
 
     created() {
@@ -157,18 +257,5 @@ export default {
             this.closeFilePicker()
         },
     },
-
-    computed:{
-
-    },
-
-    watch: {
-        value(newVal) {
-            if(newVal !== this._last) {
-                this.editor.setData(newVal);
-            }
-        }
-    }
-
 }
 </script>
