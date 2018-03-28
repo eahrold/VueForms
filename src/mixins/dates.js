@@ -40,7 +40,7 @@ export default {
 
         showRanges: {
             type: Boolean,
-            default: true
+            default: false
         },
 
         valueFormat: {

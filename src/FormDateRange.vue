@@ -134,6 +134,10 @@ export default {
                 timePickerIncrement: this.timePickerIncrement,
             }
 
+            if(this.showRanges) {
+                options.ranges = this.ranges
+            }
+
             var invalid = false;
             if(this.start) {
                 const startDate = moment(this.start);

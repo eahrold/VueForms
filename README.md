@@ -20,13 +20,15 @@ Vue.use(VueForms, options)
 
 ```vue
 <template>
-  <form-text v-model='model.text'
+  <form-text 
+    v-model='model.text'
     property='text'
     :errors='errors'>
     <template slot='help'>Some Help Text</template>
  </form-text>
 
-  <form-text v-model='model.required_text'
+  <form-text 
+    v-model='model.required_text'
     property='required_text'
     :placeholder='Placeholder text'
     :errors='errors'
@@ -34,7 +36,8 @@ Vue.use(VueForms, options)
     <template slot='help'>Some Required Help Text</template>
   </form-text>
 
-  <form-text v-model='model.email'
+  <form-text 
+    v-model='model.email'
     property='email'
     :errors='errors'
     :rules='[$validation.rules.email]'

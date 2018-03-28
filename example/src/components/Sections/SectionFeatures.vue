@@ -10,29 +10,21 @@
     <!-- <form-seo label='SEO DATA' v-model='model.seo' property='seo'></form-seo> -->
 
     <form-panel>
-      <button class="btn btn-default" @click='showModal = true'>Launch An Example Modal</button>
-      <form-modal @close='showModal = false' v-if='showModal'>
-          <template slot='header'>Reset Your Password</template>
+      <button class="btn btn-default" @click='show.modal = true'>Launch An Example Modal</button>
+      <form-modal @close='show.modal = false' v-if='show.modal'>
+          <template slot='header'>This is a modal</template>
           <template slot='body'>
-              <form-text
-                v-model='model.email'
-                property='email'
-                :errors='errors'>
-              </form-text>
-
-              <div class="row">
-                <form-password class='col-md-6'
-                  v-model='model.password'
-                  property='password'
-                  :errors='errors'
-                />
-                <form-password
-                  class='col-md-6'
-                  v-model='model.password_confirm'
-                  property='password_confirm'
-                  :errors='errors'
-                />
+                <p>Hi, I'm a modal</p>
               </div>
+              <button class="btn btn-default" @click='show.nested = true'>Launch a nested modal</button>
+
+                <form-modal @close='show.nested = false' v-if='show.nested'>
+                    <template slot='header'>Nested Modal</template>
+                    <template slot='body'>
+                      <p>Hi, I'm a nested modal</p>
+                    </template>
+                </form-modal>
+
           </template>
       </form-modal>
     </form-panel>
@@ -50,7 +42,10 @@ export default {
 
     data() {
       return {
-        showModal: false,
+        show: {
+          modal: false,
+          nested: false
+        }
       }
     }
 }

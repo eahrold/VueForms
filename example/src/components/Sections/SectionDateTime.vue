@@ -26,6 +26,7 @@
   <form-daterange
     :start.sync='model.start'
     :end.sync='model.end'
+    :show-ranges='true'
     :properties="['start', 'end']"
     label="Date Range"
     :errors='errors'

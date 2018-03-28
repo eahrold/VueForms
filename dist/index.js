@@ -12397,6 +12397,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     timePickerIncrement: this.timePickerIncrement
                 };
 
+                if (this.showRanges) {
+                    options.ranges = this.ranges;
+                }
+
                 var invalid = false;
                 if (this.start) {
                     var startDate = moment(this.start);
@@ -13198,275 +13202,273 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(30), __webpack_require__(4), __webpack_require__(1), __webpack_require__(47)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(30), __webpack_require__(4), __webpack_require__(1), __webpack_require__(47)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/promise'), require('lodash'), require('./mixins'), require('./prototypes/vfalert'));
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod.exports, global.promise, global.lodash, global.mixins, global.vfalert);
-        global.FormAlert = mod.exports;
-    }
-})(this, function (exports, _promise, _lodash, _mixins, _vfalert) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    var _promise2 = _interopRequireDefault(_promise);
-
-    var _lodash2 = _interopRequireDefault(_lodash);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    exports.default = {
-
-        mixins: [_mixins.vf_uid],
-
-        props: {
-            message: {
-                type: String,
-                required: ""
-            },
-
-            position: {
-                type: String,
-                default: 'top'
-            },
-
-            status: {
-                type: String,
-                default: _vfalert.statuses.SUCCESS
-            },
-
-            dismisses: {
-                type: Boolean,
-                default: true
-            },
-
-            timeout: {
-                type: Number,
-                default: 5000
-            },
-
-            animation: {
-                type: String,
-                default: 'alert-bounce'
-            }
-        },
-
-        //----------------------------------------------------------
-        // Local State
-        //-------------------------------------------------------
-        data: function data() {
-            return {
-                messages: [],
-                alert: null,
-                count: 1000,
-                alertTimer: null
-            };
-        },
-
-
-        computed: {
-            alertIconClass: function alertIconClass() {
-                var status = _vfalert.statuses.SUCCESS;
-                switch (_lodash2.default.get(this.alert, 'status')) {
-                    case _vfalert.statuses.SUCCESS:
-                        status = 'check-circle';
-                        break;
-                    case _vfalert.statuses.INFO:
-                        status = 'info-circle';
-                        break;
-                    case _vfalert.statuses.WARNING:
-                    case _vfalert.statuses.DANGER:
-                        status = 'exclamation-triangle';
-                        break;
-                    default:
-                        break;
-                }
-                return ['fa-' + status, 'text-' + this.alert.status];
-            },
-            flattenedAlertErrors: function flattenedAlertErrors() {
-                var errors = _lodash2.default.flatten(_lodash2.default.values(_lodash2.default.get(this.alert, 'errors', {})));
-                var left = errors.splice(5);
-                if (left.length) {
-                    return errors.concat('...and ' + left.length + ' more');
-                }
-                return errors;
-            }
-        },
-
-        //----------------------------------------------------------
-        // Events
-        //-------------------------------------------------------
-        created: function created() {
-            this.alertTimer = null;
-            this.toastTimer = null;
-        },
-        mounted: function mounted() {
-            if (this.$vfalert && _lodash2.default.isFunction(this.$vfalert.$on)) {
-                this.$vfalert.$on(_vfalert.types.ALERT, this.onAlert);
-                this.$vfalert.$on(_vfalert.types.TOAST, this.onToast);
-                this.$vfalert.$on(_vfalert.types.CONFIRM, this.onConfirm);
-            }
-        },
-        beforeDestroy: function beforeDestroy() {
-            if (this.$vfalert && _lodash2.default.isFunction(this.$vfalert.$off)) {
-                this.$vfalert.$off(_vfalert.types.ALERT, this.onAlert);
-                this.$vfalert.$off(_vfalert.types.TOAST, this.onToast);
-                this.$vfalert.$off(_vfalert.types.CONFIRM, this.onConfirm);
-            }
-        },
-
-
-        watch: {
-            message: function message(aVal) {
-                var _this = this;
-
-                if (!_lodash2.default.isEmpty(aVal)) {
-
-                    var message = {
-                        hash: this.makeVfUuid(),
-                        text: aVal
-                    };
-
-                    this.messages.unshift(message);
-
-                    setTimeout(function () {
-                        _this.dismissToast(message);
-                    }, this.timeout);
-                }
-            }
-        },
-
-        //----------------------------------------------------------
-        // Non-Reactive Properties
-        //-------------------------------------------------------
-        methods: {
-            //----------------------------------------------------------
-            // Alert
-            //-------------------------------------------------------
-            closeAlert: function closeAlert() {
-                if (!!this.alert && _lodash2.default.isFunction(this.alert.callback)) {
-                    this.alert.callback(false);
-                }
-                this.alert = null;
-                clearTimeout(this.alertTimer);
-            },
-            onConfirm: function onConfirm(message, options, _ref) {
-                var _this2 = this;
-
-                var fulfill = _ref.fulfill,
-                    reject = _ref.reject;
-
-                var _ref2 = _lodash2.default.isObject(options) ? options : {},
-                    status = _ref2.status,
-                    confirmText = _ref2.confirmText,
-                    cancelText = _ref2.cancelText;
-                // console.log({message, options, promise})
-
-                new _promise2.default(function (confirm, cancel) {
-                    _this2.alert = {
-                        message: message,
-                        status: status,
-                        confirmText: confirmText,
-                        cancelText: cancelText,
-                        promise: { confirm: confirm, cancel: cancel }
-                    };
-                }).then(fulfill).catch(reject).then(function () {
-                    _this2.alert = null;
-                });
-
-                return false;
-            },
-            onAlert: function onAlert(text, options) {
-                var _this3 = this;
-
-                var _ref3 = _lodash2.default.isObject(options) ? options : {},
-                    status = _ref3.status,
-                    timeout = _ref3.timeout,
-                    errors = _ref3.errors,
-                    max = _ref3.max;
-
-                var message = ('' + text).substring(0, max || 997);
-
-                if (text.length !== message.length) {
-                    message += '...';
-                }
-
-                clearTimeout(this.alertTimer);
-                this.alert = {
-                    message: message,
-                    status: status,
-                    errors: errors
-                };
-                if (_lodash2.default.isNumber(timeout)) {
-                    this.alertTimer = setTimeout(function (t) {
-                        return _this3.closeAlert();
-                    }, timeout);
-                }
-                return false;
-            },
-
-
-            //----------------------------------------------------------
-            // Toast
-            //-------------------------------------------------------
-            toastClass: function toastClass(message) {
-                var status = _lodash2.default.get(message, 'status', this.status);
-                var position = _lodash2.default.get(message, 'position', this.position);
-                console.log({ status: status, position: position });
-                return ['alert-' + status, position];
-            },
-            onToast: function onToast(text, options) {
-                var _this4 = this;
-
-                var zIndex = this.count = this.count + 1;
-
-                var _ref4 = _lodash2.default.isObject(options) ? options : {},
-                    status = _ref4.status,
-                    position = _ref4.position,
-                    timeout = _ref4.timeout;
-
-                var message = {
-                    text: text,
-                    zIndex: zIndex,
-                    hash: this.makeVfUuid(),
-                    status: status || this.status,
-                    position: position || this.position
-                };
-
-                this.messages.unshift(message);
-                if (timeout === false) return;
-
-                setTimeout(function () {
-                    _this4.dismissToast(message, true);
-                }, timeout || this.timeout);
-
-                return false;
-            },
-            dismissToast: function dismissToast(message, force) {
-                if (this.dismisses || force === true) {
-                    this.messages = _lodash2.default.filter(this.messages, function (msg) {
-                        return msg.hash != message.hash;
-                    });
-                    if (this.messages.length === 0) this.count = 1000; // Reset the count once everything is dismissed
-                }
-                this.$emit('dismissed', message.text);
-            }
-        }
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require("babel-runtime/core-js/promise"), require("lodash"), require("./mixins"), require("./prototypes/vfalert"));
+  } else {
+    var mod = {
+      exports: {}
     };
+    factory(mod.exports, global.promise, global.lodash, global.mixins, global.vfalert);
+    global.FormAlert = mod.exports;
+  }
+})(this, function (exports, _promise, _lodash, _mixins, _vfalert) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _promise2 = _interopRequireDefault(_promise);
+
+  var _lodash2 = _interopRequireDefault(_lodash);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = {
+    mixins: [_mixins.vf_uid],
+
+    props: {
+      message: {
+        type: String,
+        required: ""
+      },
+
+      position: {
+        type: String,
+        default: "top"
+      },
+
+      status: {
+        type: String,
+        default: _vfalert.statuses.SUCCESS
+      },
+
+      dismisses: {
+        type: Boolean,
+        default: true
+      },
+
+      timeout: {
+        type: Number,
+        default: 5000
+      },
+
+      animation: {
+        type: String,
+        default: "alert-bounce"
+      }
+    },
+
+    //----------------------------------------------------------
+    // Local State
+    //-------------------------------------------------------
+    data: function data() {
+      return {
+        messages: [],
+        alert: null,
+        count: 1000,
+        alertTimer: null
+      };
+    },
+
+
+    computed: {
+      alertIconClass: function alertIconClass() {
+        var status = _vfalert.statuses.SUCCESS;
+        switch (_lodash2.default.get(this.alert, "status")) {
+          case _vfalert.statuses.SUCCESS:
+            status = "check-circle";
+            break;
+          case _vfalert.statuses.INFO:
+            status = "info-circle";
+            break;
+          case _vfalert.statuses.WARNING:
+          case _vfalert.statuses.DANGER:
+            status = "exclamation-triangle";
+            break;
+          default:
+            break;
+        }
+        return ["fa-" + status, "text-" + this.alert.status];
+      },
+      flattenedAlertErrors: function flattenedAlertErrors() {
+        var errors = _lodash2.default.flatten(_lodash2.default.values(_lodash2.default.get(this.alert, "errors", {})));
+        var left = errors.splice(5);
+        if (left.length) {
+          return errors.concat("...and " + left.length + " more");
+        }
+        return errors;
+      }
+    },
+
+    //----------------------------------------------------------
+    // Events
+    //-------------------------------------------------------
+    created: function created() {
+      this.alertTimer = null;
+      this.toastTimer = null;
+    },
+    mounted: function mounted() {
+      if (this.$vfalert && _lodash2.default.isFunction(this.$vfalert.$on)) {
+        this.$vfalert.$on(_vfalert.types.ALERT, this.onAlert);
+        this.$vfalert.$on(_vfalert.types.TOAST, this.onToast);
+        this.$vfalert.$on(_vfalert.types.CONFIRM, this.onConfirm);
+      }
+    },
+    beforeDestroy: function beforeDestroy() {
+      if (this.$vfalert && _lodash2.default.isFunction(this.$vfalert.$off)) {
+        this.$vfalert.$off(_vfalert.types.ALERT, this.onAlert);
+        this.$vfalert.$off(_vfalert.types.TOAST, this.onToast);
+        this.$vfalert.$off(_vfalert.types.CONFIRM, this.onConfirm);
+      }
+    },
+
+
+    watch: {
+      message: function message(aVal) {
+        var _this = this;
+
+        if (!_lodash2.default.isEmpty(aVal)) {
+          var message = {
+            hash: this.makeVfUuid(),
+            text: aVal
+          };
+
+          this.messages.unshift(message);
+
+          setTimeout(function () {
+            _this.dismissToast(message);
+          }, this.timeout);
+        }
+      }
+    },
+
+    //----------------------------------------------------------
+    // Non-Reactive Properties
+    //-------------------------------------------------------
+    methods: {
+      //----------------------------------------------------------
+      // Alert
+      //-------------------------------------------------------
+      closeAlert: function closeAlert() {
+        if (!!this.alert && _lodash2.default.isFunction(this.alert.callback)) {
+          this.alert.callback(false);
+        }
+        this.alert = null;
+        clearTimeout(this.alertTimer);
+      },
+      onConfirm: function onConfirm(message, options, _ref) {
+        var _this2 = this;
+
+        var fulfill = _ref.fulfill,
+            reject = _ref.reject;
+
+        var _ref2 = _lodash2.default.isObject(options) ? options : {},
+            status = _ref2.status,
+            confirmText = _ref2.confirmText,
+            cancelText = _ref2.cancelText;
+        // console.log({message, options, promise})
+
+        new _promise2.default(function (confirm, cancel) {
+          _this2.alert = {
+            message: message,
+            status: status,
+            confirmText: confirmText,
+            cancelText: cancelText,
+            promise: { confirm: confirm, cancel: cancel }
+          };
+        }).then(fulfill).catch(reject).then(function () {
+          _this2.alert = null;
+        });
+
+        return false;
+      },
+      onAlert: function onAlert(text, options) {
+        var _this3 = this;
+
+        var _ref3 = _lodash2.default.isObject(options) ? options : {},
+            status = _ref3.status,
+            timeout = _ref3.timeout,
+            errors = _ref3.errors,
+            max = _ref3.max;
+
+        var message = ("" + text).substring(0, max || 997);
+
+        if (text.length !== message.length) {
+          message += "...";
+        }
+
+        clearTimeout(this.alertTimer);
+        this.alert = {
+          message: message,
+          status: status,
+          errors: errors
+        };
+        if (_lodash2.default.isNumber(timeout)) {
+          this.alertTimer = setTimeout(function (t) {
+            return _this3.closeAlert();
+          }, timeout);
+        }
+        return false;
+      },
+
+
+      //----------------------------------------------------------
+      // Toast
+      //-------------------------------------------------------
+      toastClass: function toastClass(message) {
+        var status = _lodash2.default.get(message, "status", this.status);
+        var position = _lodash2.default.get(message, "position", this.position);
+        console.log({ status: status, position: position });
+        return ["alert-" + status, position];
+      },
+      onToast: function onToast(text, options) {
+        var _this4 = this;
+
+        var zIndex = this.count = this.count + 1;
+
+        var _ref4 = _lodash2.default.isObject(options) ? options : {},
+            status = _ref4.status,
+            position = _ref4.position,
+            timeout = _ref4.timeout;
+
+        var message = {
+          text: text,
+          zIndex: zIndex,
+          hash: this.makeVfUuid(),
+          status: status || this.status,
+          position: position || this.position
+        };
+
+        this.messages.unshift(message);
+        if (timeout === false) return;
+
+        setTimeout(function () {
+          _this4.dismissToast(message, true);
+        }, timeout || this.timeout);
+
+        return false;
+      },
+      dismissToast: function dismissToast(message, force) {
+        if (this.dismisses || force === true) {
+          this.messages = _lodash2.default.filter(this.messages, function (msg) {
+            return msg.hash != message.hash;
+          });
+          if (this.messages.length === 0) this.count = 1000; // Reset the count once everything is dismissed
+        }
+        this.$emit("dismissed", message.text);
+      }
+    }
+  };
 });
 
 /***/ }),
@@ -14687,7 +14689,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             default: true
         }), (0, _defineProperty3.default)(_props, 'showRanges', {
             type: Boolean,
-            default: true
+            default: false
         }), (0, _defineProperty3.default)(_props, 'valueFormat', {
             type: String,
             required: false
@@ -19748,7 +19750,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDateRange_vue__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDateRange_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDateRange_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDateRange_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDateRange_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a65093b0_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormDateRange_vue__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_260aeda2_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormDateRange_vue__ = __webpack_require__(240);
 function injectStyle (ssrContext) {
   __webpack_require__(238)
 }
@@ -19768,7 +19770,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormDateRange_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a65093b0_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormDateRange_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_260aeda2_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormDateRange_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -19789,7 +19791,7 @@ var content = __webpack_require__(239);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("581af064", content, true, {});
+var update = __webpack_require__(3)("229731be", content, true, {});
 
 /***/ }),
 /* 239 */
@@ -20566,7 +20568,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a1532152_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_41ded83e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__ = __webpack_require__(279);
 function injectStyle (ssrContext) {
   __webpack_require__(277)
 }
@@ -20581,12 +20583,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-a1532152"
+var __vue_scopeId__ = "data-v-41ded83e"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a1532152_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_41ded83e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -20607,7 +20609,7 @@ var content = __webpack_require__(278);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("35d3e4cb", content, true, {});
+var update = __webpack_require__(3)("6b120d76", content, true, {});
 
 /***/ }),
 /* 278 */
@@ -20618,7 +20620,7 @@ exports = module.exports = __webpack_require__(2)(false);
 exports.i(__webpack_require__(81), "");
 
 // module
-exports.push([module.i, ".vf-alert[data-v-a1532152]{position:fixed;right:2em;top:0;z-index:1000;transition:all .3s ease}.vf-alert .alert.top[data-v-a1532152]{position:fixed;right:2em;top:1em}.vf-alert .alert.bottom[data-v-a1532152]{position:fixed;right:2em;bottom:1em}", ""]);
+exports.push([module.i, ".vf-alert[data-v-41ded83e]{position:fixed;right:2em;top:0;z-index:1000;transition:all .3s ease}.vf-alert .alert.top[data-v-41ded83e]{position:fixed;right:2em;top:1em}.vf-alert .alert.bottom[data-v-41ded83e]{position:fixed;right:2em;bottom:1em}", ""]);
 
 // exports
 
@@ -20708,7 +20710,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".vf-modal-mask{position:fixed;z-index:2000;top:0;left:0;bottom:0;right:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);display:table;transition:opacity .3s ease;overflow:scroll}.vf-modal-mask.vf-modal-rounded>.vf-modal-wrapper>.vf-modal-container{border-radius:3em}.vf-modal-mask.vf-modal-large>.vf-modal-wrapper>.vf-modal-container{width:90%;margin-left:5%;margin-right:5%}.vf-modal-mask.vf-modal-small>.vf-modal-wrapper>.vf-modal-container{width:60%;margin-left:20%;margin-right:20%}.vf-modal-wrapper{display:block;position:relative;height:100%;overflow:scroll}.vf-modal-container{position:relative;width:80%;margin:5% 10%;padding:20px 30px;background-color:#fff;border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.33);transition:all .3s ease}.vf-modal-sm .vf-modal-container{width:60%;margin-left:auto;margin-right:auto}.vf-modal-close{z-index:2;cursor:pointer}.vf-modal-header h3{margin-top:0;color:#42b983}.vf-modal-body{margin:20px 0}.vf-modal-default-button{float:right}.vf-modal-enter,.vf-modal-leave-active{opacity:0}.vf-modal-enter .vf-modal-container,.vf-modal-leave-active .vf-modal-container{-webkit-transform:scale(1.1);transform:scale(1.1)}", ""]);
+exports.push([module.i, ".vf-modal-mask{position:fixed;z-index:2000;top:0;left:0;bottom:0;right:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);display:block;transition:opacity .3s ease;overflow:scroll}.vf-modal-mask.vf-modal-rounded>.vf-modal-wrapper>.vf-modal-container{border-radius:3em}.vf-modal-mask.vf-modal-large>.vf-modal-wrapper>.vf-modal-container{width:90%;margin-left:5%;margin-right:5%}.vf-modal-mask.vf-modal-small>.vf-modal-wrapper>.vf-modal-container{width:60%;margin-left:20%;margin-right:20%}.vf-modal-wrapper{display:block;position:relative;height:100%;overflow:scroll}.vf-modal-container{position:relative;width:80%;margin:5% 10%;padding:20px 30px;background-color:#fff;border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.33);transition:all .3s ease}.vf-modal-sm .vf-modal-container{width:60%;margin-left:auto;margin-right:auto}.vf-modal-close{z-index:2;cursor:pointer}.vf-modal-header h3{margin-top:0;color:#42b983}.vf-modal-body{margin:20px 0}.vf-modal-default-button{float:right}.vf-modal-enter,.vf-modal-leave-active{opacity:0}.vf-modal-enter .vf-modal-container,.vf-modal-leave-active .vf-modal-container{-webkit-transform:scale(1.1);transform:scale(1.1)}", ""]);
 
 // exports
 
