@@ -16,7 +16,7 @@
                 :class="{ 'active': saving, 'btn-dirty' : isDirty }"
                 :disabled="saving || disabled">
                 <i v-if='saving' class="fa fa-spinner fa-spin"></i>
-                {{ (saving ? "Saving..." : label) }}
+                {{ (saving ? altLabel : label) }}
             </button>
 
             <slot name='after'></slot>
@@ -51,6 +51,31 @@
             label: {
                 type: String,
                 default: "Save"
+            },
+
+            altLabel: {
+                type: String,
+                default: "Saving..."
+            },
+
+            confirmRemove: {
+                type: Boolean,
+                default: true
+            },
+
+            removeMessage: {
+                type: String,
+                default: "Are you sure you want to delete this item?",
+            },
+
+            removeConfirmText: {
+                type: String,
+                default: "Yes delete this",
+            },
+
+            removeCancelText: {
+                type: String,
+                default: "No, I pressed the wrong button",
             }
         },
 
@@ -66,12 +91,18 @@
             },
 
             remove() {
-                const message = "Are you sure you want to delete this item?"
+                if(this.confirmRemove === false) {
+                    return this.$emit('remove');
+                }
+
+                const message = this.removeMessage
+                const confirmText = this.removeConfirmText
+                const cancelText = this.removeCancelText
 
                 if(this.$vfalert && this.$vfalert.hasFormAlert()) {
                     let buttons = {
-                        confirmText: "Yes delete this",
-                        cancelText: "No, I pressed the wrong button"
+                        confirmText,
+                        cancelText
                     }
                     this.$vfalert.confirm(message, 'warning', buttons).then((status)=>{
                         this.$emit('remove');
