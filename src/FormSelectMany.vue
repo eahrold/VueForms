@@ -1,4 +1,8 @@
 <style scoped lang="scss">
+.dropdown-menu {
+    width: 100%;
+}
+
 .dropdown-toggle {
     min-width: 208px;
     max-width: 100%;
@@ -11,26 +15,69 @@
     max-height: 50vh;
     overflow-y: scroll;
 }
+
+.dropdown-item {
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+
+    .fa-check.pull-right {
+        float: right
+    }
+
+    &:hover {
+        background-color: darkgreen;
+
+        > label {
+            color: white !important;
+
+            > span > i.fa-check {
+                color: white !important;
+            }
+        }
+
+        &.selected {
+            background-color: darkred;
+        }
+    }
+
+    > label {
+        width: 100%;
+    }
+}
+
+.form-group.search {
+    padding: 5px;
+}
+
 </style>
 
 <template>
 <div class="form-group" :class='formClass'>
     <label v-if='label' class="control-label">{{ aLabel }}</label>
     <div class="dropdown">
-      <button class="btn btn-light dropdown-toggle btn-block" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-outline-secondary btn-default dropdown-toggle btn-block" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ selected }}
+        <span class="bs-caret pull-right"><span class="caret"></span></span>
       </button>
+
       <div class="dropdown-menu" :aria-labelledby="vf_uid">
 
-        <div class="form-group px-1">
+        <div class="form-group search px-1">
             <input class='form-control' placeholder="Search..." v-model='search'>
         </div>
         <form class='dropdown-content-wrapper'>
-            <label class='dropdown-item' v-for='(opt, idx) in _filtered' :for='`vf-sel-${vf_uid}-${idx}`' :class='optClass(opt)'>{{ opt[textKey] }}
+            <div class='dropdown-item' v-for='(opt, idx) in _filtered' :class='optItemClass(opt)'>
+            <label :for='`vf-sel-${vf_uid}-${idx}`' :class='optLabelClass(opt)'>
+                <span>{{ opt[textKey] }} <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true">&#x2714;</i></span>
                 <input v-if='multiple' class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='checkbox' v-model='aValue' :value='opt'>
                 <input v-else class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='radio' v-model='aValue' :value='opt'>
-                <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true"></i>
             </label>
+            </div>
         </form>
       </div>
     </div>
@@ -133,9 +180,15 @@ export default {
     },
 
     methods: {
-        optClass(opt) {
+        optLabelClass(opt) {
             return {
                 [this.hilightClass] : this.isSelected(opt)
+            }
+        },
+
+        optItemClass(opt) {
+            return {
+                'selected' : this.isSelected(opt)
             }
         },
 

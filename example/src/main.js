@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 window.$ = window.jQuery = require('jquery')
-// require('bootstrap')
+require('bootstrap')
 require('bootstrap-sass')
 
 import moment from 'moment'
@@ -15,7 +15,9 @@ import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
+
 import { VueForms, dateFormats } from 'vue-forms'
+
 
 let tinymceConfig = {
     plugins: [

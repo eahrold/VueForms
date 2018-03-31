@@ -8,7 +8,6 @@
 
     <form-select-many
       label='Select Many'
-      class='col-md-6'
       v-model='model.checkbox_group'
       :multiple='true'
       property='checkbox_group'
@@ -44,7 +43,6 @@
 
     <form-select-many
       label='Select One'
-      class='col-md-6'
       v-model='model.radio_select'
       property='radio_select'
       v-bind='{options, errors}'>
