@@ -36,18 +36,27 @@
                 @remove='remove'
                 @save='save'>
             </form-save-button>
+        </form-section>
 
-            <label>Local Validation</label>
+        <form-section heading='Local Validation'>
+            <form-text
+              label="Stand Alone Validation"
+              v-model='model.text_required_local'
+              :validation='validation'
+              :required='true'
+              property='text_required_local'>
+                <template slot='help'>
+                  (Local) Validator Status <code>{{ `${validation.getStatus('text_required_local')}` }}</code>
+                </template>
+            </form-text>
+
             <form-save-button
-                :deletable='true'
                 :saving='saving'
-                :removing='removing'
                 :disabled='validation.fails'
                 label='You can click when valid'
                 @remove='remove'
                 @save='save'>
             </form-save-button>
-
         </form-section>
 
         <form-section heading='Properties'>

@@ -20,18 +20,6 @@
         </template>
     </form-text>
 
-    <form-text
-      label="Stand Alone Validation"
-      v-model='model.text_required_local'
-      :validation='validation'
-      :required='true'
-      property='text_required_local'
-      :errors='errors'>
-        <template slot='help'>
-          <b>[Current Val: {{ `${model.text_required_local}` }}]</b>
-          (Local) Validator Status <code>{{ `${validation.getStatus('text_required_local')}` }}</code>
-        </template>
-    </form-text>
 
     <form-text
       v-model='model.text_prepopulated'
@@ -106,10 +94,11 @@
 <script type="text/javascript">
 
 import _ from 'lodash'
-import { section } from './mixins'
+import { section} from './mixins'
+import { ValidationSyncMixin } from 'vue-forms'
 
 export default {
-    mixins: [ section ],
+    mixins: [ section, ValidationSyncMixin ],
     props: {
         validation:{},
         show: {

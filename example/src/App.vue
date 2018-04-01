@@ -15,10 +15,10 @@
 
 <script>
 
-import { ValidationSyncMixin, Validator } from 'vue-forms'
+import { ValidationSyncMixin, ValidatorStore } from 'vue-forms'
 import { AsideRight, Main } from './components'
 
-const validation = new Validator();
+const validation = new ValidatorStore();
 
 export default {
   name: 'App',

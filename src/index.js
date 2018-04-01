@@ -12,8 +12,8 @@ import {
 import {
     vfalert,
     vfconfig,
-    validation,
-    Validator,
+    ValidatorStore,
+    ValidationSyncMixin,
 } from './prototypes'
 
 import {
@@ -155,21 +155,30 @@ export const VueFormHelpers = {
         Vue.component('form-alert', FormAlert)
         Vue.component('form-progress-bar', FormProgressBar)
 
+        const validator = new ValidatorStore();
+
+        Vue.mixin({
+            data () {
+                return {
+                    VueForms_ValidatorStore: validator
+                }
+            }
+        })
+
+        Object.defineProperty(Vue.prototype, '$validation', {
+            get () {
+                return this.$root.VueForms_ValidatorStore
+            }
+        })
+
         Object.defineProperty(Vue.prototype, '$vfalert', {
           get () {
             return vfalert
           }
         })
-
-        Object.defineProperty(Vue.prototype, '$validation', {
-          get () {
-            return validation
-          }
-        })
     }
 }
 
-export { ValidationSyncMixin, ValidationEvents } from './prototypes/validation'
 export { default as VueDropzone } from './vue/VueDropzone'
 
 export {
@@ -223,8 +232,8 @@ export {
     vf_uid,
     formData,
 
-    validation,
-    Validator,
+    ValidatorStore,
+    ValidationSyncMixin,
 
     vfconfig,
     dateFormats,
