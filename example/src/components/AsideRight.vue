@@ -63,6 +63,7 @@ export default {
     data() {
         return {
             saving: false,
+            removing: false,
             showValidationRegistry: false,
         }
     },
@@ -109,9 +110,9 @@ export default {
         },
 
         remove() {
-            this.saving = true;
+            this.removing = true;
             setTimeout(()=>{
-                this.saving = false;
+                this.removing = false;
                 this.$vfalert.warning("Deleted!")
             },1000)
         },

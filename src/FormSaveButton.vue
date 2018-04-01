@@ -4,9 +4,9 @@
             <button v-if='deletable' @click='remove()'
                 class="btn btn-danger btn-delete btn-block"
                 :class="{ 'active': saving }"
-                :disabled="saving">
-                <i v-if='saving' class="fa fa-spinner fa-spin"></i>
-                Delete
+                :disabled="saving || removing">
+                <i v-if='removing' class="fa fa-spinner fa-spin"></i>
+                {{ (removing ? altRemoveLabel : removeLabel) }}
             </button>
 
             <slot name='before'></slot>
@@ -14,7 +14,7 @@
             <button @click='save()'
                 class="btn btn-primary btn-save btn-block"
                 :class="{ 'active': saving, 'btn-dirty' : isDirty }"
-                :disabled="saving || disabled">
+                :disabled="saving || removing || disabled">
                 <i v-if='saving' class="fa fa-spinner fa-spin"></i>
                 {{ (saving ? altLabel : label) }}
             </button>
@@ -48,6 +48,11 @@
                 default: false
             },
 
+            removing: {
+                type: Boolean,
+                default: false
+            },
+
             label: {
                 type: String,
                 default: "Save"
@@ -56,6 +61,16 @@
             altLabel: {
                 type: String,
                 default: "Saving..."
+            },
+
+            removeLabel: {
+                type: String,
+                default: "Delete"
+            },
+
+            altRemoveLabel: {
+                type: String,
+                default: "Deleting..."
             },
 
             confirmRemove: {
