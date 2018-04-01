@@ -10,9 +10,10 @@ import {
 } from './mixins'
 
 import {
-    validation,
-    vfconfig,
     vfalert,
+    vfconfig,
+    validation,
+    Validator,
 } from './prototypes'
 
 import {
@@ -223,8 +224,9 @@ export {
     formData,
 
     validation,
-    vfconfig,
+    Validator,
 
+    vfconfig,
     dateFormats,
     fileTypes
 }

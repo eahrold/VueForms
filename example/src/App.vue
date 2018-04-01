@@ -1,8 +1,8 @@
 <template>
   <div id='app' class="container-fluid">
     <div class="row h-100">
-        <Main v-model='model' v-bind='{statuses, status, show, fakeErrors}'></Main>
-        <AsideRight :model='model'>
+        <Main v-model='model' v-bind='{statuses, status, show, fakeErrors, validation}'></Main>
+        <AsideRight v-bind="{model, validation}">
           <template slot='toggles'>
               <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
               <form-checkbox label='Fake Server Response Errors' :value='show.showFakeErrors' @input='toggleFakeErrors' property='showFakeErrors'></form-checkbox>
@@ -15,8 +15,10 @@
 
 <script>
 
-import { ValidationSyncMixin } from 'vue-forms'
+import { ValidationSyncMixin, Validator } from 'vue-forms'
 import { AsideRight, Main } from './components'
+
+const validation = new Validator();
 
 export default {
   name: 'App',
@@ -31,8 +33,8 @@ export default {
 
   data() {
     return {
+      validation,
       status: 'success',
-
       show: {
         showElementsAll: true,
         showFakeErrors: false,
@@ -42,6 +44,8 @@ export default {
         id: 12345,
         text: null,
         text_required: null,
+        text_required_local: null,
+
         text_prepopulated: "Here to start",
         email: null,
         url: null,

@@ -26,12 +26,25 @@
             <p v-for='(value, key) in $validation.registry'><label>{{ key }}: </label><code>{{value}}</code></p>
           </form-panel>
 
+            <label>Global Validation</label>
             <form-save-button
                 :deletable='true'
                 :saving='saving'
+                :removing='removing'
                 :disabled='$validation.fails'
-                @remove='remove'
                 label='You can click when valid'
+                @remove='remove'
+                @save='save'>
+            </form-save-button>
+
+            <label>Local Validation</label>
+            <form-save-button
+                :deletable='true'
+                :saving='saving'
+                :removing='removing'
+                :disabled='validation.fails'
+                label='You can click when valid'
+                @remove='remove'
                 @save='save'>
             </form-save-button>
 
@@ -55,6 +68,11 @@ export default {
             type: Object,
             required: true
         },
+
+        validation: {
+            type: Object,
+            required: true
+        }
     },
 
     //----------------------------------------------------------

@@ -44,6 +44,11 @@ export default {
             default: (value) => {
                 return true
             }
+        },
+
+        validation: {
+            type: Object,
+            required: false,
         }
     },
 
@@ -54,21 +59,21 @@ export default {
     },
 
     mounted() {
-        if (this.$validation) {
-            this.$validation.register(this.property, this.isValidIgnoringTouch)
+        if (this.$_vf_validator) {
+            this.$_vf_validator.register(this.property, this.isValidIgnoringTouch)
         }
     },
 
     destroyed() {
-        if (this.$validation) {
-            this.$validation.unregister(this.property)
+        if (this.$_vf_validator) {
+            this.$_vf_validator.unregister(this.property)
         }
     },
 
     watch: {
         isValidIgnoringTouch(newVal) {
-            if (this.$validation) {
-                this.$validation.update(this.property, newVal)
+            if (this.$_vf_validator) {
+                this.$_vf_validator.update(this.property, newVal)
             }
         },
 
@@ -94,6 +99,10 @@ export default {
     },
 
     computed: {
+        $_vf_validator() {
+            return this.validation || this.$validation
+        },
+
         validated() {
             if (this.required === false && _.isEmpty(this.value)) return true;
 
