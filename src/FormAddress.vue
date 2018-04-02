@@ -1,5 +1,7 @@
 <template>
     <form-section heading='Address'>
+        <form-google-place-lookup v-if='showLookup' @selected='placeSelected'></form-google-place-lookup>
+
         <div v-if="!!$slots['before']" class="row">
             <slot name='before'></slot>
         </div>
@@ -59,6 +61,8 @@ import { core } from './mixins'
 import FormStateSelect from './FormStateSelect'
 import FormCountrySelect from './FormCountrySelect'
 
+import  { GOOGLE_PLACE_INSTALL_ERROR_MESSAGE } from './FormGooglePlaceLookup'
+
 export default {
     mixins: [ core ],
     components: {
@@ -67,6 +71,11 @@ export default {
     },
 
     props: {
+        includeLookup: {
+            type: Boolean,
+            default: false,
+        },
+
         includeCoordinates: {
             type: Boolean,
             default: false,
@@ -80,7 +89,28 @@ export default {
 
     data () {
         return {
-            aValue: { line_1: '', line_2: '', city: '', state: '', postal_code: '', lat: null, lng: null }
+            aValue: { line_1: '', line_2: '', city: '', state: null, postal_code: '', country: null, lat: null, lng: null }
+        }
+    },
+
+    computed: {
+        showLookup() {
+            if (this.includeLookup) {
+                const canShow = _.isFunction(_.get(window, 'google.maps.places.Autocomplete'))
+                if( ! canShow) {
+                    console.error(GOOGLE_PLACE_INSTALL_ERROR_MESSAGE)
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+    },
+
+    methods: {
+        placeSelected(address) {
+            const { line_1, city, state, postal_code, country, lat, lng, } = address
+            this.aValue = { line_1, city, state, postal_code, country, lat, lng, }
         }
     }
 }

@@ -20,7 +20,12 @@ export default {
         useIndexAsValue: {
             type: Boolean,
             default: false,
-        }
+        },
+
+        useKeyAsValue: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     computed: {
@@ -39,6 +44,10 @@ export default {
 
         optionValue(opt, indexOrKey) {
             if( ! this.$_VF_OptionsMixin_optionsListIsObject && this.useIndexAsValue) return indexOrKey;
+
+            if(this.useKeyAsValue === true) {
+                return indexOrKey
+            }
 
             if(isObject(opt) && (this.valueKey !== false)) {
                 return opt[this.valueKey]

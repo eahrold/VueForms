@@ -73,7 +73,7 @@
         <form class='dropdown-content-wrapper'>
             <div class='dropdown-item' v-for='(opt, idx) in _filtered' :class='optItemClass(opt)'>
             <label :for='`vf-sel-${vf_uid}-${idx}`' :class='optLabelClass(opt)'>
-                <span>{{ opt[textKey] }} <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true">&#x2714;</i></span>
+                <span>{{ opt[textKey] }} <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true"></i></span>
                 <input v-if='multiple' class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='checkbox' v-model='aValue' :value='opt'>
                 <input v-else class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='radio' v-model='aValue' :value='opt'>
             </label>

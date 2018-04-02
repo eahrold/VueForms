@@ -1,9 +1,11 @@
 <template>
   <form-section heading='Other Features'>
+
     <form-address
       v-model='model.address'
       property='address'
       :include-coordinates='true'
+      :include-lookup='true'
       :errors='errors'>
         <template slot='help'>use the `include-coordinated` prop to conditionally display Lat &amp; Lng</template>
     </form-address>

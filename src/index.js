@@ -57,6 +57,7 @@ import FormAddress from './FormAddress'
 import FormStateSelect from './FormStateSelect'
 import FormNamePrefixSelect from './FormNamePrefixSelect'
 import FormNameSuffixSelect from './FormNameSuffixSelect'
+import FormGooglePlaceLookup from './FormGooglePlaceLookup'
 
 import FormPanel from './FormPanel'
 import FormGroup from './FormGroup'
@@ -90,6 +91,7 @@ export const VueForms = {
         Vue.component('form-tinymce', FormTinymce)
         Vue.component('form-markdown', FormMarkdown)
         Vue.component('form-ckeditor', FormCkeditor)
+        Vue.component('form-google-place-lookup', FormGooglePlaceLookup)
 
         Vue.component('form-dropzone', FormDropzone)
         Vue.component('form-dropzone-button', FormDropzoneButton)

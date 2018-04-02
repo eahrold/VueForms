@@ -9,6 +9,7 @@
             disabled,
             required,
         }'
+        :use-key-as-value='true'
         :multiple='false'
         width='100%'>
     </form-select>
@@ -17,7 +18,6 @@
 <script>
 
 import { states } from './data_sources';
-
 import { core } from './mixins';
 
 export default {
