@@ -20,12 +20,32 @@
                 </form-file-edit>
             </div>
             <div class='row' key='gallery' v-else>
-                <div v-for='(file, idx) in files' @click='choose(file, $event)' :key='idx' class="col-md-4 text-center">
+                <div class="col-xs-12 text-right" v-if='pagedFiles.length'>
+                    <ul class="pagination">
+                        <li class="page-item" :class='{disabled: !hasPrev}'>
+                            <a @click.prevent.stop='pagePrev' href='javascript:void(0)'  class="page-link">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item" :class='{disabled: !hasNext}'>
+                            <a @click.prevent.stop='pageNext' href='javascript:void(0)' class="page-link" >
+                                <span class="">Next</span>
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-for='(file, idx) in pagedFiles' @click='choose(file, $event)' :key='idx' class="col-md-4 text-center">
                     <form-panel>
                         <img v-if='isImage(fileSrc(file))' class='img-thumbnail gallery' :src="fileSrc(file)">
                         <i v-else style='font-size: 3em' class="fa fa-file-o fa-3x" aria-hidden="true"></i>
                         <p>{{ fileSrc(file) }}</p>
                     </form-panel>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <h4 class="help-text help-block"> {{ offset + 1 }} - {{ offset + limit }} of {{ files.length }}</h4>
                 </div>
             </div>
             </transition>
@@ -36,12 +56,8 @@
 <script type="text/javascript">
 
 import _ from 'lodash'
-import FormFileEdit from './FormFileEdit'
 
 export default {
-    components: {
-        'form-file-edit': FormFileEdit
-    },
 
     props: {
         headers: {
@@ -68,6 +84,8 @@ export default {
             files: [],
             pagination: {},
             selected: null,
+            page: 1,
+            limit: 20,
         }
     },
 
@@ -78,7 +96,24 @@ export default {
 
         requestHeaders() {
             return this.headers || _.get(this.$vfconfig, 'headers', {})
-        }
+        },
+
+        pagedFiles() {
+            return this.files.slice(this.offset, this.offset+this.limit)
+        },
+
+        offset() {
+            return (this.page-1) * this.limit
+        },
+
+        hasNext() {
+            const { page, limit, files } = this
+            return ((page+1) * limit) <= _.get(files, 'length', 0 )
+        },
+
+        hasPrev() {
+            return this.page > 1
+        },
     },
 
     mounted() {
@@ -113,6 +148,19 @@ export default {
         complete(file) {
             this.$emit('choose', file)
             this.$emit('close')
+        },
+
+        pageNext() {
+            const { page } = this;
+            if(this.hasNext) {
+                this.page = page + 1
+            }
+        },
+
+        pagePrev() {
+            if(this.hasPrev) {
+                this.page = this.page - 1
+            }
         },
 
         load() {

@@ -29,7 +29,6 @@
 import _ from 'lodash'
 import VueTinymce from '@tinymce/tinymce-vue';
 import { core } from './mixins';
-import FormFileGallery from './FormFileGallery'
 
 const imageTemplate = function({path, caption, alt, width, height, align}) {
     const style=''
@@ -60,7 +59,6 @@ const defaults = {
 
 export default {
     components: {
-        'form-file-gallery': FormFileGallery,
         'vue-tinymce': VueTinymce
     },
 

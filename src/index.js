@@ -51,6 +51,8 @@ import FormDate from './FormDate'
 import FormDropzone from './FormDropzone'
 import FormDropzoneButton from './FormDropzoneButton'
 import FormFilePicker from './FormFilePicker'
+import FormFileEdit from './FormFileEdit'
+import FormFileGallery from './FormFileGallery'
 
 import FormSeoData from './FormSeoData'
 import FormAddress from './FormAddress'
@@ -96,6 +98,8 @@ export const VueForms = {
         Vue.component('form-dropzone', FormDropzone)
         Vue.component('form-dropzone-button', FormDropzoneButton)
         Vue.component('form-file-picker', FormFilePicker)
+        Vue.component('form-file-edit', FormFileEdit)
+        Vue.component('form-file-gallery', FormFileGallery)
 
         Vue.component('form-options-list', FormOptionsLists)
         Vue.component('form-options-list-scoped', FormOptionsListsScoped)
@@ -211,6 +215,8 @@ export {
     FormDropzone,
     FormDropzoneButton,
     FormFilePicker,
+    FormFileEdit,
+    FormFileGallery,
 
     FormPanel,
     FormGroup,
