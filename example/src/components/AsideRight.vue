@@ -50,6 +50,16 @@
                 </template>
             </form-text>
 
+            <form-file
+                v-model='model.basic_file'
+                property='basic_file'
+                :accept='$vfconfig.fileTypes.any'
+                :multiple='true'
+                :required='true'
+                :validation='validation'
+                :errors='errors'>
+            </form-file>
+
             <form-save-button
                 :saving='saving'
                 :disabled='validation.fails'

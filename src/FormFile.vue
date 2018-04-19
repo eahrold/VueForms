@@ -104,7 +104,14 @@ export default {
             return _.map(this.aValue, (file)=>{
                 return this.fileToString(file)
             }).join(', ')
-        }
+        },
+
+        validated() {
+            if(this.required) {
+                return !!this.aValue
+            }
+            return true
+        },
     },
 
     methods: {

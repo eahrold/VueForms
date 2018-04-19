@@ -32,6 +32,7 @@
         property='basic_file'
         :accept='$vfconfig.fileTypes.any'
         :multiple='true'
+        :required='true'
         :errors='errors'>
     </form-file>
 
