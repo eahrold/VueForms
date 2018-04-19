@@ -27,6 +27,14 @@
         :errors='errors'>
     </form-dropzone>
 
+    <form-file
+        v-model='model.basic_file'
+        property='basic_file'
+        :accept='$vfconfig.fileTypes.any'
+        :multiple='true'
+        :errors='errors'>
+    </form-file>
+
     <form-dropzone-button
         v-model='model.dropzone'
         label='File'

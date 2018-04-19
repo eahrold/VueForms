@@ -5,13 +5,13 @@ export const image = [
 ]
 
 export const audio = [
-        "audio/*",
-        'application/ogg'
+    "audio/*",
+    'application/ogg'
 ]
 
 export const video = [
-        "video/*",
-        'application/ogg'
+    "video/*",
+    'application/ogg'
 ]
 
 export const media = _.uniq(_.concat(image, audio, video))

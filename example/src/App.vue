@@ -15,7 +15,7 @@
 
 <script>
 
-import { ValidationSyncMixin, ValidatorStore } from 'vue-forms'
+import { ValidatorStore } from 'vue-forms'
 import { AsideRight, Main } from './components'
 
 const validation = new ValidatorStore();
@@ -28,7 +28,6 @@ export default {
   },
 
   mixins: [
-    ValidationSyncMixin,
   ],
 
   data() {
@@ -69,6 +68,7 @@ export default {
         radio_select_from_array: null,
 
         tinymce: null,
+        ckeditor: null,
 
         date: null,
         date_time: null,
@@ -83,6 +83,7 @@ export default {
 
         file: null,
         dropzone: null,
+        basic_file: [],
 
         address: {},
         seo: {}

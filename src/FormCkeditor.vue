@@ -18,7 +18,9 @@
           :errors='errors'>
         </form-file-gallery>
 
-        <textarea :name="property" :rows='rows' :id="vf_uid"></textarea>
+        <textarea :name="property" :rows='rows' :id="vf_uid">
+            <div>Hello Wolrd</div>
+        </textarea>
 
         <form-errors
             v-if='displayErrors'
@@ -110,6 +112,8 @@ class FileUploadAdapter {
 
                     return fulfill(response)
                 }
+                return fulfill(this.loader.file)
+
                 return reject(response.message)
             });
 
@@ -161,24 +165,47 @@ export default {
 
     mounted() {
         const config = {
-            toolbar: [ "undo", "redo", "bold", "italic", "blockquote", "imagetextalternative", "insertimage", "headings", "imagestylefull", "imagestyleside", "link", "numberedlist", "bulletedlist"],
+            toolbar: [
+                "undo",
+                "imageUpload",
+                "redo",
+                "heading",
+                "bold",
+                "italic",
+                "blockquote",
+                "link",
+                "numberedlist",
+                "bulletedlist"
+            ],
             ckfinder: {
                 // eslint-disable-next-line max-len
                 // uploadUrl: 'http://pretend.com'
             },
             image: {
                 // You need to configure the image toolbar too, so it uses the new style buttons.
-                toolbar: [ 'imageTextAlternative', '|', 'imageStyleAlignLeft', 'imageStyleFull', 'imageStyleAlignRight' ],
+               toolbar: [
+                    'imageTextAlternative',
+                    '|',
+                    'imageStyle:alignLeft',
+                    'imageStyle:alignCenter',
+                    'imageStyle:alignRight',
+                    'imageStyle:full',
+                    'imageStyle:side',
+                ],
 
                 styles: [
                     // This option is equal to a situation where no style is applied.
-                    'imageStyleFull',
+                    'full',
+
+                    'side',
+
+                    'alignCenter',
 
                     // This represents an image aligned to left.
-                    'imageStyleAlignLeft',
+                    'alignLeft',
 
                     // This represents an image aligned to right.
-                    'imageStyleAlignRight'
+                    'alignRight'
                 ]
             }
         }
@@ -187,13 +214,17 @@ export default {
             .create( document.getElementById(this.vf_uid),config)
             .then( editor => {
                 this.editor = editor;
-                // console.log(Array.from( editor.ui.componentFactory.names()))
 
-                editor.document.on('changesDone', (evt, data) => {
+                const plugins = ClassicEditor.build.plugins.map( plugin => plugin.pluginName );
+                const toolbar = Array.from( editor.ui.componentFactory.names())
+                console.log("[VF] CKeditor Config",{toolbar, plugins})
+
+                editor.model.document.on('change', (evt, data) => {
+                    // console.log("chage", {evt, data})
                     this.$emit('input', this._last=editor.getData())
                 });
 
-                editor.plugins.get('FileRepository').createAdapter = (loader) => {
+                editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
                     const config = {
                         'headers': this._headers,
                         'endpoint': this._endpoint

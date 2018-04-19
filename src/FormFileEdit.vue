@@ -11,6 +11,19 @@
         <form-number :min='0' :value='aValue.height' @input='updateHeight' placeholder='auto' property='height' />
         <form-checkbox v-model='aValue.constrain' property='constrain' />
         <form-select v-model='aValue.align' :options='alignment' property='align' />
+
+        <div class="form-group">
+            <label class="control-label">Alginment</label>
+            <div class="btn-group">
+                <button v-for='(align, idx) in alignment'
+                    @click='selectAlignment(align.value)'
+                    class="btn btn-default"
+                    :class='{active: (aValue.align == align.value)}'>
+                    <i class='vf-icon' :class='`vf-icon-image-${align.value}`'></i>
+                </button>
+            </div>
+        </div>
+
         <form-textarea :rows='2' v-model='aValue.caption' property='caption' />
         <slot name='after'></slot>
     </div>
@@ -39,11 +52,20 @@ export default {
         },
 
         alignment() {
-            return [{value: 'left', text: "Left Aligned"}, {value: 'right', text: 'Right Aligned'}]
+            return [
+                {value: 'left', text: "Left Aligned"},
+                {value: 'center', text: 'Center Aligned'},
+                {value: 'right', text: 'Right Aligned'},
+            ]
         }
     },
 
     methods: {
+        selectAlignment(align) {
+            if(this.aValue.align === align) align = 'default';
+            this.$set(this.aValue, 'align', align)
+        },
+
         updateWidth(newVal) {
             if(this.aValue.constrain && newVal > 0) {
                 this.aValue.height = Math.round(this.aValue.height * (newVal/this.aValue.width))
@@ -60,3 +82,7 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+@import url('./styles/icons.scss')
+</style>

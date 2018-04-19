@@ -1,0 +1,35 @@
+.vf-icon {
+    min-width: 2em;
+    min-height: 2em;
+}
+
+.vf-icon:after {
+    content: " ";
+    height: 2em;
+    width: 2em;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+
+/**
+ * By https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/AUTHORS.txt - lib/oojs-ui/themes/mediawiki/images/icons/, MIT, https://commons.wikimedia.org/w/index.php?curid=54911343
+ */
+.vf-icon-image-center:after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0'?%3e%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath d='M9 9h6c.554 0 1 .446 1 1v5c0 .554-.446 1-1 1H9c-.554 0-1-.446-1-1v-5c0-.554.446-1 1-1zm-5.5 9h17a.5.5 0 0 1 0 1h-17a.5.5 0 0 1 0-1zm0-12h17a.5.5 0 0 1 0 1h-17a.5.5 0 0 1 0-1z' id='align-center'/%3e%3c/svg%3e");
+}
+
+/**
+* By https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/AUTHORS.txt - lib/oojs-ui/themes/mediawiki/images/icons/, MIT, https://commons.wikimedia.org/w/index.php?curid=54911391
+*/
+.vf-icon-image-right:after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0'?%3e%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath d='M20 9h-6c-.554 0-1 .446-1 1v5c0 .554.446 1 1 1h6c.554 0 1-.446 1-1v-5c0-.554-.446-1-1-1zm-9.5 0h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm0 3h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm0 3h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm10-9h-17a.5.5 0 0 0 0 1h17a.5.5 0 0 0 0-1zm0 12h-17a.5.5 0 0 0 0 1h17a.5.5 0 0 0 0-1z' id='align-float-right'/%3e%3c/svg%3e");
+}
+
+/**
+ * By https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/AUTHORS.txt (lib/oojs-ui/themes/mediawiki/images/icons/) [MIT (http://opensource.org/licenses/mit-license.php)], via Wikimedia Commons
+ */
+.vf-icon-image-left:after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0'?%3e%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath d='M4 9h6c.554 0 1 .446 1 1v5c0 .554-.446 1-1 1H4c-.554 0-1-.446-1-1v-5c0-.554.446-1 1-1zm9.5 0h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1zm0 3h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1zm0 3h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1zm-10-9h17a.5.5 0 0 1 0 1h-17a.5.5 0 0 1 0-1zm0 12h17a.5.5 0 0 1 0 1h-17a.5.5 0 0 1 0-1z' id='align-float-left'/%3e%3c/svg%3e");
+}

@@ -24,6 +24,7 @@
     "moment": "^2.20.1",
     "popper.js": "^1.12.9",
     "simplemde": "^1.11.2",
+    "summernote": "^0.8.10",
     "vue": "^2.5.2",
     "vue-forms": "file:..",
     "vue-the-mask": "^0.11.1"

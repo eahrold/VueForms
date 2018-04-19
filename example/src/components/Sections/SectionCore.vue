@@ -94,11 +94,10 @@
 <script type="text/javascript">
 
 import _ from 'lodash'
-import { section} from './mixins'
-import { ValidationSyncMixin } from 'vue-forms'
+import { section } from './mixins'
 
 export default {
-    mixins: [ section, ValidationSyncMixin ],
+    mixins: [ section ],
     props: {
         validation:{},
         show: {

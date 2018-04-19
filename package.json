@@ -1,6 +1,6 @@
 {
   "name": "vue-forms",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Making Vue Forms Easier",
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
