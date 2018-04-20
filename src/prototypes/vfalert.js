@@ -41,17 +41,14 @@ const methods = {
     },
 
     errorResponse(response, fallback, xhr) {
-        let message = _.get(response, 'data.message');
+        let message = _.isString(response) ? response : _.get(response, 'data.message');
         if ( ! message && _.isObject(xhr)) {
-            if(_.isObject(xhr)) {
-                const { status, statusText } = xhr
-                message = `<b class='text-danger'>${status}</b> ${statusText}</br>${fallback}`
-            } else {
-                message = fallback || "Ooops... Something went wrong"
-            }
+            const { status, statusText } = xhr
+            message = `<b class='text-danger'>${status}</b> ${statusText}</br>${fallback}`
         }
+
         const errors = _.get(response, 'data.errors');
-        return this.alert(message, statuses.DANGER, {errors, });
+        return this.alert(message || fallback || "Ooops... Something went wrong", statuses.DANGER, {errors, });
     },
 
     confirm(message, status, options) {

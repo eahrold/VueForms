@@ -10123,19 +10123,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return this.alert(message, statuses.DANGER, options);
         },
         errorResponse: function errorResponse(response, fallback, xhr) {
-            var message = _.get(response, 'data.message');
+            var message = _.isString(response) ? response : _.get(response, 'data.message');
             if (!message && _.isObject(xhr)) {
-                if (_.isObject(xhr)) {
-                    var status = xhr.status,
-                        statusText = xhr.statusText;
+                var status = xhr.status,
+                    statusText = xhr.statusText;
 
-                    message = '<b class=\'text-danger\'>' + status + '</b> ' + statusText + '</br>' + fallback;
-                } else {
-                    message = fallback || "Ooops... Something went wrong";
-                }
+                message = '<b class=\'text-danger\'>' + status + '</b> ' + statusText + '</br>' + fallback;
             }
+
             var errors = _.get(response, 'data.errors');
-            return this.alert(message, statuses.DANGER, { errors: errors });
+            return this.alert(message || fallback || "Ooops... Something went wrong", statuses.DANGER, { errors: errors });
         },
         confirm: function confirm(message, status, options) {
             var _this = this;
@@ -20960,7 +20957,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_41ded83e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_7c006f46_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__ = __webpack_require__(284);
 function injectStyle (ssrContext) {
   __webpack_require__(282)
 }
@@ -20975,12 +20972,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-41ded83e"
+var __vue_scopeId__ = "data-v-7c006f46"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormAlert_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_41ded83e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_7c006f46_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormAlert_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -21001,7 +20998,7 @@ var content = __webpack_require__(283);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("6b120d76", content, true, {});
+var update = __webpack_require__(3)("625512c2", content, true, {});
 
 /***/ }),
 /* 283 */
@@ -21012,7 +21009,7 @@ exports = module.exports = __webpack_require__(2)(false);
 exports.i(__webpack_require__(93), "");
 
 // module
-exports.push([module.i, ".vf-alert[data-v-41ded83e]{position:fixed;right:2em;top:0;z-index:1000;transition:all .3s ease}.vf-alert .alert.top[data-v-41ded83e]{position:fixed;right:2em;top:1em}.vf-alert .alert.bottom[data-v-41ded83e]{position:fixed;right:2em;bottom:1em}", ""]);
+exports.push([module.i, ".vf-alert[data-v-7c006f46]{position:fixed;right:2em;top:0;z-index:5000;transition:all .3s ease}.vf-alert .alert.top[data-v-7c006f46]{position:fixed;right:2em;top:1em}.vf-alert .alert.bottom[data-v-7c006f46]{position:fixed;right:2em;bottom:1em}", ""]);
 
 // exports
 

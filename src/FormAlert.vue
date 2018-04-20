@@ -264,7 +264,7 @@ export default {
   position: fixed;
   right: 2em;
   top: 0em;
-  z-index: 1000;
+  z-index: 5000;
   transition: all 0.3s ease;
 }
 
