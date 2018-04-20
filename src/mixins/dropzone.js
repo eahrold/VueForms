@@ -40,6 +40,11 @@ export default {
             default: false,
         },
 
+        endpoint: {
+            type: String,
+            required: false,
+        },
+
         headers: {
             type: Object,
             required: false
