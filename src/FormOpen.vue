@@ -72,7 +72,7 @@ export default {
 
         save () {
             this.saving = true;
-            this.http.post(this.formData, (respose)=>{
+            this.$http.post(this.formData, (respose)=>{
                 this.$emit('saved', respose);
                 this.finally();
             },(respose)=>{

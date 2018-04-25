@@ -2,31 +2,35 @@ import _ from 'lodash'
 
 export default {
     methods: {
-        formData(file_elems, method) {
-            // This is an example of how to attach File input to the form submission.
-            var keys = _.keys(this.model);
-            var data = this.formDataFromModel(keys, method);
+        /**
+         * Convert a model to FormData for xhr submission
+         * @param  Object model     The Data to submit
+         * @param  String method    The method to spoof,  ["PUT", "POST"]
+         *                          Note: Make sure to POST the actual xhr request!
+         * @return FormData         FormData object
+         */
+        transformModelToFormData(model, method) {
+            const formData = new FormData()
+            formData.append('_method', method || 'POST');
 
-            _.each(file_elems, (el) => {
-                var image = document.getElementById(file_elems).files[0];
-                data.append(file_elems, image || null);
-            })
-
-            return data;
-        },
-
-        formDataFromModel(fillables, method) {
-            var data = new FormData();
-            data.append('_method', method || 'POST');
-
-            _.each(fillables, (key) => {
-                var val = _.get(this.model, key, null);
-                if (val instanceof Object || val instanceof Array) {
-                    val = JSON.stringify(val);
+            _.forOwn(model, (value, key)=>{
+                if (value instanceof FileList) {
+                    _.each(value, (file)=>{
+                        formData.append(`${key}[]`, file);
+                    })
+                } else if (value instanceof Array) {
+                    const serialize = (_.find(value, _.isObject) !== undefined)
+                    _.each(value, (raw)=>{
+                        const aValue = serialize ? JSON.stringify(raw) : raw;
+                        formData.append(`${key}[]`, aValue);
+                    })
+                } else if (value instanceof Object) {
+                    formData.append(key, JSON.stringify(value));
+                } else {
+                    formData.append(key, value);
                 }
-                data.append(key, val);
-            });
-            return data;
+            })
+            return formData
         },
     }
 }

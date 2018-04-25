@@ -144,7 +144,7 @@ export default {
 
             this.progress = 0;
             if (this.$vfalert && _.isFunction(this.$vfalert.errorResponse)) {
-                this.$vfalert.errorResponse(response, 'There was a problem with with Dropzone', xhr);
+                this.$vfalert.errorResponse(response, 'There was a problem uploading the file', xhr);
             }
 
             this.$emit('error', response);

@@ -85,7 +85,7 @@ export default {
             if (newVal === true) {
                 this.$_checkValidated(this.validated)
             }
-        }
+        },
     },
 
     methods: {

@@ -20,21 +20,32 @@
  *
  * When I need to have a direct file upload on a form, I'll usually
  * do somehting like this
+ * [ This is included in the formData mixin, which can be imported ]
  *
 
-    makeFormData() {
+    transformModelToFormData(model, method) {
         const formData = new FormData()
-        _.forOwn(this.model, (value, key)=>{
+        formData.append('_method', method || 'POST');
+
+        _.forOwn(model, (value, key)=>{
             if (value instanceof FileList) {
                 _.each(value, (file)=>{
                     formData.append(`${key}[]`, file);
                 })
+            } else if (value instanceof Array) {
+                const serialize = (_.find(value, _.isObject) !== undefined)
+                _.each(value, (raw)=>{
+                    const aValue = serialize ? JSON.stringify(raw) : raw;
+                    formData.append(`${key}[]`, aValue);
+                })
+            } else if (value instanceof Object) {
+                formData.append(key, JSON.stringify(value));
             } else {
                 formData.append(key, value);
             }
         })
         return formData
-    },
+    }
  *
  *
  *

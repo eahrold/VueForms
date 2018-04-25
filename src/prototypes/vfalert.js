@@ -41,13 +41,15 @@ const methods = {
     },
 
     errorResponse(response, fallback, xhr) {
-        let message = _.isString(response) ? response : _.get(response, 'data.message');
+        const data = _.get(response, 'data', response);
+
+        let message = _.isString(response) ? response : _.get(data, 'message');
         if ( ! message && _.isObject(xhr)) {
             const { status, statusText } = xhr
             message = `<b class='text-danger'>${status}</b> ${statusText}</br>${fallback}`
         }
 
-        const errors = _.get(response, 'data.errors');
+        const errors = _.get(data, 'errors');
         return this.alert(message || fallback || "Ooops... Something went wrong", statuses.DANGER, {errors, });
     },
 

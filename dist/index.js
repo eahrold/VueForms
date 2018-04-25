@@ -10123,7 +10123,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return this.alert(message, statuses.DANGER, options);
         },
         errorResponse: function errorResponse(response, fallback, xhr) {
-            var message = _.isString(response) ? response : _.get(response, 'data.message');
+            var data = _.get(response, 'data', response);
+
+            var message = _.isString(response) ? response : _.get(data, 'message');
             if (!message && _.isObject(xhr)) {
                 var status = xhr.status,
                     statusText = xhr.statusText;
@@ -10131,7 +10133,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 message = '<b class=\'text-danger\'>' + status + '</b> ' + statusText + '</br>' + fallback;
             }
 
-            var errors = _.get(response, 'data.errors');
+            var errors = _.get(data, 'errors');
             return this.alert(message || fallback || "Ooops... Something went wrong", statuses.DANGER, { errors: errors });
         },
         confirm: function confirm(message, status, options) {
@@ -15071,7 +15073,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 this.progress = 0;
                 if (this.$vfalert && _lodash2.default.isFunction(this.$vfalert.errorResponse)) {
-                    this.$vfalert.errorResponse(response, 'There was a problem with with Dropzone', xhr);
+                    this.$vfalert.errorResponse(response, 'There was a problem uploading the file', xhr);
                 }
 
                 this.$emit('error', response);
@@ -15207,32 +15209,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     exports.default = {
         methods: {
-            formData: function formData(file_elems, method) {
-                // This is an example of how to attach File input to the form submission.
-                var keys = _lodash2.default.keys(this.model);
-                var data = this.formDataFromModel(keys, method);
+            /**
+             * Convert a model to FormData for xhr submission
+             * @param  Object model     The Data to submit
+             * @param  String method    The method to spoof,  ["PUT", "POST"]
+             *                          Note: Make sure to POST the actual xhr request!
+             * @return FormData         FormData object
+             */
+            transformModelToFormData: function transformModelToFormData(model, method) {
+                var formData = new FormData();
+                formData.append('_method', method || 'POST');
 
-                _lodash2.default.each(file_elems, function (el) {
-                    var image = document.getElementById(file_elems).files[0];
-                    data.append(file_elems, image || null);
-                });
-
-                return data;
-            },
-            formDataFromModel: function formDataFromModel(fillables, method) {
-                var _this = this;
-
-                var data = new FormData();
-                data.append('_method', method || 'POST');
-
-                _lodash2.default.each(fillables, function (key) {
-                    var val = _lodash2.default.get(_this.model, key, null);
-                    if (val instanceof Object || val instanceof Array) {
-                        val = (0, _stringify2.default)(val);
+                _lodash2.default.forOwn(model, function (value, key) {
+                    if (value instanceof FileList) {
+                        _lodash2.default.each(value, function (file) {
+                            formData.append(key + '[]', file);
+                        });
+                    } else if (value instanceof Array) {
+                        var serialize = _lodash2.default.find(value, _lodash2.default.isObject) !== undefined;
+                        _lodash2.default.each(value, function (raw) {
+                            var aValue = serialize ? (0, _stringify2.default)(raw) : raw;
+                            formData.append(key + '[]', aValue);
+                        });
+                    } else if (value instanceof Object) {
+                        formData.append(key, (0, _stringify2.default)(value));
+                    } else {
+                        formData.append(key, value);
                     }
-                    data.append(key, val);
                 });
-                return data;
+                return formData;
             }
         }
     };
@@ -16954,7 +16959,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormFile_vue__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormFile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormFile_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormFile_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormFile_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5ff36b5c_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormFile_vue__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1775bd6b_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormFile_vue__ = __webpack_require__(175);
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -16971,7 +16976,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_FormFile_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5ff36b5c_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormFile_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1775bd6b_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_FormFile_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
