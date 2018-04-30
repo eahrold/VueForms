@@ -11,6 +11,17 @@
     </form-address>
     <!-- <form-seo label='SEO DATA' v-model='model.seo' property='seo'></form-seo> -->
 
+    <form-text-mask
+      v-model='model.phone'
+      property='phone'
+      mask='(###) ###-####'
+      :errors='errors'>
+        <template slot='help'>
+          Uses masking syntax `:mask='(###) ###-####'` (wrapper for <a href='https://vuejs-tips.github.io/vue-the-mask' target='_blank'>Vue The Mask</a>)
+        </template>
+    </form-text-mask>
+
+
     <form-panel>
       <button class="btn btn-default" @click='show.modal = true'>Launch An Example Modal</button>
       <form-modal @close='show.modal = false' v-if='show.modal'>

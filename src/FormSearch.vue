@@ -15,9 +15,9 @@
 </style>
 
 <template>
-<div class="input-group-search">
+<div class="input-group-search vf-form-group">
     <span class="col-xs-12">
-        <input class='form-control' v-model='aValue'>
+        <input type='search' class='form-control' v-model='aValue'>
         <span class="spy-glass"><i class="fa fa-search" aria-hidden="true"></i></span>
     </span>
 </div>

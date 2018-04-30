@@ -1,6 +1,6 @@
 <template>
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div class="form-group vf-form-group" :class='formClass'>
+        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
 
         <form-file-gallery
             v-if='showModal'
@@ -14,13 +14,12 @@
 
         <vue-tinymce :api-key="_apiKey" v-model='aValue' :init='init'></vue-tinymce>
 
-
         <form-errors
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
 
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

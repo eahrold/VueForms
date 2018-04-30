@@ -40,11 +40,11 @@ export default {
     },
 
     methods: {
-        onFocus() {
+        onFocus(event) {
             this.focused = true
         },
 
-        onBlur() {
+        onBlur(event) {
             this.blurred = true
         }
     },

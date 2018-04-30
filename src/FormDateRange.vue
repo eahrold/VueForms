@@ -10,24 +10,28 @@ Usage:
    label='Some Label'>
 </form-daterange>
  -->
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ label }}: </label>
-        <div class="input-group">
+    <div class="form-group vf-form-group" :class='formClass'>
+        <label class="control-label vf-control-label" :for='vf_uid'>{{ label }}: </label>
+        <div class="input-group vf-input-group">
             <input
+                v-bind='$attrs'
+                v-on='$listeners'
+                :id='vf_uid'
+                :name="label"
+                :style='inputStyle'
+                :class='inputClass'
                 @blur='onBlur'
                 @focus='onFocus'
-                class='form-control'
-                :id='vf_uid'
                 type="text"
-                :name="label"/>
-            <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend">
+                class='form-control vf-form-control'/>
+            <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend vf-input-group-addon vf-date-addon">
                 <span class="input-group-text">
                     <i class="fa fa-times-circle" aria-hidden="true"></i>
                 </span>
             </a>
         </div>
         <form-errors v-for='(property, idx) in properties' :key='idx' :errors='errors' :property='property'></form-errors>
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 <script>
@@ -36,10 +40,10 @@ var $ = require('jquery');
 require('bootstrap-daterangepicker');
 var moment = require('moment');
 
-import { errors, dates, vf_uid } from './mixins';
+import { errors, dates, styles, vf_uid } from './mixins';
 
 export default {
-    mixins: [ errors, dates, vf_uid ],
+    mixins: [ errors, dates, styles, vf_uid ],
 
     props: {
         properties: {

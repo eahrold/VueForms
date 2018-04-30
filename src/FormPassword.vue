@@ -1,20 +1,24 @@
 <template>
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ aLabel }} </label>
+    <div class="form-group vf-form-group" :class='formClass'>
+        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }} </label>
         <input
+            v-model='aValue'
+            v-bind="$attrs"
+            v-on="$listeners"
             type="password"
             :id="vf_uid"
-            v-model='aValue'
-            class="form-control"
             :placeholder="placeholder"
+            :disabled='disabled'
+            :style='inputStyle'
+            :class='inputClass'
             @blur='onBlur'
             @focus='onFocus'
-            :disabled='disabled'>
+            class="form-control vf-form-control">
         <form-errors
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

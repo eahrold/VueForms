@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group row">
+    <div class="form-group vf-form-group row">
         <div class="col-md-12 text-right">
             <button v-if='deletable' @click='remove()'
                 class="btn btn-danger btn-delete btn-block"

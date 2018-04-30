@@ -83,6 +83,7 @@
       <template v-if='(model.password_confirm !== null) && (model.password !== model.password_confirm)' slot='help'>Password and Confirm must match</template>
   </form-password>
 
+
     <form-textarea
       v-model='model.text_area'
       property='text_area'
@@ -103,6 +104,10 @@ export default {
         show: {
             type: Object,
         },
+    },
+
+    methods: {
+      alert(msg){console.log(msg)},
     }
 }
 </script>

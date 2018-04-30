@@ -1,5 +1,9 @@
 <template>
-    <form-select placeholder='Choose...' label='Prefix' width='100%' :multiple='false' v-model='aValue' :property='property' :options='prefixes' :errors='errors'></form-select>
+    <form-select
+        v-bind='{placeholder, label, property, options, errors, width}'
+        v-model='aValue'
+        :multiple='false'>
+    </form-select>
 </template>
 
 <script>
@@ -11,9 +15,27 @@ import { core } from './mixins';
 export default {
     mixins: [ core ],
 
+    props: {
+        width: {
+            type: String,
+            default: '100%'
+        },
+
+        label: {
+            type: String,
+            default: "Prefix"
+        },
+
+        placeholder: {
+            type: String,
+            default: "Choose..."
+        }
+    },
+
+
     data () {
         return {
-            prefixes: prefixes,
+            options: prefixes,
             aValue: null
         }
     },

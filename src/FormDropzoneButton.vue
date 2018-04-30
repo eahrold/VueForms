@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group upload">
+    <div class="form-group vf-form-group upload">
 
         <transition name='fade'>
             <div v-if='id'>

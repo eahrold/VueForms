@@ -1,24 +1,18 @@
 <template>
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
-        <input
-            v-model.number='aValue'
-            @blur='onBlur'
-            @focus='onFocus'
-            type="number"
-            :name='property'
-            :min='min'
-            :max='max'
-            :id="vf_uid"
-            :placeholder="placeholder"
-            number
-            class="form-control">
-        <form-errors
-            v-if='displayErrors'
-            v-bind="{errors, warning, property}">
-        </form-errors>
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
-    </div>
+    <form-text
+        type='number'
+        v-model.number='aValue'
+        v-bind="$attrs"
+        v-on="$listeners"
+        :min="min"
+        :max="max"
+        :errors="errors"
+        :property="property"
+        :label="label"
+        :style='inputStyle'
+        :class='inputClass'
+        number>
+    </form-text>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
-    <div class="form-group">
-        <label class="control-label" :for='property'>{{ aLabel }}</label>
+    <div class="form-group vf-form-group">
+        <label class="control-label vf-control-label" :for='property'>{{ aLabel }}</label>
         <div v-if='!inline' class='form-group-radio'>
             <div class='radio' v-for='(opt, idx) in options'>
                 <label :for="`${vf_uid}-${idx}`">
@@ -29,7 +29,7 @@
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
-        <p v-if="!!$slots['help']" class="help-block">
+        <p v-if="!!$slots['help']" class="help-block vf-help-block">
             <small><slot name='help'></slot></small>
         </p>
     </div>

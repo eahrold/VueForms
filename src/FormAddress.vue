@@ -50,7 +50,7 @@
             <slot name='after'></slot>
         </div>
 
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </form-section>
 </template>
 

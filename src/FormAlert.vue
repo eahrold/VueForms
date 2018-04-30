@@ -172,24 +172,24 @@ export default {
       const { status, confirmText, cancelText } = _.isObject(options)
         ? options
         : {};
-      // console.log({message, options, promise})
 
-      new Promise((confirm, cancel) => {
+      return new Promise((confirm, cancel) => {
         this.alert = {
-          message,
-          status,
-          confirmText,
-          cancelText,
-          promise: { confirm, cancel },
-        };
+            message,
+            status,
+            confirmText,
+            cancelText,
+            promise: { confirm, cancel },
+          }
       })
-        .then(fulfill)
-        .catch(reject)
-        .then(() => {
-          this.alert = null;
-        });
-
-      return false;
+      .then((response)=>{
+        this.alert = null;
+        fulfill(response)
+      })
+      .catch((response)=>{
+        this.alert = null;
+        reject(response)
+      })
     },
 
     onAlert(text, options) {

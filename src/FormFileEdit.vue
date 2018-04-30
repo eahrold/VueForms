@@ -12,8 +12,8 @@
         <form-checkbox v-model='aValue.constrain' property='constrain' />
         <form-select v-model='aValue.align' :options='alignment' property='align' />
 
-        <div class="form-group">
-            <label class="control-label">Alginment</label>
+        <div class="form-group vf-form-group">
+            <label class="control-label vf-control-label">Alginment</label>
             <div class="btn-group">
                 <button v-for='(align, idx) in alignment'
                     @click='selectAlignment(align.value)'

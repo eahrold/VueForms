@@ -1,24 +1,28 @@
 <template>
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div class="form-group vf-form-group" :class='formClass'>
+        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
         <div class='input-group date'>
             <input
+                v-bind='$attrs'
+                v-on='$listeners'
+                :id='vf_uid'
+                :style='inputStyle'
+                :class='inputClass'
                 @blur='onBlur'
                 @focus='onFocus'
-                :id='vf_uid'
                 type='text'
-                class="form-control" />
-                <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend">
+                class="form-control vf-form-control" />
+                 <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend vf-input-group-addon">
                     <span class="input-group-text">
                         <i class="fa fa-times-circle" aria-hidden="true"></i>
                     </span>
-                </a>
+                 </a>
         </div>
         <form-errors
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
-        <p v-if="!!$slots['help']" class="help-block">
+        <p v-if="!!$slots['help']" class="help-block vf-help-block">
             <small><slot name='help'></slot></small>
         </p>
     </div>

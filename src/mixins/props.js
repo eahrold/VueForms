@@ -1,9 +1,10 @@
 import _ from 'lodash'
 
 import vf_uid from './vf_uid'
+import styles from './styles'
 
 export default {
-    mixins: [ vf_uid ],
+    mixins: [ vf_uid, styles ],
     props: {
         value: {
             required: true
@@ -140,10 +141,16 @@ export default {
             return this.isValidIgnoringTouch === true;
         },
 
+        hideLabel() {
+            return this.label === false
+        },
+
+        showLabel() {
+            return !this.hideLabel
+        },
+
         aLabel() {
-            if (this.label === false) {
-                return ""
-            }
+            if (this.hideLabel)return ""
 
             return (this.label || _.startCase(this.property || '')) + (this.required ? "*" : "")
         }

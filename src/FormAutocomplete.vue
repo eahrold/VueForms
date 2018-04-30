@@ -3,19 +3,25 @@
 Borrowed Heavily from
 https://github.com/fareez-ahamed/autocomplete-vuejs2
 -->
-<div class="form-group" :class='formClass'>
+<div class="form-group vf-form-group" :class='formClass'>
     <div style="position:relative" :class="{'open':openSuggestion}">
-        <label :for='property'>{{ aLabel }}: </label>
-        <input class="form-control" type="text" :id="property" :name='property' :value="aValue" @input="updateValue($event.target.value)"
-          @keydown.enter = 'enter'
-          @keydown.down = 'down'
-          @keydown.up = 'up'
-        >
+        <label :for='vf_uid'>{{ aLabel }}: </label>
+        <input
+            v-bind='$attrs'
+            v-on='$listeners'
+            type="text"
+            :id="vf_uid"
+            :name='property'
+            :value="aValue"
+            @input="updateValue($event.target.value)"
+            @keydown.enter = 'enter'
+            @keydown.down = 'down'
+            @keydown.up = 'up'
+            class="form-control vf-form-control">
         <ul class="dropdown-menu" style="width:100%">
             <li v-for="(suggestion, idx) in matches"
                 :class="{'active': isActive(idx)}"
-                @click="suggestionClick(idx)"
-            >
+                @click="suggestionClick(idx)">
                 <span class="clickable">{{ suggestion }}</span>
             </li>
         </ul>

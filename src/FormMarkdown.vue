@@ -1,7 +1,7 @@
 <template>
-    <div class="form-group">
+    <div class="form-group vf-form-group">
         <label v-if='label' :for='vf_uid'>{{ label }}:</label>
-        <p v-if="showInfo" class="help-block">
+        <p v-if="showInfo" class="help-block vf-help-block">
             <small>For information on Markdown syntax, <a href="https://simplemde.com/markdown-guide" target="_blank">click here</a></small>
         </p>
         <textarea :id="vf_uid" v-model='aValue'></textarea>
@@ -9,7 +9,7 @@
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
-        <p v-if="!!$slots['help']" class="help-block">
+        <p v-if="!!$slots['help']" class="help-block vf-help-block">
             <small><slot name='help'></slot></small>
         </p>
     </div>

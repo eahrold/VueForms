@@ -2,7 +2,7 @@
   <div id='app' class="container-fluid">
     <div class="row h-100">
         <Main v-model='model' v-bind='{statuses, status, show, fakeErrors, validation}'></Main>
-        <AsideRight v-bind="{model, validation}">
+        <AsideRight v-bind="{model, validation, errors: fakeErrors}">
           <template slot='toggles'>
               <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
               <form-checkbox label='Fake Server Response Errors' :value='show.showFakeErrors' @input='toggleFakeErrors' property='showFakeErrors'></form-checkbox>
@@ -125,11 +125,11 @@ export default {
 <style lang='scss'>
 
 /* For Bootstrap 3 */
-$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
-@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+// $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+// @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
 // /* For Bootstrap 4 */
-// @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 
 
 #app {

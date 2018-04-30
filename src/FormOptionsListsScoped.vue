@@ -1,9 +1,9 @@
 <template>
-<div class="row clearfix form-group">
+<div class="form-group col col-md-12">
     <!-- Lable  -->
-    <div class="col-sm-12">
+    <div class="row">
         <slot name='label'>
-            <label v-if='label'>{{ label }}</label>
+            <div class="col-md-12"><label v-if='label'>{{ label }}</label></div>
         </slot>
     </div>
     <!-- End Label -->

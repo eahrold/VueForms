@@ -1,5 +1,5 @@
 <template>
-    <div class="panel panel-default">
+    <div class="panel panel-default vf-panel">
         <div @click='isCollapsed = !isCollapsed' class='panel-heading clearfix' :class="{movable, movable}">
             <div class="pull-left"><slot name='heading'>
                 {{ heading }}

@@ -83,6 +83,9 @@ export default {
 
     mixins: [],
     props: {
+        errors: {
+
+        },
         model: {
             type: Object,
             required: true

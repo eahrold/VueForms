@@ -1,13 +1,23 @@
 <template>
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
-        <input type="file" :name="property" :id="property" :multiple="multiple" :accept='_accept' @change="processFile($event)">
+    <div class="form-group vf-form-group" :class='formClass'>
+        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
+        <input
+        type="file"
+        v-bind='$attrs'
+        v-on='$listeners'
+        :name="property"
+        :id="property"
+        :multiple="multiple"
+        :accept='_accept'
+        :style='inputStyle'
+        :class='inputClass'
+        @change="processFile($event)">
         <small v-if='showAttached'>Current {{ pluralized }}: {{ currentFile }}</small>
         <form-errors
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

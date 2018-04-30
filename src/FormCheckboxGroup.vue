@@ -1,9 +1,9 @@
 <template>
-    <div class="form-group">
+    <div class="form-group vf-form-group">
         <label class='d-block' :for='property'>{{ aLabel }}</label>
-        <div v-if='!inline' class='form-group-checkbox'>
-            <div class='checkbox form-check' v-for='(opt, idx) in options'>
-                <label class="control-label form-check-label" :for="`${vf_uid}-${idx}`">
+        <div v-if='!inline' class='form-group-checkbox vf-form-group-checkbox'>
+            <div class='checkbox form-check vf-checkbox' v-for='(opt, idx) in options'>
+                <label class="control-label form-check-label vf-control-label" :for="`${vf_uid}-${idx}`">
                     <input type="checkbox"
                     class='form-check-input'
                     :name="property"
@@ -32,7 +32,7 @@
             v-if='displayErrors'
             v-bind="{errors, warning, property}">
         </form-errors>
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

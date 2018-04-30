@@ -5,8 +5,8 @@
 </style>
 
 <template>
-    <div class="form-group" :class='formClass'>
-        <label class="control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div class="form-group vf-form-group" :class='formClass'>
+        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
 
         <form-file-gallery
             v-if='showModal'
@@ -27,7 +27,7 @@
             v-bind="{errors, warning, property}">
         </form-errors>
 
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 
@@ -175,7 +175,7 @@ export default {
                 "blockquote",
                 "link",
                 "numberedlist",
-                "bulletedlist"
+                "bulletedlist",
             ],
             ckfinder: {
                 // eslint-disable-next-line max-len

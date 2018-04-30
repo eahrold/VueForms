@@ -3,7 +3,7 @@
 
 window.$ = window.jQuery = require('jquery')
 require('bootstrap')
-require('bootstrap-sass')
+// require('bootstrap-sass')
 
 import moment from 'moment'
 window.moment = moment

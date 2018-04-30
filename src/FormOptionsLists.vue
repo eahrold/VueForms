@@ -1,41 +1,56 @@
 <template>
-<div class="form-group">
+<div class="form-group col col-md-12">
     <!-- Lable  -->
-    <div class="col-sm-12">
+    <div class="row">
         <slot name='label'>
-            <label v-if='label'>{{ label }}</label>
+            <div class="col-md-12"><label v-if='label'>{{ label }}</label></div>
         </slot>
     </div>
+
     <!-- End Label -->
     <div class='row'>
-    <!-- List Groups -->
-    <div class="col-sm-6">
-        <small class="help-text">Current Items</small>
-        <vue-draggable class="value-container" :class='valueListClass' v-model="aValue" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-            <transition-group name="no" class="list-group draggable-list" tag="ul">
-                <li class="list-group-item" v-for="element in aValue" :key="element[valueKey]">
-                    <a class='badge' @click.prevent.stop="fixElement(element)"><i :class="elementIcon(element)" aria-hidden="true"></i></a>
+        <!-- List Groups -->
+        <div class="col col-sm-6">
+            <small class="help-text">Current Items</small>
+            <vue-draggable
+                v-model="aValue"
+                :class='valueListClass'
+                :options="dragOptions"
+                :move="onMove"
+                @start="isDragging=true"
+                @end="isDragging=false"
+                class="value-container">
+                    <li class="list-group-item" v-for="element in aValue" :key="element[valueKey]">
+                        <a class='badge' @click.prevent.stop="fixElement(element)">
+                            <i :class="elementIcon(element)" aria-hidden="true"></i>
+                        </a>
                         {{ elementDescription(element) }}
+                    </li>
+            </vue-draggable>
+        </div>
+
+        <div class="col col-sm-6">
+            <small class="help-text">Available Items</small>
+            <transition name='fade'>
+                <li v-if='showOptSearch' class="list-group-item">
+                    <input v-model='optSearch' class='form-control' placeholder="Search...">
                 </li>
-            </transition-group>
-        </vue-draggable>
-    </div>
+            </transition>
 
-    <div class="col-sm-6">
-        <small class="help-text">Available Items</small>
-        <transition name='fade'>
-            <li v-if='showOptSearch' class="list-group-item"><input v-model='optSearch' class='form-control' placeholder="Search..."></li>
-        </transition>
-
-        <vue-draggable class="value-container" :class='optionsListClass' :value="availableOptions" :options="dragOptions" :move="onMove">
-            <transition-group name="no" class="list-group draggable-list" tag="ul">
-                <li class="list-group-item" v-for="element in availableOptions" :key="element[valueKey]">
-                    <a class='badge' @click.prevent.stop="fixElement(element)"><i :class="elementIcon(element)" aria-hidden="true"></i></a>
+            <vue-draggable
+                class="value-container"
+                :class='optionsListClass'
+                :value="availableOptions"
+                :options="dragOptions"
+                :move="onMove">
+                    <li class="list-group-item" v-for="element in availableOptions" :key="element[valueKey]">
+                        <a class='badge' @click.prevent.stop="fixElement(element)">
+                            <i :class="elementIcon(element)" aria-hidden="true"></i>
+                        </a>
                         {{ elementDescription(element) }}
-                </li>
-          </transition-group>
-        </vue-draggable>
-    </div>
+                    </li>
+            </vue-draggable>
+        </div>
     </div>
     <!-- End List Groups -->
 </div>

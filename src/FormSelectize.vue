@@ -1,6 +1,6 @@
 <template>
-    <div class='form-group' :class='formClass'>
-        <label class="control-label" v-if='label !== ""' :for='id'>{{ aLabel }}</label>
+    <div class='form-group vf-form-group' :class='formClass'>
+        <label class="control-label vf-control-label" v-if='label !== ""' :for='id'>{{ aLabel }}</label>
         <select v-if='multiple && options'
             :id='id'
             :name='property'
@@ -46,7 +46,7 @@
             v-bind="{errors, warning, property}">
         </form-errors>
 
-        <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
     </div>
 </template>
 

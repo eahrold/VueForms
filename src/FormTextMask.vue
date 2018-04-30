@@ -1,13 +1,27 @@
 <template>
-    <div class="form-group" :class='formClass'>
+    <div class="form-group vf-form-group" :class='formClass'>
         <label :for='vf_uid'>{{ aLabel }}: </label>
         <div class='text' :class='groupClass'>
-            <the-mask @keydown.tab="autocomplete" :id="vf_uid" :placeholder='placeholder' v-model='aValue' :name='property' :mask="mask" class="form-control" :disabled='!enabled'/>
-
-            <span v-if='lockable' class="input-group-addon">
-                <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
+            <the-mask
+                v-model='aValue'
+                v-bind='$attrs'
+                v-on='$listeners'
+                :id="vf_uid"
+                :placeholder='placeholder'
+                :name='property'
+                :mask="mask"
+                :disabled='disabled || !enabled'
+                :style='inputStyle'
+                :class='inputClass'
+                @keydown.tab="autocomplete"
+                class="form-control vf-form-control"/>
+            <span v-if='showAddon' class="input-group-addon vf-input-group-addon">
+                <slot name='addon'>
+                    <span @click='enabled = !enabled' class="fa" :class='lockClass'></span>
+                </slot>
             </span>
-            <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+
+            <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
         </div>
         <form-errors
             v-if='displayErrors'
@@ -44,8 +58,12 @@ export default {
     },
 
     computed : {
+        showAddon() {
+            return this.lockable || !!this.$slots.addon
+        },
+
         groupClass() {
-            return {'input-group': this.lockable === true }
+            return {'input-group': this.showAddon }
         },
 
         lockClass() {

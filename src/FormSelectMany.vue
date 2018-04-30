@@ -57,12 +57,14 @@
 </style>
 
 <template>
-<div class="form-group" :class='formClass'>
-    <label v-if='label' class="control-label">{{ aLabel }}</label>
+<div class="form-group vf-form-group" :class='formClass'>
+    <label v-if='label' class="control-label vf-control-label">{{ aLabel }}</label>
     <div class="dropdown">
-      <button class="btn btn-outline-secondary btn-default dropdown-toggle btn-block" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-outline-secondary btn-default btn-block" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ selected }}
-        <span class="bs-caret pull-right"><span class="caret"></span></span>
+        <span class="bs-caret pull-right">
+            <slot name='caret'><i class="fa fa-caret-down" aria-hidden="true"></i></slot>
+        </span>
       </button>
 
       <div class="dropdown-menu" :aria-labelledby="vf_uid">
@@ -86,7 +88,7 @@
         v-if='displayErrors'
         v-bind="{errors, warning, property}">
     </form-errors>
-    <p v-if="!!$slots['help']" class="help-block"><small><slot name='help'></slot></small></p>
+    <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
 </div>
 </template>
 
