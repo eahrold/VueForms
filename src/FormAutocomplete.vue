@@ -13,6 +13,8 @@ https://github.com/fareez-ahamed/autocomplete-vuejs2
             :id="vf_uid"
             :name='property'
             :value="aValue"
+            :style='inputStyle'
+            :class='inputClass'
             @input="updateValue($event.target.value)"
             @keydown.enter = 'enter'
             @keydown.down = 'down'
