@@ -74,7 +74,7 @@ export default {
 
     mixins: [ core ],
 
-    props : {
+    props: {
         multiple: {
             type: Boolean,
             default: false
@@ -82,12 +82,12 @@ export default {
 
         accept: {
             type: [String, Array],
-            default: ()=>{ return fileTypes.any }
+            default: () => { return fileTypes.any }
         },
 
         showAttached: {
             type: Boolean,
-            default: true,
+            default: true
         }
     },
 
@@ -98,52 +98,51 @@ export default {
     },
 
     mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
+        this.$nextTick(() => {
+            if (this.value) {
+                this.aValue = this.value
             }
-        });
+        })
     },
 
     computed: {
-        pluralized() {
-            if(this.multiple) {
-                return (_.get(this.aValue, 'length') > 1) ? "Files" : "File"
+        pluralized () {
+            if (this.multiple) {
+                return (_.get(this.aValue, 'length') > 1) ? 'Files' : 'File'
             }
             return 'File'
         },
 
-        _accept() {
-            if(_.isString(this.accept))return this.accept;
+        _accept () {
+            if (_.isString(this.accept)) return this.accept
             return this.accept.join(',')
         },
 
-        currentFile() {
+        currentFile () {
+            if (!this.multiple) return this.fileToString(this.aValue)
 
-            if( ! this.multiple ) return this.fileToString(this.aValue);
-
-            return _.map(this.aValue, (file)=>{
+            return _.map(this.aValue, (file) => {
                 return this.fileToString(file)
             }).join(', ')
         },
 
-        validated() {
-            if(this.required) {
+        validated () {
+            if (this.required) {
                 return !!this.aValue
             }
             return true
-        },
+        }
     },
 
     methods: {
-        fileToString(file) {
-            if(_.isString(file)) return file
-            return _.get(file, 'name', _.get(file,'path'))
+        fileToString (file) {
+            if (_.isString(file)) return file
+            return _.get(file, 'name', _.get(file, 'path'))
         },
 
-        processFile(event) {
-            console.log(event.target.files);
-            if(this.multiple) {
+        processFile (event) {
+            console.log(event.target.files)
+            if (this.multiple) {
                 this.aValue = event.target.files
             } else {
                 this.aValue = event.target.files[0]

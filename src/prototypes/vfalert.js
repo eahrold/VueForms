@@ -1,9 +1,10 @@
-import Vue from "Vue"
+import Vue from 'Vue'
+import _ from 'lodash'
 
 export const types = {
     TOAST: 'vfalert.TOAST',
     ALERT: 'vfalert.ALERT',
-    CONFIRM: 'vfalert.CONFIRM',
+    CONFIRM: 'vfalert.CONFIRM'
 }
 
 export const statuses = {
@@ -14,55 +15,54 @@ export const statuses = {
 }
 
 const methods = {
-    toast(message, status, options) {
+    toast (message, status, options) {
         const { position, timeout } = _.isObject(options) ? options : {}
-        this.$emit(types.TOAST, message, {status,  position, timeout })
+        this.$emit(types.TOAST, message, { status, position, timeout })
     },
 
-    alert(message, status, options) {
+    alert (message, status, options) {
         const { timeout, errors } = _.isObject(options) ? options : {}
-        this.$emit(types.ALERT, message, {status, timeout, errors})
+        this.$emit(types.ALERT, message, { status, timeout, errors })
     },
 
-    success(message, options) {
-        return this.alert(message, statuses.SUCCESS, options);
+    success (message, options) {
+        return this.alert(message, statuses.SUCCESS, options)
     },
 
-    info(message, options) {
-        return this.alert(message, statuses.INFO, options);
+    info (message, options) {
+        return this.alert(message, statuses.INFO, options)
     },
 
-    warning(message, options) {
-        return this.alert(message, statuses.WARNING, options);
+    warning (message, options) {
+        return this.alert(message, statuses.WARNING, options)
     },
 
-    error(message, options) {
-        return this.alert(message, statuses.DANGER, options);
+    error (message, options) {
+        return this.alert(message, statuses.DANGER, options)
     },
 
-    errorResponse(response, fallback, xhr) {
-        const data = _.get(response, 'data', response);
+    errorResponse (response, fallback, xhr) {
+        const data = _.get(response, 'data', response)
 
-        let message = _.isString(response) ? response : _.get(data, 'message');
-        if ( ! message && _.isObject(xhr)) {
+        let message = _.isString(response) ? response : _.get(data, 'message')
+        if (!message && _.isObject(xhr)) {
             const { status, statusText } = xhr
             message = `<b class='text-danger'>${status}</b> ${statusText}</br>${fallback}`
         }
 
-        const errors = _.get(data, 'errors');
-        return this.alert(message || fallback || "Ooops... Something went wrong", statuses.DANGER, {errors, });
+        const errors = _.get(data, 'errors')
+        return this.alert(message || fallback || 'Ooops... Something went wrong', statuses.DANGER, { errors })
     },
 
-    confirm(message, status, options) {
-        return new Promise((fulfill, reject)=>{
-            this.$emit(types.CONFIRM, message, {...options, status, }, {fulfill, reject},)
+    confirm (message, status, options) {
+        return new Promise((resolve, reject) => {
+            this.$emit(types.CONFIRM, message, { ...options, status }, { resolve, reject })
         })
     },
 
-    hasFormAlert() {
-        return !!window.document.getElementById('vf-form-alert-panel');
+    hasFormAlert () {
+        return !!window.document.getElementById('vf-form-alert-panel')
     }
 }
 
-
-export default new Vue({methods,})
+export default new Vue({methods})

@@ -53,7 +53,6 @@
 .form-group.search {
     padding: 5px;
 }
-
 </style>
 
 <template>
@@ -73,7 +72,7 @@
             <input class='form-control' placeholder="Search..." v-model='search'>
         </div>
         <form class='dropdown-content-wrapper'>
-            <div class='dropdown-item' v-for='(opt, idx) in _filtered' :class='optItemClass(opt)'>
+            <div class='dropdown-item' v-for='(opt, idx) in _filtered' :key='idx' :class='optItemClass(opt)'>
             <label :for='`vf-sel-${vf_uid}-${idx}`' :class='optLabelClass(opt)'>
                 <span>{{ opt[textKey] }} <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true"></i></span>
                 <input v-if='multiple' class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='checkbox' v-model='aValue' :value='opt'>
@@ -93,7 +92,8 @@
 </template>
 
 <script>
-import { core } from './mixins';
+import _ from 'lodash'
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
@@ -125,7 +125,7 @@ export default {
 
         placeholder: {
             type: String,
-            default: "Please Select..."
+            default: 'Please Select...'
         },
 
         hilightClass: {
@@ -135,7 +135,7 @@ export default {
 
         maxDisplayItems: {
             type: Number,
-            default: 3,
+            default: 3
         }
     },
 
@@ -147,64 +147,63 @@ export default {
     },
 
     mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
+        this.$nextTick(() => {
+            if (this.value) {
                 this.aValue = this.value
             }
-        });
+        })
     },
 
     computed: {
-        _filtered() {
-            if(!this.search)return this.options;
+        _filtered () {
+            if (!this.search) return this.options
 
-            const regex = new RegExp(this.search, "i")
-            return _.filter(this.options, (opt)=>{
+            const regex = new RegExp(this.search, 'i')
+            return _.filter(this.options, (opt) => {
                 return opt[this.textKey].match(regex)
             })
         },
 
-        selected() {
+        selected () {
             if (!_.isEmpty(this.aValue)) {
-                if( ! this.multiple) {
+                if (!this.multiple) {
                     let text = _.get(this.aValue, this.textKey)
-                    if(text)return text
+                    if (text) return text
                 } else {
-                    let take = _.take(this.aValue, this.maxDisplayItems).map((item)=>{return item[this.textKey]})
-                    if(this.aValue.length > take.length) {
+                    let take = _.take(this.aValue, this.maxDisplayItems).map((item) => { return item[this.textKey] })
+                    if (this.aValue.length > take.length) {
                         take.push(`(and ${this.aValue.length - take.length} more...)`)
                     }
                     return take.join(', ')
                 }
             }
-            return this.placeholder;
+            return this.placeholder
         }
     },
 
     methods: {
-        optLabelClass(opt) {
+        optLabelClass (opt) {
             return {
-                [this.hilightClass] : this.isSelected(opt)
+                [this.hilightClass]: this.isSelected(opt)
             }
         },
 
-        optItemClass(opt) {
+        optItemClass (opt) {
             return {
-                'selected' : this.isSelected(opt)
+                'selected': this.isSelected(opt)
             }
         },
 
-        optIndex(opt) {
+        optIndex (opt) {
             return _.findIndex(this.aValue, opt)
         },
 
-        isSelected(opt) {
-            return this.multiple ?
-                (this.optIndex(opt) !== -1) :
-                opt[this.textKey] === _.get(this.value, this.textKey)
-
-        },
-    },
+        isSelected (opt) {
+            return this.multiple
+                ? (this.optIndex(opt) !== -1)
+                : opt[this.textKey] === _.get(this.value, this.textKey)
+        }
+    }
 
 }
 </script>

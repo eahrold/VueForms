@@ -6,19 +6,19 @@ import {
     dates,
     options,
     vf_uid,
-    formData,
+    formData
 } from './mixins'
 
 import {
     vfalert,
     vfconfig,
     ValidatorStore,
-    ValidationSyncMixin,
+    ValidationSyncMixin
 } from './prototypes'
 
 import {
     dateFormats,
-    fileTypes,
+    fileTypes
 } from './data_sources'
 
 import FormText from './FormText'
@@ -73,8 +73,7 @@ import FormErrors from './FormErrors'
 import FormSaveButton from './FormSaveButton'
 
 export const VueForms = {
-    install(Vue, options) {
-
+    install (Vue, options) {
         Vue.use(VueFormsCore, options)
         Vue.use(VueFormHelpers, options)
 
@@ -103,7 +102,6 @@ export const VueForms = {
 
         Vue.component('form-options-list', FormOptionsLists)
         Vue.component('form-options-list-scoped', FormOptionsListsScoped)
-
     }
 }
 
@@ -111,15 +109,14 @@ export const VueForms = {
  * Core Components
  */
 export const VueFormsCore = {
-    install(Vue, option) {
+    install (Vue, option) {
         vfconfig.configure(option || {})
 
         Object.defineProperty(Vue.prototype, '$vfconfig', {
-          get () {
-            return vfconfig
-          }
+            get () {
+                return vfconfig
+            }
         })
-
 
         Vue.component('form-text', FormText)
 
@@ -153,7 +150,7 @@ export const VueFormsCore = {
  * Helpers
  */
 export const VueFormHelpers = {
-    install(Vue, options) {
+    install (Vue, options) {
         Vue.component('form-loader', FormLoader)
         Vue.component('form-errors', FormErrors)
         Vue.component('form-save-button', FormSaveButton)
@@ -161,7 +158,7 @@ export const VueFormHelpers = {
         Vue.component('form-alert', FormAlert)
         Vue.component('form-progress-bar', FormProgressBar)
 
-        const validator = new ValidatorStore();
+        const validator = new ValidatorStore()
 
         Vue.mixin({
             data () {
@@ -178,9 +175,9 @@ export const VueFormHelpers = {
         })
 
         Object.defineProperty(Vue.prototype, '$vfalert', {
-          get () {
-            return vfalert
-          }
+            get () {
+                return vfalert
+            }
         })
     }
 }

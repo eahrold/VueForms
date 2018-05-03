@@ -23,12 +23,12 @@ export default {
         min: {
             type: Number,
             default: 0
-        },
+        }
     },
 
     computed: {
-        barStyle() {
-            return "width:" + this.progress + '%';
+        barStyle () {
+            return 'width:' + this.progress + '%'
         }
     }
 }

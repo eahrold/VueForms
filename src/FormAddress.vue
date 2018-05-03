@@ -54,31 +54,31 @@
     </form-section>
 </template>
 
-
 <script>
 
 import { core } from './mixins'
 import FormStateSelect from './FormStateSelect'
 import FormCountrySelect from './FormCountrySelect'
 
-import  { GOOGLE_PLACE_INSTALL_ERROR_MESSAGE } from './FormGooglePlaceLookup'
+import { GOOGLE_PLACE_INSTALL_ERROR_MESSAGE } from './FormGooglePlaceLookup'
+import _ from 'lodash'
 
 export default {
     mixins: [ core ],
     components: {
         'form-state-select': FormStateSelect,
-        'form-country-select': FormCountrySelect,
+        'form-country-select': FormCountrySelect
     },
 
     props: {
         includeLookup: {
             type: Boolean,
-            default: false,
+            default: false
         },
 
         includeCoordinates: {
             type: Boolean,
-            default: false,
+            default: false
         },
 
         stateSelect: {
@@ -94,23 +94,23 @@ export default {
     },
 
     computed: {
-        showLookup() {
+        showLookup () {
             if (this.includeLookup) {
                 const canShow = _.isFunction(_.get(window, 'google.maps.places.Autocomplete'))
-                if( ! canShow) {
+                if (!canShow) {
                     console.error(GOOGLE_PLACE_INSTALL_ERROR_MESSAGE)
-                    return false;
+                    return false
                 }
-                return true;
+                return true
             }
-            return false;
+            return false
         }
     },
 
     methods: {
-        placeSelected(address) {
-            const { line_1, city, state, postal_code, country, lat, lng, } = address
-            this.aValue = { line_1, city, state, postal_code, country, lat, lng, }
+        placeSelected (address) {
+            const { line_1, city, state, postal_code, country, lat, lng } = address
+            this.aValue = { line_1, city, state, postal_code, country, lat, lng }
         }
     }
 }

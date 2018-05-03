@@ -26,34 +26,33 @@
 <script>
 
 import _ from 'lodash'
-import VueTinymce from '@tinymce/tinymce-vue';
-import { core } from './mixins';
+import VueTinymce from '@tinymce/tinymce-vue'
+import { core } from './mixins'
 
-const imageTemplate = function({path, caption, alt, width, height, align}) {
-    const style=''
-    const attrs = _.reduce({src: path, alt, width, height, align}, (result, value, key)=>{
+const imageTemplate = function ({path, caption, alt, width, height, align}) {
+    // const style = ''
+    const attrs = _.reduce({src: path, alt, width, height, align}, (result, value, key) => {
         if (value) {
             result += `${[key]}="${value}" `
         }
-        return result;
-    } ,'')
+        return result
+    }, '')
     let imgTemplate = `<img ${attrs} />`
 
-    if(_.isString(caption)) {
+    if (_.isString(caption)) {
         return `<figure class="image">${imgTemplate}<figcaption><p>${caption.replace(/(?:\r\n|\r|\n)/g, '<br />')}</p></figcaption></figure>`
     }
-    return imgTemplate;
+    return imgTemplate
 }
-
 
 const defaults = {
     height: 300,
     image_caption: true,
     image_advtab: true,
 
-    remove_script_host : false,
-    relative_urls : false,
-    convert_urls : true,
+    remove_script_host: false,
+    relative_urls: false,
+    convert_urls: true
 }
 
 export default {
@@ -62,7 +61,7 @@ export default {
     },
 
     mixins: [ core ],
-    data() {
+    data () {
         return {
             showModal: false,
             editor: null
@@ -82,46 +81,48 @@ export default {
     },
 
     methods: {
-        closeFilePicker() {
-            this.showModal = false;
+        closeFilePicker () {
+            this.showModal = false
         },
 
-        openFilePicker() {
+        openFilePicker () {
             this.showModal = true
         },
 
-        chooseFile(file) {
-            let content;
-            if(_.isObject(file)) {
+        chooseFile (file) {
+            let content
+            if (_.isObject(file)) {
                 content = file
-            } else if(_.isString(file)) {
+            } else if (_.isString(file)) {
                 content = {path: file}
             }
             this.editor.insertContent(imageTemplate(content))
             this.closeFilePicker()
-        },
+        }
     },
 
-    computed:{
-        _apiKey() {
+    computed: {
+        _apiKey () {
             return this.apiKey || _.get(this.$vfconfig, 'tinymce.apiKey')
         },
 
-        init() {
-            if(this.tinymceConfig) return tinymceConfig;
+        init () {
+            if (this.tinymceConfig) return this.tinymceConfig
 
             let init = {
-              setup:(editor)=>{
-                this.editor = editor;
-                editor.addButton('vf_image_picker', {
-                    text: "Image Gallery",
-                    icon: 'image',
-                    tooltip: "Insert Image",
-                    onclick: this.openFilePicker
-                });
-              }
+                setup: (editor) => {
+                    /* eslint-disable vue/no-side-effects-in-computed-properties */
+                    this.editor = editor
+                    editor.addButton('vf_image_picker', {
+                        text: 'Image Gallery',
+                        icon: 'image',
+                        tooltip: 'Insert Image',
+                        onclick: this.openFilePicker
+                    })
+                    /* eslint-enable vue/no-side-effects-in-computed-properties */
+                }
             }
-            return  _.assign(init, defaults, _.get(this.$vfconfig, 'tinymce.config', {}))
+            return _.assign(init, defaults, _.get(this.$vfconfig, 'tinymce.config', {}))
         }
     }
 

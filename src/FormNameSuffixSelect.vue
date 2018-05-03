@@ -8,10 +8,9 @@
 
 <script>
 
-import { suffixes } from './data_sources/Honorifics';
+import { suffixes } from './data_sources/Honorifics'
 
-import { core } from './mixins';
-
+import { core } from './mixins'
 
 export default {
 
@@ -25,12 +24,12 @@ export default {
 
         label: {
             type: String,
-            default: "Suffix"
+            default: 'Suffix'
         },
 
         placeholder: {
             type: String,
-            default: "Choose..."
+            default: 'Choose...'
         }
     },
 
@@ -39,6 +38,6 @@ export default {
             options: suffixes,
             aValue: null
         }
-    },
+    }
 }
 </script>

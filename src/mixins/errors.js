@@ -1,61 +1,61 @@
 import _ from 'lodash'
 
 export default {
-    data() {
+    data () {
         return {
             touched: false,
             blurred: false,
-            focused: false,
+            focused: false
         }
     },
 
     computed: {
-        formClass() {
+        formClass () {
             return [{
-                "has-error": this.hasError,
-                "has-warning": !this.isValid,
-            }];
+                'has-error': this.hasError,
+                'has-warning': !this.isValid
+            }]
         },
 
-        typeErrors() {
-            return _.get(this.errors, this.property, []);
+        typeErrors () {
+            return _.get(this.errors, this.property, [])
         },
 
-        hasError() {
-            return Boolean(this.errors && this.typeErrors.length);
+        hasError () {
+            return Boolean(this.errors && this.typeErrors.length)
         },
 
-        displayErrors() {
+        displayErrors () {
             return this.hasError || this.warning
         },
 
-        warning() {
+        warning () {
             const message = _.get(this, 'vfErrors')
             if (_.isString(message)) {
                 return message
             }
             return null
-        },
+        }
 
     },
 
     methods: {
-        onFocus(event) {
+        onFocus (event) {
             this.focused = true
         },
 
-        onBlur(event) {
+        onBlur (event) {
             this.blurred = true
         }
     },
 
     watch: {
-        blurred(newVal) {
+        blurred (newVal) {
             this.focused = !newVal
         },
 
-        focused(newVal) {
+        focused (newVal) {
             this.blurred = !newVal
         }
     }
-};
+}

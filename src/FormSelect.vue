@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import { core, options } from './mixins';
+import { core, options } from './mixins'
 
 export default {
     mixins: [ core, options ],
-    props: {},
+    props: {}
 
 }
 </script>

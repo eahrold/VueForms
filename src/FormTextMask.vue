@@ -33,7 +33,7 @@
 <script>
 
 import { TheMask } from 'vue-the-mask'
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     components: { TheMask },
@@ -53,23 +53,25 @@ export default {
 
     data () {
         return {
-            enabled: this.lockable === false ? true : false,
+            enabled: this.lockable === false
         }
     },
 
-    computed : {
-        showAddon() {
+    computed: {
+        showAddon () {
             return this.lockable || !!this.$slots.addon
         },
 
-        groupClass() {
-            return {'input-group': this.showAddon }
+        groupClass () {
+            return {
+                'input-group': this.showAddon
+            }
         },
 
-        lockClass() {
-            return this.enabled ? 'fa-unlock-alt':'fa-lock';
+        lockClass () {
+            return this.enabled ? 'fa-unlock-alt' : 'fa-lock'
         }
-    },
+    }
 
 }
 </script>

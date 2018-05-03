@@ -1,11 +1,11 @@
 export default {
     props: {
         inputClass: {
-            required: false,
+            required: false
         },
 
         inputStyle: {
-            required: false,
-        },
+            required: false
+        }
     }
 }

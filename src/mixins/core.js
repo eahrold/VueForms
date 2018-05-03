@@ -8,6 +8,6 @@ export default {
         values,
         vf_uid,
         props,
-        errors,
+        errors
     ]
 }

@@ -8,9 +8,9 @@ export default {
     },
 
     props: {
-        // Used for v-bind
+    // Used for v-bind
         value: {
-            type: [Object, Array],
+            type: [Object, Array]
         },
 
         // the label for the form element
@@ -27,22 +27,22 @@ export default {
 
         // The id of the model
         id: {
-            type: Number,
+            type: Number
         },
 
         // The model property the image should be attached to
         property: {
-            type: String,
+            type: String
         },
 
         private: {
             type: Boolean,
-            default: false,
+            default: false
         },
 
         endpoint: {
             type: String,
-            required: false,
+            required: false
         },
 
         headers: {
@@ -71,26 +71,26 @@ export default {
         helpText: {
             type: String,
             required: false
-        },
+        }
     },
 
-    data() {
+    data () {
         return {
             error: null,
-            progress: 0,
+            progress: 0
         }
     },
 
     computed: {
-        dzHelpText() {
+        dzHelpText () {
             return `Limited to ${this.limitText}. ${this.eachText} must not exceed ${this.maxFileSize}MB.`
         },
 
-        requestHeaders() {
+        requestHeaders () {
             return this.headers || _.get(this.$vfconfig, 'headers', {})
         },
 
-        acceptedFileTypes() {
+        acceptedFileTypes () {
             if (_.isString(this.fileTypes)) {
                 return this.fileTypes
             }
@@ -100,98 +100,98 @@ export default {
             }
         },
 
-        requestEndpoint() {
-            const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload');
+        requestEndpoint () {
+            const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload')
 
-            var endpoint = base + "?type=" + this.type;
+            var endpoint = base + '?type=' + this.type
 
             if (this.id) {
-                endpoint += "&model=" + this.id;
+                endpoint += '&model=' + this.id
             }
 
             if (this.property) {
-                endpoint += "&property=" + this.property;
+                endpoint += '&property=' + this.property
             }
 
-            return endpoint;
+            return endpoint
         },
 
-        fileList() {
+        fileList () {
             if (this.value instanceof Array) {
-                return this.value;
+                return this.value
             } else if (this.value instanceof Object) {
-                return [this.value];
+                return [this.value]
             }
         },
 
-        impliedArray() {
-            return Boolean(this.limit > 1 || this.value instanceof Array);
+        impliedArray () {
+            return Boolean(this.limit > 1 || this.value instanceof Array)
         },
 
-        eachText() {
-            return this.limit > 1 ? "Each file" : "The file"
+        eachText () {
+            return this.limit > 1 ? 'Each file' : 'The file'
         },
 
-        limitText() {
-            return "" + this.limit + " file" + ((this.limit > 1) ? 's' : '');
+        limitText () {
+            return '' + this.limit + ' file' + ((this.limit > 1) ? 's' : '')
         }
     },
 
     methods: {
-        dzError(file, response, xhr) {
-            console.error('FormDropzone Error:', response, xhr);
+        dzError (file, response, xhr) {
+            console.error('FormDropzone Error:', response, xhr)
             this.error = response
 
-            this.progress = 0;
+            this.progress = 0
             if (this.$vfalert && _.isFunction(this.$vfalert.errorResponse)) {
-                this.$vfalert.errorResponse(response, 'There was a problem uploading the file', xhr);
+                this.$vfalert.errorResponse(response, 'There was a problem uploading the file', xhr)
             }
 
-            this.$emit('error', response);
+            this.$emit('error', response)
         },
 
-        dzAdded(file) {
-            this.progress = 0;
+        dzAdded (file) {
+            this.progress = 0
             if (this.impliedArray) {
-                var files = this.value || [];
-                files.push(file);
-                return this.$emit('input', files);
+                var files = this.value || []
+                files.push(file)
+                return this.$emit('input', files)
             }
 
-            this.$emit('input', file);
-            this.$emit('added', file);
+            this.$emit('input', file)
+            this.$emit('added', file)
         },
 
-        dzRemoved(file) {
-            this.progress = 0;
+        dzRemoved (file) {
+            this.progress = 0
 
             var success = (response) => {
                 var files = null
                 if (this.impliedArray) {
                     files = _.filter(this.value, (f) => {
-                        return f.id != file.id
-                    });
+                        return f.id !== file.id
+                    })
                 }
-                this.$emit('input', files);
-                this.$emit('removed', file);
-                console.log("Successfully removed " + file.name);
-            };
+                this.$emit('input', files)
+                this.$emit('removed', file)
+                console.log('Successfully removed ' + file.name)
+            }
 
             var error = (response) => {
                 this.error = response
-                this.$emit('error', response);
-            };
+                this.$emit('error', response)
+            }
 
             if (file.id) {
-                const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload');
+                const base = this.endpoint || _.get(this.$vfconfig, 'endpoints.upload')
                 if (_.isEmpty(base)) {
-                    console.error("[FORM DROPZONE] No base path set.")
-                    return;
+                    console.error('[FORM DROPZONE] No base path set.')
+                    return
                 }
 
                 var endpoint = `${base}/${file.id}`
-                this.$http.delete(endpoint).then(success, error);
+                this.$http.delete(endpoint).then(success, error)
             }
-        },
+        }
     }
 }

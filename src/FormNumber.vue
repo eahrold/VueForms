@@ -17,7 +17,7 @@
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
@@ -31,7 +31,7 @@ export default {
         max: {
             type: [ Number, String ],
             default: Number.MAX_VALUE
-        },
-    },
+        }
+    }
 }
 </script>

@@ -37,10 +37,10 @@ export default {
         }
     },
 
-    data() {
+    data () {
         return {
-            isCollapsed: this.collapsed,
+            isCollapsed: this.collapsed
         }
-    },
+    }
 }
 </script>

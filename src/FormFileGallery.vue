@@ -62,126 +62,127 @@ export default {
     props: {
         headers: {
             type: Object,
-            required: false,
+            required: false
         },
         endpoint: {
             type: String,
-            required: false,
+            required: false
         },
         srcKey: {
             type: String,
-            default: "path"
+            default: 'path'
         },
         addMeta: {
             type: Boolean,
-            default: false,
+            default: false
         }
     },
 
-    data() {
+    data () {
         return {
             errorMsg: null,
             files: [],
             pagination: {},
             selected: null,
             page: 1,
-            limit: 20,
+            limit: 20
         }
     },
 
     computed: {
-        requestEndpoint() {
-            return this.endpoint || (!!this.$vfconfig ? this.$vfconfig.filesEndpoint() : null)
+        requestEndpoint () {
+            return this.endpoint || (this.$vfconfig ? this.$vfconfig.filesEndpoint() : null)
         },
 
-        requestHeaders() {
+        requestHeaders () {
             return this.headers || _.get(this.$vfconfig, 'headers', {})
         },
 
-        pagedFiles() {
-            return this.files.slice(this.offset, this.offset+this.limit)
+        pagedFiles () {
+            return this.files.slice(this.offset, this.offset + this.limit)
         },
 
-        offset() {
-            return (this.page-1) * this.limit
+        offset () {
+            return (this.page - 1) * this.limit
         },
 
-        hasNext() {
+        hasNext () {
             const { page, limit, files } = this
-            return ((page+1) * limit) <= _.get(files, 'length', 0 )
+            return ((page + 1) * limit) <= _.get(files, 'length', 0)
         },
 
-        hasPrev() {
+        hasPrev () {
             return this.page > 1
-        },
+        }
     },
 
-    mounted() {
+    mounted () {
         this.load()
     },
 
     methods: {
-        isImage(filename) {
+        isImage (filename) {
             return _.isString(filename) && (/\.(gif|jpe?g|tiff|png)$/i).test(filename)
         },
 
-        fileSrc(file) {
+        fileSrc (file) {
             if (_.isObject(file)) {
                 return _.get(file, this.srcKey)
             } else if (_.isString(file)) {
-                return file;
+                return file
             }
         },
 
-        choose(file, event) {
-            if(this.addMeta) {
+        choose (file, event) {
+            if (this.addMeta) {
                 const size = {
                     width: event.target.naturalWidth,
                     height: event.target.naturalHeight,
-                    constrain: true,
+                    constrain: true
                 }
-                return this.selected = _.assign(size, file);
+                const selected = this.selected = _.assign(size, file)
+                return selected
             }
             this.complete(file)
         },
 
-        complete(file) {
+        complete (file) {
             this.$emit('choose', file)
             this.$emit('close')
         },
 
-        pageNext() {
-            const { page } = this;
-            if(this.hasNext) {
+        pageNext () {
+            const { page } = this
+            if (this.hasNext) {
                 this.page = page + 1
             }
         },
 
-        pagePrev() {
-            if(this.hasPrev) {
+        pagePrev () {
+            if (this.hasPrev) {
                 this.page = this.page - 1
             }
         },
 
-        load() {
-            if(!_.isEmpty(this.files))return;
+        load () {
+            if (!_.isEmpty(this.files)) return
 
             var request = new XMLHttpRequest()
-            request.onload=({target})=>{
+            request.onload = ({target}) => {
                 this.files = JSON.parse(target.responseText)
-            };
-            request.onerror=({target})=>{
-                this.errorMsg = "Error error loading files"
-            };
+            }
+            request.onerror = ({target}) => {
+                this.errorMsg = 'Error error loading files'
+            }
 
-            request.open("GET", this.requestEndpoint, true);
-            _.each(this.requestHeaders, (value, key)=>{
+            request.open('GET', this.requestEndpoint, true)
+            _.each(this.requestHeaders, (value, key) => {
                 request.setRequestHeader(key, value)
             })
-            request.send();
-        },
+            request.send()
+        }
 
-    },
+    }
 }
 </script>
 

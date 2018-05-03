@@ -23,9 +23,9 @@
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
-    mixins: [ core ],
+    mixins: [ core ]
 }
 </script>

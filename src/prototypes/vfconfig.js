@@ -1,5 +1,5 @@
-import Vue from "Vue"
-
+import Vue from 'Vue'
+import _ from 'lodash'
 import mimeTypes from '../data_sources/SupportedMimeTypes'
 
 const DEFAULT_DATE_FORMAT = 'MM/DD/YYYY'
@@ -10,13 +10,13 @@ export default new Vue({
         headers: {},
         endpoints: {
             upload: null,
-            files: null,
+            files: null
         },
 
         format: {
             date: DEFAULT_DATE_FORMAT,
             time: DEFAULT_TIME_FORMAT,
-            dateValueFormat: null, // Format to return
+            dateValueFormat: null // Format to return
         },
 
         dropzone: {
@@ -35,25 +35,25 @@ export default new Vue({
                 toolbar: `undo redo | insert code  | bold italic | alignleft aligncenter alignright alignjustify |
                     bullist numlist outdent indent | link image vf_image_picker | styleselect fontselect fontsizeselect forecolor | visualblocks code`,
                 css: '',
-                menubar: true,
+                menubar: true
             }
-        },
+        }
     },
 
     computed: {
-        fileTypes() {
+        fileTypes () {
             return mimeTypes
-        },
+        }
     },
 
     methods: {
-        csfrToken() {
-            const token = document.head.querySelector('meta[name="csrf-token"]');
+        csfrToken () {
+            const token = document.head.querySelector('meta[name="csrf-token"]')
             if (token) return token.content
         },
 
-        filesEndpoint(key) {
-            const files = _.get(this, 'endpoints.files');
+        filesEndpoint (key) {
+            const files = _.get(this, 'endpoints.files')
             if (_.isObject(files)) {
                 return _.get(files, key || 'default')
             } else if (_.isString(files)) {
@@ -61,14 +61,14 @@ export default new Vue({
             }
         },
 
-        configure(options) {
+        configure (options) {
             const { headers, format, endpoints, tinymce } = options
             if (headers) {
                 this.headers = headers
             }
 
             if (tinymce) {
-                console.log("Setting tinymce", tinymce)
+                console.log('Setting tinymce', tinymce)
                 this.tinymce = _.assign({}, this.tinymce, tinymce)
             }
 

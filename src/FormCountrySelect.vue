@@ -15,17 +15,17 @@
 
 <script>
 
-import { countryCodes } from './data_sources';
+import { countryCodes } from './data_sources'
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
 
     data () {
         return {
-            options: countryCodes,
+            options: countryCodes
         }
-    },
+    }
 }
 </script>

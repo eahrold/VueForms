@@ -9,7 +9,7 @@
 <template>
 <transition name='fade'>
     <ul v-if='hasError || hasWarning' class='error list-unstyled pull-right'>
-        <li v-if='hasError' v-for='err in typeErrors'>
+        <li v-if='hasError' v-for='(err, idx) in typeErrors' :key='idx'>
             <small class="help-block form-text text-danger">{{ err }}</small>
         </li>
         <li v-if='!hasError && hasWarning'>
@@ -40,17 +40,17 @@ export default {
     },
 
     computed: {
-        typeErrors() {
-            return _.get(this.errors, this.property);
+        typeErrors () {
+            return _.get(this.errors, this.property)
         },
 
-        hasError() {
-            return Boolean(this.errors && !!this.typeErrors);
+        hasError () {
+            return Boolean(this.errors && !!this.typeErrors)
         },
 
-        hasWarning() {
+        hasWarning () {
             return _.isString(this.warning) && this.warning.length
-        },
+        }
     }
 }
 </script>

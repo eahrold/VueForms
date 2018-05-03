@@ -18,6 +18,7 @@
                 <button v-for='(align, idx) in alignment'
                     @click='selectAlignment(align.value)'
                     class="btn btn-default"
+                    :key='idx'
                     :class='{active: (aValue.align == align.value)}'>
                     <i class='vf-icon' :class='`vf-icon-image-${align.value}`'></i>
                 </button>
@@ -32,50 +33,50 @@
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
 
-    props : {
+    props: {
         src: {
             type: String,
-            default: true
+            required: true
         }
     },
 
     computed: {
-        thumbStyle() {
+        thumbStyle () {
             return {
-                width: "200px",
-                height:`${200 * (this.aValue.height/this.aValue.width)}px`}
+                width: '200px',
+                height: `${200 * (this.aValue.height / this.aValue.width)}px`}
         },
 
-        alignment() {
+        alignment () {
             return [
-                {value: 'left', text: "Left Aligned"},
+                {value: 'left', text: 'Left Aligned'},
                 {value: 'center', text: 'Center Aligned'},
-                {value: 'right', text: 'Right Aligned'},
+                {value: 'right', text: 'Right Aligned'}
             ]
         }
     },
 
     methods: {
-        selectAlignment(align) {
-            if(this.aValue.align === align) align = 'default';
+        selectAlignment (align) {
+            if (this.aValue.align === align) align = 'default'
             this.$set(this.aValue, 'align', align)
         },
 
-        updateWidth(newVal) {
-            if(this.aValue.constrain && newVal > 0) {
-                this.aValue.height = Math.round(this.aValue.height * (newVal/this.aValue.width))
+        updateWidth (newVal) {
+            if (this.aValue.constrain && newVal > 0) {
+                this.aValue.height = Math.round(this.aValue.height * (newVal / this.aValue.width))
             }
             this.aValue.width = Math.round(newVal)
         },
 
-        updateHeight(newVal) {
-            if(this.aValue.constrain && newVal > 0) {
-                this.aValue.width =  Math.round(this.aValue.width * (newVal/this.aValue.height))
+        updateHeight (newVal) {
+            if (this.aValue.constrain && newVal > 0) {
+                this.aValue.width = Math.round(this.aValue.width * (newVal / this.aValue.height))
             }
             this.aValue.height = Math.round(newVal)
         }

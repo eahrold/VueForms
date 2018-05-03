@@ -17,16 +17,16 @@
 
 <script>
 
-import { states } from './data_sources';
-import { core } from './mixins';
+import { states } from './data_sources'
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
 
     data () {
         return {
-            options: states,
+            options: states
         }
-    },
+    }
 }
 </script>

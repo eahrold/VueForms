@@ -1,4 +1,5 @@
 import moment from 'moment'
+import _ from 'lodash'
 
 export default {
     props: {
@@ -15,7 +16,7 @@ export default {
 
         opens: {
             type: String,
-            default: "center"
+            default: 'center'
         },
 
         autoApply: {
@@ -25,17 +26,12 @@ export default {
 
         timePicker: {
             type: Boolean,
-            default: false,
+            default: false
         },
 
         timePickerIncrement: {
             type: Number,
             default: 15
-        },
-
-        autoApply: {
-            type: Boolean,
-            default: true,
         },
 
         showRanges: {
@@ -45,13 +41,13 @@ export default {
 
         valueFormat: {
             type: String,
-            required: false,
+            required: false
         }
     },
 
     methods: {
-        $_makeFormattedDate(aMoment) {
-            if (!aMoment || !aMoment.isValid()) return null;
+        $_makeFormattedDate (aMoment) {
+            if (!aMoment || !aMoment.isValid()) return null
 
             if (this.timePicker) {
                 return aMoment.format(this.dateValueFormat)
@@ -59,57 +55,57 @@ export default {
             return aMoment.utc().startOf('day').format(this.dateValueFormat)
         },
 
-        updateStart(aMoment) {
+        updateStart (aMoment) {
             if (aMoment.isValid()) {
-                if ( ! this.timePicker) {
+                if (!this.timePicker) {
                     aMoment = aMoment.utc().startOf('day')
                 }
-                this.picker.setStartDate(aMoment);
+                this.picker.setStartDate(aMoment)
             }
         },
 
-        updateEnd(aMoment) {
+        updateEnd (aMoment) {
             if (aMoment.isValid()) {
-                if ( ! this.timePicker) {
+                if (!this.timePicker) {
                     aMoment = aMoment.utc().startOf('day')
                 }
-                this.picker.setEndDate(aMoment);
+                this.picker.setEndDate(aMoment)
             }
         },
 
-        safeDate(string) {
-            var date = moment(string);
+        safeDate (string) {
+            var date = moment(string)
             if (date.isValid()) {
-                return date;
+                return date
             }
-            return moment({});
-        },
+            return moment({})
+        }
 
     },
 
     computed: {
-        pickerLocaleFormat() {
+        pickerLocaleFormat () {
             var format = (_.get(this.$vfconfig, 'format.date') || 'MM/DD/YYYY')
-            if(this.timePicker) {
-                format += ` ${_.get(this.$vfconfig, 'format.time') || 'h:mm A' }`
+            if (this.timePicker) {
+                format += ` ${_.get(this.$vfconfig, 'format.time') || 'h:mm A'}`
             }
             return format
         },
 
-        dateValueFormat() {
-            return this.valueFormat || _.get(this, '$vfconfig.format.dateValueFormat', null);
+        dateValueFormat () {
+            return this.valueFormat || _.get(this, '$vfconfig.format.dateValueFormat', null)
         },
 
-        params() {
-            var date = this.safeDate(this.value);
+        params () {
+            var date = this.safeDate(this.value)
             return {
-                "singleDatePicker": this.single || false,
-                "autoApply": this.autoApply,
-                "showDropdowns": this.dropdowns,
-                "timePicker": this.timepicker,
-                "startDate": date,
-                "endDate": date,
-                "opens": this.opens
+                'singleDatePicker': this.single || false,
+                'autoApply': this.autoApply,
+                'showDropdowns': this.dropdowns,
+                'timePicker': this.timepicker,
+                'startDate': date,
+                'endDate': date,
+                'opens': this.opens
             }
         }
     }

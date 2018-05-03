@@ -1,61 +1,61 @@
 <template>
-  <transition name="vf-modal">
-    <div class="vf-modal-mask">
-      <div class="vf-modal-wrapper">
-        <div class="vf-modal-container">
-          <span @click="$emit('close')" class="vf-modal-close close">x</span>
+    <transition name="vf-modal">
+        <div class="vf-modal-mask">
+            <div class="vf-modal-wrapper">
+                <div class="vf-modal-container">
+                    <span @click="$emit('close')" class="vf-modal-close close">x</span>
 
-          <div v-if='!!$slots.header' class="vf-modal-header clearfix">
-            <h4>
-              <slot name="header"></slot>
-            </h4>
-          </div>
+                    <div v-if='!!$slots.header' class="vf-modal-header clearfix">
+                        <h4>
+                        <slot name="header"></slot>
+                        </h4>
+                    </div>
 
-          <div class="vf-modal-body clearfix">
-            <slot name="body">
-              default body
-            </slot>
-          </div>
+                    <div class="vf-modal-body clearfix">
+                        <slot name="body">
+                          default body
+                        </slot>
+                    </div>
 
-          <div v-if='!hideFooter' class="vf-modal-footer clearfix">
-            <slot name="footer">
-              <button class="btn btn-primary vf-modal-default-button" @click="$emit('close')">
-                Close
-              </button>
-            </slot>
-          </div>
+                    <div v-if='!hideFooter' class="vf-modal-footer clearfix">
+                        <slot name="footer">
+                        <button
+                            class="btn btn-primary vf-modal-default-button"
+                            @click="$emit('close')">Close</button>
+                        </slot>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </transition>
+    </transition>
 </template>
 
 <script type="text/javascript">
 export default {
     props: {
-      hideHeader: {
-        type: Boolean,
-        default: false,
-      },
+        hideHeader: {
+            type: Boolean,
+            default: false
+        },
 
-      hideFooter: {
-        type: Boolean,
-        default: false
-      }
+        hideFooter: {
+            type: Boolean,
+            default: false
+        }
     },
 
-    data() {
-      return {
-        default: document.body.style.display
-      }
+    data () {
+        return {
+            default: document.body.style.display
+        }
     },
 
-    beforeDestroy() {
-        document.body.style.overflow = this.default;
+    beforeDestroy () {
+        document.body.style.overflow = this.default
     },
 
-    mounted() {
-        document.body.style.overflow = "hidden";
+    mounted () {
+        document.body.style.overflow = 'hidden'
     }
 }
 </script>

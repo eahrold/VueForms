@@ -2,11 +2,11 @@
     <div>
         <div class="segmented-control" :class='`text-${type}`'>
             <template v-for='(opt, idx) in options'>
-                <input v-model='aValue' :value='idx' type="radio" :name="property" :id="'sc-1-'+vf_uid+'-'+idx">
+                <input :key='`sc-input-${idx}`' v-model='aValue' :value='idx' type="radio" :name="property" :id="`sc-${vf_uid}-${idx}`">
             </template>
 
             <template v-for='(opt, idx) in options'>
-                <label :for="'sc-1-'+vf_uid+'-'+idx" :data-value="opt">{{ opt }}</label>
+                <label :key='`sc-label-${idx}`' :for="`sc-${vf_uid}-${idx}`" :data-value="opt">{{ opt }}</label>
             </template>
         </div>
     </div>
@@ -14,7 +14,7 @@
 
 <script>
 
-import { core, options } from './mixins';
+import { core, options } from './mixins'
 
 export default {
     mixins: [ core, options ],
@@ -28,9 +28,9 @@ export default {
 
     data () {
         return {
-            aValue: this.value || 0,
+            aValue: this.value || 0
         }
-    },
+    }
 
 }
 </script>

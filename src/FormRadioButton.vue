@@ -2,7 +2,7 @@
     <div class="form-group vf-form-group">
         <label class="control-label vf-control-label" :for='property'>{{ aLabel }}</label>
         <div v-if='!inline' class='form-group-radio'>
-            <div class='radio' v-for='(opt, idx) in options'>
+            <div class='radio' v-for='(opt, idx) in options' :key='idx'>
                 <label :for="`${vf_uid}-${idx}`">
                     <input type="radio"
                         :name="property"
@@ -16,7 +16,7 @@
         </div>
 
         <div v-else class='form-group-radio'>
-            <label v-for='(opt, idx) in options' class="control-label radio-inline" :for="`${vf_uid}-${idx}`">
+            <label v-for='(opt, idx) in options' class="control-label radio-inline" :key='idx' :for="`${vf_uid}-${idx}`">
                 <input type="radio"
                 :name="property"
                 :id="`${vf_uid}-${idx}`"
@@ -37,7 +37,7 @@
 
 <script>
 
-import { core, options } from './mixins';
+import { core, options } from './mixins'
 
 export default {
     mixins: [ core, options ],
@@ -47,6 +47,6 @@ export default {
             type: Boolean,
             default: false
         }
-    },
+    }
 }
 </script>

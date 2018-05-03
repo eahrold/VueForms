@@ -36,11 +36,12 @@ Usage:
 </template>
 <script>
 
-var $ = require('jquery');
-require('bootstrap-daterangepicker');
-var moment = require('moment');
+import { errors, dates, styles, vf_uid } from './mixins'
+import _ from 'lodash'
+import moment from 'moment'
 
-import { errors, dates, styles, vf_uid } from './mixins';
+var $ = require('jquery')
+require('bootstrap-daterangepicker')
 
 export default {
     mixins: [ errors, dates, styles, vf_uid ],
@@ -48,19 +49,19 @@ export default {
     props: {
         properties: {
             type: Array,
-            default: ()=>{ return []},
+            default: () => { return [] }
         },
 
         label: {
-            type: String,
+            type: String
         },
 
-        start : {
-            type: String,
+        start: {
+            type: String
         },
 
-        end : {
-            type: String,
+        end: {
+            type: String
         },
 
         errors: {
@@ -70,7 +71,7 @@ export default {
 
         rules: {
             type: [Array, Function, Boolean],
-            default: true,
+            default: true
         }
     },
 
@@ -78,121 +79,120 @@ export default {
         return {
             picker: null,
             rootPicker: null,
-            range: null,
+            range: null
         }
     },
 
     mounted () {
-        this.$nextTick(()=>{
-            this.load();
-        });
+        this.$nextTick(() => {
+            this.load()
+        })
     },
 
     computed: {
-        ranges() {
+        ranges () {
             return {
-                "Today": [
+                'Today': [
                     moment().toDate(),
                     moment().toDate()
                 ],
-                "Yesterday": [
+                'Yesterday': [
                     moment().subtract(1, 'days').toDate(),
-                    moment().subtract(1, 'days').toDate(),
+                    moment().subtract(1, 'days').toDate()
                 ],
-                "Past week": [
+                'Past week': [
                     moment().subtract(1, 'week').toDate(),
                     moment().toDate()
                 ],
-                "Past Month": [
+                'Past Month': [
                     moment().subtract(1, 'months').toDate(),
                     moment().toDate()
                 ],
-                "Past Year": [
+                'Past Year': [
                     moment().subtract(1, 'years').toDate(),
                     moment().toDate()
                 ]
             }
         },
 
-        isValid() {
-            if (!this.required) return true;
+        isValid () {
+            if (!this.required) return true
             return (!!this.start && moment(this.start).isValid()) && (!!this.end && moment(this.end).isValid())
         }
     },
 
-    methods : {
-        $_emitDates(start, end) {
-            this.$emit('update:start', this.$_makeFormattedDate(start));
-            this.$emit('update:end', this.$_makeFormattedDate(end));
+    methods: {
+        $_emitDates (start, end) {
+            this.$emit('update:start', this.$_makeFormattedDate(start))
+            this.$emit('update:end', this.$_makeFormattedDate(end))
         },
 
         load () {
-
             var options = {
                 locale: {
                     cancelLabel: 'Clear',
-                    format: this.pickerLocaleFormat,
+                    format: this.pickerLocaleFormat
                 },
                 autoUpdateInput: this.autoApply,
                 timePicker: this.timePicker,
-                timePickerIncrement: this.timePickerIncrement,
+                timePickerIncrement: this.timePickerIncrement
             }
 
-            if(this.showRanges) {
+            if (this.showRanges) {
                 options.ranges = this.ranges
             }
 
-            var invalid = false;
-            if(this.start) {
-                const startDate = moment(this.start);
+            var invalid = false
+            if (this.start) {
+                const startDate = moment(this.start)
                 if (startDate.isValid()) options.startDate = startDate
             } else invalid = true
 
-            if(this.end) {
-                const endDate = moment(this.end);
+            if (this.end) {
+                const endDate = moment(this.end)
                 if (endDate.isValid()) options.endDate = endDate
             } else invalid = true
 
             const config = _.assign({}, options, this.dateConfig)
 
-            this.rootPicker = $('#'+this.vf_uid).daterangepicker(
+            this.rootPicker = $('#' + this.vf_uid).daterangepicker(
                 config,
-            (start, end, label) => {
-                this.$_emitDates(start, end);
-            }).on('cancel.daterangepicker', (ev, picker)=>{
-                this.clear();
-            }).on('apply.daterangepicker', (ev, picker)=>{
-                this.$_emitDates(picker.startDate, picker.endDate);
-            });
+                (start, end, label) => {
+                    this.$_emitDates(start, end)
+                }).on('cancel.daterangepicker', (ev, picker) => {
+                this.clear()
+            }).on('apply.daterangepicker', (ev, picker) => {
+                this.$_emitDates(picker.startDate, picker.endDate)
+            })
 
-            if (invalid) {this.rootPicker.val('')}
+            if (invalid) { this.rootPicker.val('') }
 
             this.picker = this.rootPicker.data('daterangepicker')
         },
 
-        clear() {
+        clear () {
             this.$_emitDates(null, null)
-            this.rootPicker.val('');
-        },
+            this.rootPicker.val('')
+        }
     },
 
-    watch : {
-        timePicker(change){
+    watch: {
+        timePicker (change) {
             this.load()
-            this.$_emitDates(moment(this.start), moment(this.end));
+            this.$_emitDates(moment(this.start), moment(this.end))
         },
 
         start (change) {
             this.updateStart(moment(change))
-            if( change === null ) {
-                this.rootPicker.val('');
+            if (change === null) {
+                this.rootPicker.val('')
             }
         },
 
         end (change) {
             this.updateEnd(moment(change))
-            if( change === null ) {
-                this.rootPicker.val('');
+            if (change === null) {
+                this.rootPicker.val('')
             }
         }
     }

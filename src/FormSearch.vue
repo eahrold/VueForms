@@ -25,15 +25,15 @@
 
 <script>
 
-import { errors, values } from './mixins';
+import { errors, values } from './mixins'
 
 export default {
     mixins: [ errors, values ],
 
     props: {
-        value : {
+        value: {
             required: true
-        },
-    },
+        }
+    }
 }
 </script>

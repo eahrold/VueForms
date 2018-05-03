@@ -20,35 +20,35 @@
 
 import _ from 'lodash'
 
-import { core } from './mixins';
+import { core } from './mixins'
 import FormFileGallery from './FormFileGallery'
 
 export default {
     mixins: [ core ],
     components: {
-        'form-file-gallery': FormFileGallery,
+        'form-file-gallery': FormFileGallery
     },
 
     props: {
         headers: {
             type: String,
-            required: false,
+            required: false
         },
         endpoint: {
             type: String,
-            required: false,
+            required: false
         },
         srcKey: {
             type: String,
-            default: "path"
+            default: 'path'
         },
         btnText: {
             type: String,
-            default: "Choose a File"
+            default: 'Choose a File'
         }
     },
 
-    data() {
+    data () {
         return {
             errorMsg: null,
             showModal: false,
@@ -57,18 +57,17 @@ export default {
         }
     },
 
-
     methods: {
-        open() {
+        open () {
             this.showModal = true
         },
 
-        isImage(filename) {
+        isImage (filename) {
             return _.isString(filename) && (/\.(gif|jpe?g|tiff|png)$/i).test(filename)
         },
 
-        choose(file) {
-            if(_.isObject(file)){
+        choose (file) {
+            if (_.isObject(file)) {
                 this.aValue = _.get(file, this.srcKey)
             } else if (_.isString(file)) {
                 this.aValue = file
@@ -77,10 +76,10 @@ export default {
             this.close()
         },
 
-        close() {
-            this.showModal = false;
+        close () {
+            this.showModal = false
         }
-    },
+    }
 }
 </script>
 

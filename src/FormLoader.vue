@@ -11,8 +11,8 @@
 </template>
 
 <script>
-    export default {
-    props : {
+export default {
+    props: {
         loading: {
             type: Boolean,
             required: true

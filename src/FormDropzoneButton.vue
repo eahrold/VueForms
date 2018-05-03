@@ -60,8 +60,8 @@ export default {
     props: {
         btnText: {
             type: String,
-            default: "Upload File"
+            default: 'Upload File'
         }
-    },
+    }
 }
 </script>

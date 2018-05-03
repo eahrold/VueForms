@@ -24,7 +24,7 @@
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
@@ -33,6 +33,6 @@ export default {
             type: Boolean,
             default: false
         }
-    },
+    }
 }
 </script>

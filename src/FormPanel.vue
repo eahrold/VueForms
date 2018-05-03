@@ -15,9 +15,9 @@ export default {
         }
     },
 
-    computed : {
+    computed: {
         panelClass () {
-            return 'panel-' + this.type;
+            return 'panel-' + this.type
         },
 
         hasFooterSlot () {

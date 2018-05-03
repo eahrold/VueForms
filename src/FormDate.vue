@@ -29,12 +29,12 @@
 </template>
 <script>
 
+import { props, errors, dates, vf_uid } from './mixins'
+import _ from 'lodash'
+import moment from 'moment'
 
-var $ = require('jquery');
+var $ = require('jquery')
 require('bootstrap-daterangepicker')
-var moment = require('moment');
-
-import { props, errors, dates, vf_uid } from './mixins';
 
 export default {
     mixins: [ props, errors, dates, vf_uid ],
@@ -46,66 +46,65 @@ export default {
     },
 
     mounted () {
-        this.$nextTick(()=>{
-            this.load();
-        });
+        this.$nextTick(() => {
+            this.load()
+        })
     },
 
-    methods : {
-        $_emitDates(moment) {
-            this.$emit('input', this.$_makeFormattedDate(moment));
+    methods: {
+        $_emitDates (moment) {
+            this.$emit('input', this.$_makeFormattedDate(moment))
         },
 
         load () {
             var options = {
                 locale: {
                     cancelLabel: 'Clear',
-                    format: this.pickerLocaleFormat,
+                    format: this.pickerLocaleFormat
                 },
                 autoUpdateInput: this.autoApply,
                 timePicker: this.timePicker,
-                timePickerIncrement: this.timePickerIncrement,
+                timePickerIncrement: this.timePickerIncrement
             }
 
-            var invalid = false;
-            if(this.value) {
-                const startDate = moment(this.value);
+            var invalid = false
+            if (this.value) {
+                const startDate = moment(this.value)
                 if (startDate.isValid()) options.startDate = startDate
             } else invalid = true
 
             const config = _.assign({}, options, this.dateConfig)
             config.singleDatePicker = true
 
-            this.rootPicker = $('#'+this.vf_uid).daterangepicker(config,
-            (start, end, label) => {
-                this.$_emitDates(start);
-            }).on('cancel.daterangepicker', (ev, picker)=>{
-                this.clear();
-            }).on('apply.daterangepicker', (ev, picker)=>{
-                this.$_emitDates(picker.startDate);
-            });
+            this.rootPicker = $('#' + this.vf_uid).daterangepicker(config,
+                (start, end, label) => {
+                    this.$_emitDates(start)
+                }).on('cancel.daterangepicker', (ev, picker) => {
+                this.clear()
+            }).on('apply.daterangepicker', (ev, picker) => {
+                this.$_emitDates(picker.startDate)
+            })
 
-            if (invalid) {this.rootPicker.val('')}
+            if (invalid) { this.rootPicker.val('') }
 
             this.picker = this.rootPicker.data('daterangepicker')
         },
 
-        clear() {
-            this.$emit('input', null);
-            this.rootPicker.val('');
-        },
+        clear () {
+            this.$emit('input', null)
+            this.rootPicker.val('')
+        }
     },
 
-    watch : {
-        timePicker(){
+    watch: {
+        timePicker () {
             this.load()
-            this.$_emitDates(moment(this.start));
-
+            this.$_emitDates(moment(this.start))
         },
 
         value (change) {
             this.updateStart(moment(change))
-        },
+        }
     }
 }
 </script>

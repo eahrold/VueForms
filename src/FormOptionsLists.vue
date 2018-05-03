@@ -58,7 +58,7 @@
 </template>
 <script>
 
-import _ from 'lodash';
+import _ from 'lodash'
 import VueDraggable from 'vuedraggable'
 
 export default {
@@ -84,17 +84,17 @@ export default {
 
         searchable: {
             type: Boolean,
-            default: true,
+            default: true
         },
 
         value: {
             type: Array,
-            required: true,
+            required: true
         },
 
         options: {
             type: Array,
-            required: true,
+            required: true
         },
 
         badgeKey: {
@@ -104,7 +104,7 @@ export default {
 
         group: {
             type: String,
-            default: 'group',
+            default: 'group'
         }
     },
 
@@ -115,96 +115,100 @@ export default {
             optSearch: null,
             editable: true,
             isDragging: false,
-            delayedDragging:false
+            delayedDragging: false
         }
     },
 
-    mounted() {
-        this.aValue = this.value.map( (entry, index) => {
-            return _.assign({}, entry, { order: index+1, fixed: false });
-        });
+    mounted () {
+        this.aValue = this.value.map((entry, index) => {
+            return _.assign({}, entry, { order: index + 1, fixed: false })
+        })
 
-        this.aOptions = this.options.map( (entry, index) => {
-            return _.assign({}, entry, { order: index+1, fixed: false });
-        });
+        this.aOptions = this.options.map((entry, index) => {
+            return _.assign({}, entry, { order: index + 1, fixed: false })
+        })
     },
 
-    methods:{
-        fixElement(element) {
+    methods: {
+        fixElement (element) {
             this.$set(element, 'fixed', !element.fixed)
         },
 
-        elementIcon(element) {
+        elementIcon (element) {
             return element.fixed ? 'fa fa-lock' : 'fa fa-unlock-alt'
         },
 
         orderList () {
-            this.aValue = this.aValue.sort((one,two) =>{return one.order-two.order; })
+            this.aValue = this.aValue.sort((one, two) => { return one.order - two.order })
         },
 
         onMove ({relatedContext, draggedContext}) {
-            const relatedElement = relatedContext.element;
-            const draggedElement = draggedContext.element;
+            const relatedElement = relatedContext.element
+            const draggedElement = draggedContext.element
             return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
         },
 
-        elementDescription(element) {
+        elementDescription (element) {
             if (this.textKey) {
-                return _.get(element, this.textKey, element.id);
+                return _.get(element, this.textKey, element.id)
             }
             return element.name || element.title || element.slug || element.id
         }
     },
 
     computed: {
-        showOptSearch() {
-            return !_.isEmpty(this.optSearch) || (!_.isEmpty(this.availableOptions) && (this.availableOptions.length >= 5));
+        showOptSearch () {
+            return !_.isEmpty(this.optSearch) || (!_.isEmpty(this.availableOptions) && (this.availableOptions.length >= 5))
         },
 
-        optionsListClass() {
-            return {'empty-drag-area': _.isEmpty(this.availableOptions) }
+        optionsListClass () {
+            return {
+                'empty-drag-area': _.isEmpty(this.availableOptions)
+            }
         },
 
-        valueListClass() {
-            return {'empty-drag-area': _.isEmpty(this.aValue) }
+        valueListClass () {
+            return {
+                'empty-drag-area': _.isEmpty(this.aValue)
+            }
         },
 
-        hasOptions() {
-            return !_.isEmpty(this.availableOptions);
+        hasOptions () {
+            return !_.isEmpty(this.availableOptions)
         },
 
-        availableOptions() {
-            const opts = _.differenceBy(this.aOptions, this.aValue, this.valueKey);
+        availableOptions () {
+            const opts = _.differenceBy(this.aOptions, this.aValue, this.valueKey)
             if (!_.isEmpty(this.optSearch)) {
-                return _.filter(opts, (opt)=>{
-                    return JSON.stringify(opt).indexOf(this.optSearch) !== -1;
+                return _.filter(opts, (opt) => {
+                    return JSON.stringify(opt).indexOf(this.optSearch) !== -1
                 })
             }
-            return opts;
+            return opts
         },
 
         dragOptions () {
-            return  {
+            return {
                 animation: 0,
                 group: this.group,
                 disabled: !this.editable,
                 ghostClass: 'ghost'
-            };
-        },
+            }
+        }
     },
 
     watch: {
-        aValue(newValue) {
-            this.$emit('input', newValue);
+        aValue (newValue) {
+            this.$emit('input', newValue)
         },
 
         isDragging (newValue) {
-            if (newValue){
-            this.delayedDragging= true
-            return
+            if (newValue) {
+                this.delayedDragging = true
+                return
             }
-            this.$nextTick( () =>{
-            this.delayedDragging =false
+            this.$nextTick(() => {
+                this.delayedDragging = false
             })
         }
     }
@@ -262,6 +266,5 @@ ul.list-group.draggable-list {
     max-height: 220px;
     overflow: scroll;
 }
-
 
 </style>

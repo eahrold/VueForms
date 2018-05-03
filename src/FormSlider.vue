@@ -25,14 +25,14 @@
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
 
     methods: {
-        toggle(event) {
-            this.$emit('toggled', event.target.checked);
+        toggle (event) {
+            this.$emit('toggled', event.target.checked)
         }
     }
 }

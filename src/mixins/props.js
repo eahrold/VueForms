@@ -12,17 +12,17 @@ export default {
 
         placeholder: {
             type: [String, Number],
-            default: ""
+            default: ''
         },
 
         property: {
             type: String,
-            required: true,
+            required: true
         },
 
         label: {
             type: [String, Boolean],
-            default: ""
+            default: ''
         },
 
         errors: {
@@ -49,50 +49,50 @@ export default {
 
         validation: {
             type: Object,
-            required: false,
+            required: false
         }
     },
 
-    data() {
+    data () {
         return {
             vfErrors: null
         }
     },
 
-    mounted() {
+    mounted () {
         if (this.$_vf_validator) {
             this.$_vf_validator.register(this.property, this.isValidIgnoringTouch)
         }
     },
 
-    destroyed() {
+    destroyed () {
         if (this.$_vf_validator) {
             this.$_vf_validator.unregister(this.property)
         }
     },
 
     watch: {
-        isValidIgnoringTouch(newVal) {
+        isValidIgnoringTouch (newVal) {
             if (this.$_vf_validator) {
                 this.$_vf_validator.update(this.property, newVal)
             }
         },
 
-        validated(newVal) {
+        validated (newVal) {
             this.$_checkValidated(newVal)
         },
 
-        blurred(newVal) {
+        blurred (newVal) {
             if (newVal === true) {
                 this.$_checkValidated(this.validated)
             }
-        },
+        }
     },
 
     methods: {
-        $_checkValidated(validated) {
+        $_checkValidated (validated) {
             if (_.isString(validated)) {
-                this.vfErrors = validated;
+                this.vfErrors = validated
             } else if (validated === true) {
                 this.vfErrors = null
             }
@@ -100,15 +100,15 @@ export default {
     },
 
     computed: {
-        $_vf_validator() {
+        $_vf_validator () {
             return this.validation || this.$validation
         },
 
-        validated() {
-            if (this.required === false && _.isEmpty(this.value)) return true;
+        validated () {
+            if (this.required === false && _.isEmpty(this.value)) return true
 
             if (this.required === true && _.isEmpty(this.value) && !_.isNumber(this.value)) {
-                return `${_.startCase(this.property || "This field")} is required`
+                return `${_.startCase(this.property || 'This field')} is required`
             }
 
             if (_.isBoolean(this.rules)) {
@@ -120,7 +120,7 @@ export default {
                     const rule = this.rules[i]
                     const isFunction = _.isFunction(rule)
                     if (!isFunction) {
-                        console.error("[VueForms Validation] Rules array must only contain functions.")
+                        console.error('[VueForms Validation] Rules array must only contain functions.')
                         return false
                     }
                     let passes = rule(this.value)
@@ -129,30 +129,30 @@ export default {
                     }
                 }
             }
-            return true;
+            return true
         },
 
-        isValidIgnoringTouch() {
-            return this.validated === true;
+        isValidIgnoringTouch () {
+            return this.validated === true
         },
 
-        isValid() {
-            if (!this.touched) return true;
-            return this.isValidIgnoringTouch === true;
+        isValid () {
+            if (!this.touched) return true
+            return this.isValidIgnoringTouch === true
         },
 
-        hideLabel() {
+        hideLabel () {
             return this.label === false
         },
 
-        showLabel() {
+        showLabel () {
             return !this.hideLabel
         },
 
-        aLabel() {
-            if (this.hideLabel)return ""
+        aLabel () {
+            if (this.hideLabel) return ''
 
-            return (this.label || _.startCase(this.property || '')) + (this.required ? "*" : "")
+            return (this.label || _.startCase(this.property || '')) + (this.required ? '*' : '')
         }
-    },
-};
+    }
+}

@@ -19,7 +19,7 @@
 
 <script>
 
-import { props, errors } from './mixins';
+import { props, errors } from './mixins'
 
 export default {
 
@@ -38,20 +38,20 @@ export default {
     },
 
     mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
+        this.$nextTick(() => {
+            if (this.value) {
+                this.aValue = this.value
             }
-        });
+        })
     },
 
-    watch : {
+    watch: {
         aValue: {
-            handler: function(change){
-                this.$emit('input', change);
+            handler: function (change) {
+                this.$emit('input', change)
             },
             deep: true
-        },
+        }
     }
 }
 </script>

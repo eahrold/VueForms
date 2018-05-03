@@ -21,7 +21,7 @@ https://github.com/fareez-ahamed/autocomplete-vuejs2
             @keydown.up = 'up'
             class="form-control vf-form-control">
         <ul class="dropdown-menu" style="width:100%">
-            <li v-for="(suggestion, idx) in matches"
+            <li v-for="(suggestion, idx) in matches" :key='idx'
                 :class="{'active': isActive(idx)}"
                 @click="suggestionClick(idx)">
                 <span class="clickable">{{ suggestion }}</span>
@@ -33,7 +33,7 @@ https://github.com/fareez-ahamed/autocomplete-vuejs2
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
@@ -49,26 +49,26 @@ export default {
         return {
             open: false,
             current: 0,
-            aValue: null,
+            aValue: null
         }
     },
 
-    mounted() {
-        this.$nextTick(()=>{
+    mounted () {
+        this.$nextTick(() => {
             this.aValue = this.value
         })
     },
 
     computed: {
-        // Filtering the suggestion based on the input
+    // Filtering the suggestion based on the input
         matches () {
             return this.suggestions.filter((item) => {
-            return item.includes(this.aValue)
-        })
-    },
+                return item.includes(this.aValue)
+            })
+        },
 
-    openSuggestion () {
-        return this.selection !== '' &&
+        openSuggestion () {
+            return this.selection !== '' &&
                this.matches.length !== 0 &&
                this.open === true
         }
@@ -83,7 +83,7 @@ export default {
         },
         // When enter pressed on the input
         enter () {
-            this.aValue = this.matches[this.current];
+            this.aValue = this.matches[this.current]
             this.open = false
         },
 
@@ -108,13 +108,12 @@ export default {
 
         // When one of the suggestion is clicked
         suggestionClick (index) {
-            this.aValue = this.matches[index];
+            this.aValue = this.matches[index]
             this.open = false
         }
     }
 }
 </script>
-
 
 <style scoped>
 .dropdown-menu {

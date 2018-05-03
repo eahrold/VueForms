@@ -8,9 +8,13 @@
 </template>
 
 <script>
+
+import _ from 'lodash'
 import { vf_uid } from './mixins'
 
 export default {
+    mixins: [ vf_uid ],
+
     props: {
         saves: {
             type: Boolean,
@@ -34,7 +38,7 @@ export default {
 
         method: {
             type: String,
-            default: "POST"
+            default: 'POST'
         },
 
         multipart: {
@@ -54,46 +58,46 @@ export default {
         }
     },
 
-    mounted() {
-        this.$nextTick(()=>{
-            window.foo = this.$children;
+    mounted () {
+        this.$nextTick(() => {
+            window.foo = this.$children
         })
     },
 
-    methods : {
+    methods: {
         formData () {
-            var fromData = new FormData(this.$el);
-            return formData;
+            var formData = new FormData(this.$el)
+            return formData
         },
 
         finally () {
-            this.saving = false;
+            this.saving = false
         },
 
         save () {
-            this.saving = true;
-            this.$http.post(this.formData, (respose)=>{
-                this.$emit('saved', respose);
-                this.finally();
-            },(respose)=>{
-                this.$emit('error', respose);
-                this.finally();
-            });
+            this.saving = true
+            this.$http.post(this.formData, (respose) => {
+                this.$emit('saved', respose)
+                this.finally()
+            }, (respose) => {
+                this.$emit('error', respose)
+                this.finally()
+            })
         }
     },
 
-    computed : {
-        vf_csfrToken() {
-            if ( _.isString(this.csfrToken) ) return this.csfrToken;
-            if ( this.csfrToken !== false && this.$vfconfig) {
-                return this.$vfconfig.csfrToken();
+    computed: {
+        vf_csfrToken () {
+            if (_.isString(this.csfrToken)) return this.csfrToken
+            if (this.csfrToken !== false && this.$vfconfig) {
+                return this.$vfconfig.csfrToken()
             }
         },
 
         enctype () {
-            return this.multipart ?
-                "multipart/form-data" :
-                "application/x-www-form-urlencoded";
+            return this.multipart
+                ? 'multipart/form-data'
+                : 'application/x-www-form-urlencoded'
         }
     }
 }

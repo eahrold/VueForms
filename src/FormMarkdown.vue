@@ -15,13 +15,12 @@
     </div>
 </template>
 
-
 <script>
 
-import { core } from './mixins';
-import _ from 'lodash';
+import { core } from './mixins'
+import _ from 'lodash'
 
-const SimpleMDE = require('simplemde');
+const SimpleMDE = require('simplemde')
 
 export default {
     mixins: [ core ],
@@ -36,16 +35,16 @@ export default {
     data () {
         return {
             aValue: this.value,
-            simplemde: null,
+            simplemde: null
         }
     },
 
     watch: {
-        value(newValue, oldVal) {
-            if(typeof newValue !== 'string') return;
+        value (newValue, oldVal) {
+            if (typeof newValue !== 'string') return
 
-            if (newValue != this.simplemde.value()) {
-                this.simplemde.value(newValue);
+            if (newValue !== this.simplemde.value()) {
+                this.simplemde.value(newValue)
             }
         }
     },
@@ -54,14 +53,13 @@ export default {
         const props = _.assign({}, this.options, {
             element: document.getElementById(this.vf_uid),
             forceSync: false,
-            initialValue: this.value,
+            initialValue: this.value
         })
 
-        const simplemde = this.simplemde = new SimpleMDE(props);
-        simplemde.codemirror.on("change", ()=>{
+        const simplemde = this.simplemde = new SimpleMDE(props)
+        simplemde.codemirror.on('change', () => {
             this.$emit('input', simplemde.value())
-        });
-
+        })
     }
 }
 </script>

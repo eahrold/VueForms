@@ -37,36 +37,40 @@ import _ from 'lodash'
 import {
     vf_uid,
     props,
-    errors,
-} from './mixins';
+    errors
+} from './mixins'
 
 import FormFileGallery from './FormFileGallery'
 
-const imageTemplate = function({path, caption, alt, width, height, align}) {
-    const style=''
-    const attrs = _.reduce({src: path, alt, width, height, align}, (result, value, key)=>{
+const ClassicEditor = window.ClassicEditor
+if (!ClassicEditor) {
+    console.error('CKeditor Requires ClassicEditor to be installed')
+}
+
+const imageTemplate = function ({path, caption, alt, width, height, align}) {
+    // const style = ''
+    const attrs = _.reduce({src: path, alt, width, height, align}, (result, value, key) => {
         if (value) {
             result += `${[key]}="${value}" `
         }
-        return result;
-    } ,'')
+        return result
+    }, '')
     let imgTemplate = `<img ${attrs} />`
 
-    if(_.isString(caption)) {
+    if (_.isString(caption)) {
         return `<figure class="image">${imgTemplate}<figcaption><p>${caption.replace(/(?:\r\n|\r|\n)/g, '<br />')}</p></figcaption></figure>`
     }
-    return imgTemplate;
+    return imgTemplate
 }
 
 class FileUploadAdapter {
-    constructor(loader, {endpoint, headers}) {
+    constructor (loader, {endpoint, headers}) {
         this.loader = loader
         this.endpoint = endpoint
-        this.config = { headers, }
+        this.config = { headers }
     }
 
-    responseHandler({target}) {
-
+    responseHandler ({target}) {
         const success = (target.status === 200) || (target.status === 201)
         try {
             const json = JSON.parse(target.responseText)
@@ -77,75 +81,72 @@ class FileUploadAdapter {
         } catch (e) {
             return {
                 success,
-                message: "There was a problem uploading the file."
+                message: 'There was a problem uploading the file.'
             }
         }
     }
 
-    errorHandler({target}) {
+    errorHandler ({target}) {
         return {
             success: false,
-            message: "There was a problem uploading the file."
+            message: 'There was a problem uploading the file.'
         }
     }
 
-    upload() {
-        const data = new FormData();
-        data.append('file', this.loader.file);
+    upload () {
+        const data = new FormData()
+        data.append('file', this.loader.file)
 
-        return new Promise((fulfill, reject) => {
-            const XHR = new XMLHttpRequest();
+        return new Promise((resolve, reject) => {
+            const XHR = new XMLHttpRequest()
 
             // Set up our request
-            XHR.open('POST', this.endpoint);
+            XHR.open('POST', this.endpoint)
 
-            _.forOwn(this.config.headers, (value,key)=>{
-                XHR.setRequestHeader(key, value);
+            _.forOwn(this.config.headers, (value, key) => {
+                XHR.setRequestHeader(key, value)
             })
 
             // Define what happens on successful data submission
-            XHR.addEventListener('load', (event)=>{
+            XHR.addEventListener('load', (event) => {
                 const response = this.responseHandler(event)
 
-                if(response.success) {
-                    console.log("Fulfilling", response);
-
-                    return fulfill(response)
+                if (response.success) {
+                    console.log('Fulfilling', response)
+                    return resolve(response)
                 }
-                return fulfill(this.loader.file)
-
-                return reject(response.message)
-            });
+                return resolve(this.loader.file)
+                // return reject(response.message)
+            })
 
             // Define what happens in case of error
-            XHR.addEventListener('error', (event)=>{
+            XHR.addEventListener('error', (event) => {
                 const response = this.errorHandler(event)
                 reject(response)
-            });
+            })
 
             // Send our FormData object; HTTP headers are set automatically
-            XHR.send(data);
-        });
+            XHR.send(data)
+        })
     }
 
-    abort() {
-        //
+    abort () {
+    //
     }
 }
 
-
 export default {
     components: {
-        'form-file-gallery': FormFileGallery,
+        'form-file-gallery': FormFileGallery
     },
 
     mixins: [
         vf_uid,
         props,
-        errors,
+        errors
     ],
 
-    data() {
+    data () {
         return {
             showModal: false,
             editor: null
@@ -159,23 +160,23 @@ export default {
         },
         rows: {
             type: Number,
-            default: 5,
+            default: 5
         }
     },
 
-    mounted() {
+    mounted () {
         const config = {
             toolbar: [
-                "undo",
-                "imageUpload",
-                "redo",
-                "heading",
-                "bold",
-                "italic",
-                "blockquote",
-                "link",
-                "numberedlist",
-                "bulletedlist",
+                'undo',
+                'imageUpload',
+                'redo',
+                'heading',
+                'bold',
+                'italic',
+                'blockquote',
+                'link',
+                'numberedlist',
+                'bulletedlist'
             ],
             ckfinder: {
                 // eslint-disable-next-line max-len
@@ -183,14 +184,14 @@ export default {
             },
             image: {
                 // You need to configure the image toolbar too, so it uses the new style buttons.
-               toolbar: [
+                toolbar: [
                     'imageTextAlternative',
                     '|',
                     'imageStyle:alignLeft',
                     'imageStyle:alignCenter',
                     'imageStyle:alignRight',
                     'imageStyle:full',
-                    'imageStyle:side',
+                    'imageStyle:side'
                 ],
 
                 styles: [
@@ -211,82 +212,80 @@ export default {
         }
 
         ClassicEditor
-            .create( document.getElementById(this.vf_uid),config)
-            .then( editor => {
-                this.editor = editor;
+            .create(document.getElementById(this.vf_uid), config)
+            .then(editor => {
+                this.editor = editor
 
-                const plugins = ClassicEditor.build.plugins.map( plugin => plugin.pluginName );
-                const toolbar = Array.from( editor.ui.componentFactory.names())
-                console.log("[VF] CKeditor Config",{toolbar, plugins})
+                const plugins = ClassicEditor.build.plugins.map(plugin => plugin.pluginName)
+                const toolbar = Array.from(editor.ui.componentFactory.names())
+                console.log('[VF] CKeditor Config', {toolbar, plugins})
 
                 editor.model.document.on('change', (evt, data) => {
                     // console.log("chage", {evt, data})
-                    this.$emit('input', this._last=editor.getData())
-                });
+                    this.$emit('input', this._last = editor.getData())
+                })
 
                 editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
                     const config = {
                         'headers': this._headers,
                         'endpoint': this._endpoint
                     }
-                    return new FileUploadAdapter(loader, config);
-                };
-
+                    return new FileUploadAdapter(loader, config)
+                }
             })
-            .catch( error => {
-                console.error( error );
-            });
+            .catch(error => {
+                console.error(error)
+            })
     },
 
     computed: {
-        _headers() {
+        _headers () {
             return this.headers || this.$vfconfig.headers
         },
 
-        _endpoint() {
+        _endpoint () {
             return this.endpoint || this.$vfconfig.endpoints.upload
         }
     },
 
     watch: {
-        value(newVal) {
-            if(newVal !== this._last) {
-                this.editor.setData(newVal);
+        value (newVal) {
+            if (newVal !== this._last) {
+                this.editor.setData(newVal)
             }
         }
     },
 
-    created() {
+    created () {
         this._last = null
     },
 
-    beforeDestroy() {
+    beforeDestroy () {
         this.editor.destroy()
-            .catch( error => {
-                console.log( error );
-            } );
+            .catch(error => {
+                console.log(error)
+            })
     },
 
-
     methods: {
-        closeFilePicker() {
-            this.showModal = false;
+        closeFilePicker () {
+            this.showModal = false
         },
 
-        openFilePicker() {
+        openFilePicker () {
             this.showModal = true
         },
 
-        chooseFile(file) {
-            let content;
-            if(_.isObject(file)) {
+        chooseFile (file) {
+            let content
+            if (_.isObject(file)) {
                 content = file
-            } else if(_.isString(file)) {
+            } else if (_.isString(file)) {
                 content = {path: file}
             }
             this.editor.insertContent(imageTemplate(content))
             this.closeFilePicker()
-        },
-    },
+        }
+    }
 }
 </script>

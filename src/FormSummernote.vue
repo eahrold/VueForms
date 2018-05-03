@@ -10,21 +10,21 @@ var $ = require('jquery')
 require('summernote')
 
 export default {
-    data() {
+    data () {
         return {
-            summernote: null,
+            summernote: null
         }
     },
 
-    mounted (){
+    mounted () {
         this.load()
     },
-    beforeDestroy(){
-      this.editor.summernote('destroy')
+    beforeDestroy () {
+        this.editor.summernote('destroy')
     },
 
     methods: {
-        load() {
+        load () {
             const { placeholder, height, minHeight, maxHeight, focus, $emit } = this
             var initOptions = {
                 placeholder,
@@ -33,31 +33,31 @@ export default {
                 maxHeight,
                 focus,
                 callbacks: {
-                    onInit: function(){
+                    onInit: function () {
                         $emit('onInit')
                     },
-                    onEnter: function(){
+                    onEnter: function () {
                         $emit('onEnter')
                     },
-                    onFocus: function(){
+                    onFocus: function () {
                         $emit('onFocus')
                     },
-                    onBlur: function(){
+                    onBlur: function () {
                         $emit('onBlur')
                     },
-                    onKeyup:function(e){
+                    onKeyup: function (e) {
                         $emit('onKeyup', e)
                     },
-                    onKeydown:function(e){
+                    onKeydown: function (e) {
                         $emit('onKeydown', e)
                     },
-                    onPaste:function(e){
+                    onPaste: function (e) {
                         $emit('onPaste', e)
                     },
-                    onImageUpload: function(files)=>{
+                    onImageUpload: function (files) {
                         $emit('onImageUpload', files)
                     },
-                    onChange: function(contents)=>{
+                    onChange: function (contents) {
                         $emit('onChange', contents)
                     }
                 }

@@ -8,9 +8,9 @@
 
 <script>
 
-import { prefixes } from './data_sources/Honorifics';
+import { prefixes } from './data_sources/Honorifics'
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
@@ -23,21 +23,20 @@ export default {
 
         label: {
             type: String,
-            default: "Prefix"
+            default: 'Prefix'
         },
 
         placeholder: {
             type: String,
-            default: "Choose..."
+            default: 'Choose...'
         }
     },
-
 
     data () {
         return {
             options: prefixes,
             aValue: null
         }
-    },
+    }
 }
 </script>

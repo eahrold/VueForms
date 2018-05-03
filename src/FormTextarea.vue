@@ -24,7 +24,7 @@
 
 <script>
 
-import { core } from './mixins';
+import { core } from './mixins'
 
 export default {
     mixins: [ core ],
@@ -33,7 +33,7 @@ export default {
         rows: {
             required: false,
             default: 3
-        },
-    },
+        }
+    }
 }
 </script>

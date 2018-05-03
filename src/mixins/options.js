@@ -1,4 +1,4 @@
-import { isObject, get, isArray } from 'lodash'
+import { isObject, isArray } from 'lodash'
 
 export default {
     props: {
@@ -9,50 +9,50 @@ export default {
 
         textKey: {
             type: String,
-            default: 'text',
+            default: 'text'
         },
 
         valueKey: {
             type: [String, Boolean],
-            default: 'value',
+            default: 'value'
         },
 
         useIndexAsValue: {
             type: Boolean,
-            default: false,
+            default: false
         },
 
         useKeyAsValue: {
             type: Boolean,
-            default: false,
-        },
+            default: false
+        }
     },
 
     computed: {
-        $_VF_OptionsMixin_optionsListIsObject() {
-            return !isArray(this.options);
+        $_VF_OptionsMixin_optionsListIsObject () {
+            return !isArray(this.options)
         }
     },
 
     methods: {
-        optionDescription(opt) {
-            if(isObject(opt)) {
+        optionDescription (opt) {
+            if (isObject(opt)) {
                 return opt[this.textKey]
             }
-            return opt;
+            return opt
         },
 
-        optionValue(opt, indexOrKey) {
-            if( ! this.$_VF_OptionsMixin_optionsListIsObject && this.useIndexAsValue) return indexOrKey;
+        optionValue (opt, indexOrKey) {
+            if (!this.$_VF_OptionsMixin_optionsListIsObject && this.useIndexAsValue) return indexOrKey
 
-            if(this.useKeyAsValue === true) {
+            if (this.useKeyAsValue === true) {
                 return indexOrKey
             }
 
-            if(isObject(opt) && (this.valueKey !== false)) {
+            if (isObject(opt) && (this.valueKey !== false)) {
                 return opt[this.valueKey]
             }
-            return opt;
+            return opt
         }
     }
-};
+}

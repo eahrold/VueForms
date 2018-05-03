@@ -16,7 +16,8 @@
             <!-- Options -->
             <option v-for='(opt, idx) in options'
                     :data-content='opt.html'
-                    v-bind:value="opt.value || idx">
+                    :key='idx'
+                    :value="opt.value || idx">
                 {{ opt.text || opt.name || opt }}
             </option>
 
@@ -36,7 +37,8 @@
             <option v-if='nullable' :value="null">{{ placeholder }}</option>
             <option v-for='(opt, idx) in options'
                     :data-content='opt.html'
-                    v-bind:value="opt.value || idx">
+                    :key='idx'
+                    :value="opt.value || idx">
                 {{ opt.text || opt.name || opt }}
             </option>
         </select>
@@ -54,7 +56,7 @@
 import { props, errors } from './mixins'
 
 const $ = require('jquery')
-require('bootstrap-select');
+require('bootstrap-select')
 
 export default {
     mixins: [ props, errors ],
@@ -62,7 +64,7 @@ export default {
     props: {
         width: {
             type: String,
-            default: "auto"
+            default: 'auto'
         },
 
         search: {
@@ -87,7 +89,7 @@ export default {
 
         placeholder: {
             type: String,
-            default: "Please Select..."
+            default: 'Please Select...'
         }
     },
 
@@ -99,38 +101,38 @@ export default {
     },
 
     mounted () {
-        this.$nextTick(()=>{
-            if(this.value) {
-                this.aValue = this.value;
+        this.$nextTick(() => {
+            if (this.value) {
+                this.aValue = this.value
             }
-            this.refresh();
-        });
+            this.refresh()
+        })
     },
 
-    methods : {
+    methods: {
         refresh () {
-            this.$nextTick(()=>{
-                $('#'+this.id).selectpicker('refresh');
-            });
+            this.$nextTick(() => {
+                $('#' + this.id).selectpicker('refresh')
+            })
         }
     },
 
-    watch : {
+    watch: {
         disabled (change) {
-            this.refresh();
+            this.refresh()
         },
 
         options (change) {
-            this.refresh();
+            this.refresh()
         },
 
         aValue (change) {
-            this.$emit('input', change);
+            this.$emit('input', change)
         },
 
         value (change) {
-            this.aValue = change;
-            this.refresh();
+            this.aValue = change
+            this.refresh()
         }
     }
 }
