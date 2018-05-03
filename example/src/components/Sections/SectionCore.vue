@@ -66,22 +66,24 @@
   <form-password
     v-model='model.password'
     property='password'
-    :confirm='model.password_confirm'
-    :required='true'
-    :rules='[$validation.rules.match(model.password_confirm, "password confirm")]'
     :errors='errors'>
-        <template slot='help'>
-          <b>[Current Val: {{ `${model.password}` }}]</b>
-          Validator Status <code>{{ `${$validation.getStatus('password')}` }}</code> This uses <code>:rules='[$validation.rules.match(model.password_confirm)]'</code>
-        </template>
+      <template v-if='(model.password_confirm !== null) && (model.password !== model.password_confirm)' slot='help'>Password and Confirm must match</template>
   </form-password>
+
 
   <form-password
     v-model='model.password_confirm'
     property='password_confirm'
+    :confirm='model.password'
+    :required='true'
+    :rules='[$validation.rules.match(model.password, "password")]'
     :errors='errors'>
-      <template v-if='(model.password_confirm !== null) && (model.password !== model.password_confirm)' slot='help'>Password and Confirm must match</template>
+        <template slot='help'>
+          <b>[Current Val: {{ `${model.password_confirm}` }}]</b>
+          Validator Status <code>{{ `${$validation.getStatus('password_confirm')}` }}</code> This uses <code>:rules='[$validation.rules.match(model.password)]'</code>
+        </template>
   </form-password>
+
 
 
     <form-textarea

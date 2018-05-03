@@ -1,10 +1,9 @@
 import _ from 'lodash'
+import moment from 'moment'
 
-/* eslint-disable no-useless-escape */
-const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-const HTTPS_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-const IMAGE_REGEX = /\.(gif|jpe?g|tiff|png)$/i
-/* eslint-enable no-useless-escape */
+const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+const HTTPS_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
+const IMAGE_REGEX = /\.(gif|jpe?g|tiff|png|svg)$/i
 
 export const required = function (value) {
     if (!_.isEmpty(value)) {
@@ -25,9 +24,13 @@ export const url = function (value) {
     return HTTPS_REGEX.test(value)
 }
 
-export const match = function (compared, label) {
+export const date = function (value) {
+    return moment(value).isValid()
+}
+
+export const match = function (compared, label, response) {
     return function (value) {
-        return (compared === value)
+        return (compared === value) || (response || false)
     }
 }
 
@@ -39,6 +42,7 @@ export default {
     required,
     number,
     email,
+    date,
     url,
     match
 }

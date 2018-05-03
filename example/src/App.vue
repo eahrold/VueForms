@@ -6,7 +6,7 @@
           <template slot='toggles'>
               <form-checkbox label='Show All Elements' v-model='show.showElementsAll' property='showElementsAll'></form-checkbox>
               <form-checkbox label='Fake Server Response Errors' :value='show.showFakeErrors' @input='toggleFakeErrors' property='showFakeErrors'></form-checkbox>
-              <form-select v-model='status' :options='statuses' property='status' :label='false'></form-select>
+              <form-select v-model='status' :use-key-as-value='true' :options='statuses' property='status' label='Theme'></form-select>
           </template>
         </AsideRight>
     </div>

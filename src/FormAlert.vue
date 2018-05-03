@@ -25,8 +25,8 @@
             </ul>
         </div>
         <div v-if='alert.promise' class='text-right' slot='footer'>
-            <div class="btn btn-danger" @click='alert.promise.cancel({status: "cancelled"})'>{{ alert.cancelText || 'Cancel'}}</div>
-            <div class="btn btn-default btn-primary" @click='alert.promise.confirm({status: "confirmed"})'>{{ alert.confirmText || 'OK'}}</div>
+            <div class="btn btn-danger" @click='alert.promise.reject({status: "cancelled"})'>{{ alert.cancelText || 'Cancel'}}</div>
+            <div class="btn btn-default btn-primary" @click='alert.promise.resolve({status: "confirmed"})'>{{ alert.confirmText || 'OK'}}</div>
         </div>
     </form-modal>
 
@@ -172,7 +172,7 @@ export default {
             clearTimeout(this.alertTimer)
         },
 
-        onConfirm (message, options, { confirm, cancel }) {
+        onConfirm (message, options, { resolve, reject }) {
             const { status, confirmText, cancelText } = _.isObject(options)
                 ? options
                 : {}
@@ -188,11 +188,11 @@ export default {
             })
                 .then((response) => {
                     this.alert = null
-                    confirm(response)
+                    resolve(response)
                 })
                 .catch((response) => {
                     this.alert = null
-                    cancel(response)
+                    reject(response)
                 })
         },
 

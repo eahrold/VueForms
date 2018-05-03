@@ -9,7 +9,13 @@
         <button class='btn btn-default btn-secondary' @click='error'>Click To Error</button>
       </div>
       <div class="form-group">
-        <form-selectize class="col-md-6" v-model='position' :options='positions' property='position' label='Position'></form-selectize>
+        <form-select class="col-md-6"
+            v-model='position'
+            :use-key-as-value='true'
+            :options='positions'
+            property='position'
+            label='Toast Position'>
+          </form-select>
       </div>
     </form-panel>
   </form-section>

@@ -1,18 +1,14 @@
 import _ from 'lodash'
-import moment from 'moment'
-
-/* eslint-enable no-useless-escape */
-const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-const HTTPS_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-/* eslint-enable no-useless-escape */
+import Rules from '../data_sources/Rules'
 
 const lang = {
-    REQUIRED: 'This is required',
+    REQUIRED: 'This field is required',
     NUMBER: 'The value must be a number',
-    EMAIL: 'The value must be a valid email address',
+    EMAIL: 'This must be a valid email address',
     URL: 'The value must be a valid, secure url (https://)',
     MATCH: 'Does not match',
-    DATE: 'The value must be a valid date'
+    DATE: 'The value must be a valid date',
+    IMAGE: 'This must be a valid image'
 }
 
 export const ValidationSyncMixin = {
@@ -27,47 +23,28 @@ export const ValidatorStore = function () {
 
         VueForm_validation_internalRules: {
             required: function (value) {
-                if (!_.isEmpty(value)) {
-                    return true
-                }
-                return lang.REQUIRED
+                return Rules.required(value) || lang.REQUIRED
             },
 
             number: function (value) {
-                if (_.isNumber(value)) {
-                    return true
-                }
-                return lang.NUMBER
+                return Rules.number(value) || lang.NUMBER
             },
 
             email: function (value) {
-                if (EMAIL_REGEX.test(value)) {
-                    return true
-                }
-                return lang.EMAIL
+                return Rules.email(value) || lang.EMAIL
             },
 
             url: function (value) {
-                if (HTTPS_REGEX.test(value)) {
-                    return true
-                }
-                return lang.URL
+                return Rules.url(value) || lang.URL
             },
 
             date: function (value) {
-                if (moment(value).isValid()) {
-                    return true
-                }
-                return lang.DATE
+                return Rules.date(value) || lang.DATE
             },
 
             match: function (compared, label) {
-                return function (value) {
-                    if (compared === value) {
-                        return true
-                    }
-                    return `${lang.MATCH} ${label || 'other value'}`
-                }
+                const response = `${lang.MATCH} ${label || 'other value'}`
+                return Rules.match(compared, label, response)
             }
         },
 
