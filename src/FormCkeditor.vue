@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <div class="form-group vf-form-group" :class='formClass'>
+    <div v-if='hasEditor' class="form-group vf-form-group" :class='formClass'>
         <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
 
         <form-file-gallery
@@ -19,7 +19,8 @@
         </form-file-gallery>
 
         <textarea :name="property" :rows='rows' :id="vf_uid">
-            <div>Hello Wolrd</div>
+            <div>--- Enter Text Here ---</div>
+            <div>--- Place Image Above ---</div>
         </textarea>
 
         <form-errors
@@ -43,9 +44,6 @@ import {
 import FormFileGallery from './FormFileGallery'
 
 const ClassicEditor = window.ClassicEditor
-if (!ClassicEditor) {
-    console.error('CKeditor Requires ClassicEditor to be installed')
-}
 
 const imageTemplate = function ({path, caption, alt, width, height, align}) {
     // const style = ''
@@ -165,6 +163,11 @@ export default {
     },
 
     mounted () {
+        if (!this.hasEditor) {
+            console.error('CKeditor Requires ClassicEditor to be installed')
+            return;
+        }
+
         const config = {
             toolbar: [
                 'undo',
@@ -239,6 +242,10 @@ export default {
     },
 
     computed: {
+        hasEditor() {
+            return !! ClassicEditor
+        },
+
         _headers () {
             return this.headers || this.$vfconfig.headers
         },
