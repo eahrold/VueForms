@@ -1,4 +1,4 @@
-import Vue from 'Vue'
+import Vue from 'vue'
 import _ from 'lodash'
 import mimeTypes from '../data_sources/SupportedMimeTypes'
 
