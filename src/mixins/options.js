@@ -3,7 +3,7 @@ import { isObject, isArray } from 'lodash'
 export default {
     props: {
         options: {
-            type: [Array, Object],
+            type: [ Array, Object ],
             required: false
         },
 
@@ -13,7 +13,7 @@ export default {
         },
 
         valueKey: {
-            type: [String, Boolean],
+            type: [ String, Boolean ],
             default: 'value'
         },
 
