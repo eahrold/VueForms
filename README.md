@@ -85,7 +85,7 @@ export default {
 ```
 And it'll add the errors, validation, and other goodies.
 
-Additionally, this is an easy way to overwrite vue-form components. If for example you want to change the `<form-text />` layout, just create a component, use the core mixin, and register your new component, 
+Additionally, this is an easy way to overwrite vue-form components. If for example you want to change the `<form-text />` layout, just create a component, use the core mixin, and register your new component,
 
 ```javascript
 import MyFormText from './MyFormText'
@@ -137,7 +137,7 @@ tinymce: {
 },
 ```
 
-## [Validation](./src/prototypes/validation)
+## [Validation](./src/prototypes/validation.js)
 
 You can attach a rule to any `<form-xyz :rules='[$validation.rule.url]' .../>` element
 The rule can be a function, or an array of functions.

@@ -165,7 +165,7 @@ export default {
     mounted () {
         if (!this.hasEditor) {
             console.error('CKeditor Requires ClassicEditor to be installed')
-            return;
+            return
         }
 
         const config = {
@@ -242,8 +242,8 @@ export default {
     },
 
     computed: {
-        hasEditor() {
-            return !! ClassicEditor
+        hasEditor () {
+            return !!ClassicEditor
         },
 
         _headers () {
