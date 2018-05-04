@@ -1,24 +1,28 @@
 <template>
-    <div class="form-group vf-form-group" :class='formClass'>
-        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            :for="vf_uid"
+            class="control-label vf-control-label">{{ aLabel }}</label>
         <textarea
-        :id="vf_uid"
-        :disabled='disabled'
-        :placeholder='placeholder'
-        :rows='rows'
-        :style='inputStyle'
-        :class='inputClass'
-        v-model='aValue'
-        v-bind='$attrs'
-        v-on='$listeners'
-        class="form-control vf-form-control">
-        </textarea>
+            :id="vf_uid"
+            :disabled="disabled"
+            :placeholder="placeholder"
+            :rows="rows"
+            :style="inputStyle"
+            :class="inputClass"
+            v-model="aValue"
+            v-bind="$attrs"
+            class="form-control vf-form-control"
+            v-on="$listeners"/>
 
         <form-errors
-            v-if='displayErrors'
-            v-bind="{errors, warning, property}">
-        </form-errors>
-        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
+            v-if="displayErrors"
+            v-bind="{errors, warning, property}"/>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block"><small><slot name="help"/></small></p>
     </div>
 </template>
 

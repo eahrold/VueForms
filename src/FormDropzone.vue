@@ -1,21 +1,22 @@
 <template>
     <div class="form-group vf-form-group upload">
-        <transition name='fade'>
-            <div v-if='id'>
+        <transition name="fade">
+            <div v-if="id">
                 <label>{{ label }}</label>
                 <vue-dropzone
-                    :existing='value'
+                    :existing="value"
                     :url="requestEndpoint"
                     :accepted-file-types="acceptedFileTypes"
-                    :headers='requestHeaders'
-                    :max-number-of-files='limit'
-                    :max-file-size-in-mb='maxFileSize'
+                    :headers="requestHeaders"
+                    :max-number-of-files="limit"
+                    :max-file-size-in-mb="maxFileSize"
                     @error="dzError"
                     @success="dzAdded"
-                    @removed="dzRemoved">
-                </vue-dropzone>
+                    @removed="dzRemoved"/>
                 <small class="help-block form-text">{{ dzHelpText }}</small>
-                <small v-if='helpText' class="help-block form-text">{{ helpText }}</small>
+                <small
+                    v-if="helpText"
+                    class="help-block form-text">{{ helpText }}</small>
             </div>
             <div v-else>
                 <small class="help-block form-text">File upload is available after initial save.</small>

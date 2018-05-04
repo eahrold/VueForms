@@ -1,53 +1,102 @@
 <template>
     <form-modal @close="$emit('close')">
-        <div slot='body' class="row">
-            <transition name='fade'>
-            <div class='col-md-12 alert alert-danger alert-dismissible text-center' v-if='errorMsg' role='alert'>
-                <button type="button" class="close" @click='errorMsg=null' aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3>{{ errorMsg }}</h3>
-            </div>
+        <div
+            slot="body"
+            class="row">
+            <transition name="fade">
+                <div
+                    v-if="errorMsg"
+                    class="col-md-12 alert alert-danger alert-dismissible text-center"
+                    role="alert">
+                    <button
+                        type="button"
+                        class="close"
+                        aria-label="Close"
+                        @click="errorMsg=null">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3>{{ errorMsg }}</h3>
+                </div>
             </transition>
 
-            <transition name='fade' mode="out-in">
-            <div class='row' key='meta' v-if='selected'>
-                <form-file-edit v-model='selected' :src='fileSrc(selected)' property='selected'>
-                    <div slot='after' class="text-right">
-                        <button class="btn btn-default" @click='selected = null'>Back</button>
-                        <button class="btn btn-primary ml-1" @click='complete(selected)'>Insert</button>
+            <transition
+                name="fade"
+                mode="out-in">
+                <div
+                    v-if="selected"
+                    key="meta"
+                    class="row">
+                    <form-file-edit
+                        v-model="selected"
+                        :src="fileSrc(selected)"
+                        property="selected">
+                        <div
+                            slot="after"
+                            class="text-right">
+                            <button
+                                class="btn btn-default"
+                                @click="selected = null">Back</button>
+                            <button
+                                class="btn btn-primary ml-1"
+                                @click="complete(selected)">Insert</button>
+                        </div>
+                    </form-file-edit>
+                </div>
+                <div
+                    v-else
+                    key="gallery"
+                    class="row">
+                    <div
+                        v-if="pagedFiles.length"
+                        class="col-xs-12 text-right">
+                        <ul class="pagination">
+                            <li
+                                :class="{disabled: !hasPrev}"
+                                class="page-item">
+                                <a
+                                    href="javascript:void(0)"
+                                    class="page-link"
+                                    @click.prevent.stop="pagePrev">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="">Previous</span>
+                                </a>
+                            </li>
+                            <li
+                                :class="{disabled: !hasNext}"
+                                class="page-item">
+                                <a
+                                    href="javascript:void(0)"
+                                    class="page-link"
+                                    @click.prevent.stop="pageNext" >
+                                    <span class="">Next</span>
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </form-file-edit>
-            </div>
-            <div class='row' key='gallery' v-else>
-                <div class="col-xs-12 text-right" v-if='pagedFiles.length'>
-                    <ul class="pagination">
-                        <li class="page-item" :class='{disabled: !hasPrev}'>
-                            <a @click.prevent.stop='pagePrev' href='javascript:void(0)'  class="page-link">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item" :class='{disabled: !hasNext}'>
-                            <a @click.prevent.stop='pageNext' href='javascript:void(0)' class="page-link" >
-                                <span class="">Next</span>
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
 
-                <div v-for='(file, idx) in pagedFiles' @click='choose(file, $event)' :key='idx' class="col-md-4 text-center">
-                    <form-panel>
-                        <img v-if='isImage(fileSrc(file))' class='img-thumbnail gallery' :src="fileSrc(file)">
-                        <i v-else style='font-size: 3em' class="fa fa-file-o fa-3x" aria-hidden="true"></i>
-                        <p>{{ fileSrc(file) }}</p>
-                    </form-panel>
+                    <div
+                        v-for="(file, idx) in pagedFiles"
+                        :key="idx"
+                        class="col-md-4 text-center"
+                        @click="choose(file, $event)">
+                        <form-panel>
+                            <img
+                                v-if="isImage(fileSrc(file))"
+                                :src="fileSrc(file)"
+                                class="img-thumbnail gallery">
+                            <i
+                                v-else
+                                style="font-size: 3em"
+                                class="fa fa-file-o fa-3x"
+                                aria-hidden="true"/>
+                            <p>{{ fileSrc(file) }}</p>
+                        </form-panel>
+                    </div>
+                    <div class="col-xs-12 text-center">
+                        <h4 class="help-text help-block"> {{ offset + 1 }} - {{ offset + limit }} of {{ files.length }}</h4>
+                    </div>
                 </div>
-                <div class="col-xs-12 text-center">
-                    <h4 class="help-text help-block"> {{ offset + 1 }} - {{ offset + limit }} of {{ files.length }}</h4>
-                </div>
-            </div>
             </transition>
         </div>
     </form-modal>

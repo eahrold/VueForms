@@ -15,12 +15,17 @@
 </style>
 
 <template>
-<div class="input-group-search vf-form-group">
-    <span class="col-xs-12">
-        <input type='search' class='form-control' v-model='aValue'>
-        <span class="spy-glass"><i class="fa fa-search" aria-hidden="true"></i></span>
-    </span>
-</div>
+    <div class="input-group-search vf-form-group">
+        <span class="col-xs-12">
+            <input
+                v-model="aValue"
+                type="search"
+                class="form-control">
+            <span class="spy-glass"><i
+                class="fa fa-search"
+                aria-hidden="true"/></span>
+        </span>
+    </div>
 </template>
 
 <script>

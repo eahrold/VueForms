@@ -1,9 +1,15 @@
 <template>
-<div class="progress">
-    <div class="progress-bar" role="progressbar" :aria-valuenow="progress" :aria-valuemin="min" :aria-valuemax="max" :style="barStyle">
-        <span class="sr-only">{{ progress }}% Complete</span>
+    <div class="progress">
+        <div
+            :aria-valuenow="progress"
+            :aria-valuemin="min"
+            :aria-valuemax="max"
+            :style="barStyle"
+            class="progress-bar"
+            role="progressbar">
+            <span class="sr-only">{{ progress }}% Complete</span>
+        </div>
     </div>
-</div>
 </template>
 
 <script>

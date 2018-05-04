@@ -7,16 +7,21 @@
 }
 </style>
 <template>
-<transition name='fade'>
-    <ul v-if='hasError || hasWarning' class='error list-unstyled pull-right'>
-        <li v-if='hasError' v-for='(err, idx) in typeErrors' :key='idx'>
-            <small class="help-block form-text text-danger">{{ err }}</small>
-        </li>
-        <li v-if='!hasError && hasWarning'>
-            <small class="help-block form-text text-warning">{{ this.warning }}</small>
-        </li>
-    </ul>
-</transition>
+    <transition name="fade">
+        <ul
+            v-if="hasError || hasWarning"
+            class="error list-unstyled pull-right">
+            <li
+                v-for="(err, idx) in typeErrors"
+                v-if="hasError"
+                :key="idx">
+                <small class="help-block form-text text-danger">{{ err }}</small>
+            </li>
+            <li v-if="!hasError && hasWarning">
+                <small class="help-block form-text text-warning">{{ this.warning }}</small>
+            </li>
+        </ul>
+    </transition>
 </template>
 
 <script>

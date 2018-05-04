@@ -56,39 +56,80 @@
 </style>
 
 <template>
-<div class="form-group vf-form-group" :class='formClass'>
-    <label v-if='label' class="control-label vf-control-label">{{ aLabel }}</label>
-    <div class="dropdown">
-      <button class="btn btn-outline-secondary btn-default btn-block" type="button" :id="vf_uid" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{ selected }}
-        <span class="bs-caret pull-right">
-            <slot name='caret'><i class="fa fa-caret-down" aria-hidden="true"></i></slot>
-        </span>
-      </button>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            v-if="label"
+            class="control-label vf-control-label">{{ aLabel }}</label>
+        <div class="dropdown">
+            <button
+                :id="vf_uid"
+                class="btn btn-outline-secondary btn-default btn-block"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                {{ selected }}
+                <span class="bs-caret pull-right">
+                    <slot name="caret"><i
+                        class="fa fa-caret-down"
+                        aria-hidden="true"/></slot>
+                </span>
+            </button>
 
-      <div class="dropdown-menu" :aria-labelledby="vf_uid">
+            <div
+                :aria-labelledby="vf_uid"
+                class="dropdown-menu">
 
-        <div class="form-group search px-1">
-            <input class='form-control' placeholder="Search..." v-model='search'>
-        </div>
-        <form class='dropdown-content-wrapper'>
-            <div class='dropdown-item' v-for='(opt, idx) in _filtered' :key='idx' :class='optItemClass(opt)'>
-            <label :for='`vf-sel-${vf_uid}-${idx}`' :class='optLabelClass(opt)'>
-                <span>{{ opt[textKey] }} <i v-if='isSelected(opt)' class="fa fa-check pull-right" aria-hidden="true"></i></span>
-                <input v-if='multiple' class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='checkbox' v-model='aValue' :value='opt'>
-                <input v-else class="invisible" :id='`vf-sel-${vf_uid}-${idx}`' name='property' type='radio' v-model='aValue' :value='opt'>
-            </label>
+                <div class="form-group search px-1">
+                    <input
+                        v-model="search"
+                        class="form-control"
+                        placeholder="Search...">
+                </div>
+                <form class="dropdown-content-wrapper">
+                    <div
+                        v-for="(opt, idx) in _filtered"
+                        :key="idx"
+                        :class="optItemClass(opt)"
+                        class="dropdown-item">
+                        <label
+                            :for="`vf-sel-${vf_uid}-${idx}`"
+                            :class="optLabelClass(opt)">
+                            <span>{{ opt[textKey] }} <i
+                                v-if="isSelected(opt)"
+                                class="fa fa-check pull-right"
+                                aria-hidden="true"/></span>
+                            <input
+                                v-if="multiple"
+                                :id="`vf-sel-${vf_uid}-${idx}`"
+                                v-model="aValue"
+                                :value="opt"
+                                class="invisible"
+                                name="property"
+                                type="checkbox">
+                            <input
+                                v-else
+                                :id="`vf-sel-${vf_uid}-${idx}`"
+                                v-model="aValue"
+                                :value="opt"
+                                class="invisible"
+                                name="property"
+                                type="radio">
+                        </label>
+                    </div>
+                </form>
             </div>
-        </form>
-      </div>
-    </div>
+        </div>
 
-    <form-errors
-        v-if='displayErrors'
-        v-bind="{errors, warning, property}">
-    </form-errors>
-    <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
-</div>
+        <form-errors
+            v-if="displayErrors"
+            v-bind="{errors, warning, property}"/>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block"><small><slot name="help"/></small></p>
+    </div>
 </template>
 
 <script>
@@ -146,14 +187,6 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(() => {
-            if (this.value) {
-                this.aValue = this.value
-            }
-        })
-    },
-
     computed: {
         _filtered () {
             if (!this.search) return this.options
@@ -179,6 +212,14 @@ export default {
             }
             return this.placeholder
         }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            if (this.value) {
+                this.aValue = this.value
+            }
+        })
     },
 
     methods: {

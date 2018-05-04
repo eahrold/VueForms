@@ -1,18 +1,26 @@
 <template>
     <div class="panel panel-default vf-panel">
-        <div @click='isCollapsed = !isCollapsed' class='panel-heading clearfix' :class="{movable, }">
-            <div class="pull-left"><slot name='heading'>
+        <div
+            :class="{movable, }"
+            class="panel-heading clearfix"
+            @click="isCollapsed = !isCollapsed">
+            <div class="pull-left"><slot name="heading">
                 {{ heading }}
             </slot>
             </div>
             <div class="pull-right">
-                <i class="fa" :class='isCollapsed ? "fa-caret-up" : "fa-caret-down"' aria-hidden="true"></i>
+                <i
+                    :class="isCollapsed ? &quot;fa-caret-up&quot; : &quot;fa-caret-down&quot;"
+                    class="fa"
+                    aria-hidden="true"/>
             </div>
         </div>
 
-        <div class='panel-collapse collapse' :class="{ 'in': !isCollapsed }">
+        <div
+            :class="{ 'in': !isCollapsed }"
+            class="panel-collapse collapse">
             <div class="panel-body">
-                <slot></slot>
+                <slot/>
             </div>
         </div>
     </div>

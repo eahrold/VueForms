@@ -1,9 +1,8 @@
 <template>
     <form-select
-        v-bind='{placeholder, label, property, options, errors, width}'
-        v-model='aValue'
-        :multiple='false'>
-    </form-select>
+        v-bind="{placeholder, label, property, options, errors, width}"
+        v-model="aValue"
+        :multiple="false"/>
 </template>
 
 <script>

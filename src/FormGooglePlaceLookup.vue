@@ -6,7 +6,12 @@
 </style>
 
 <template>
-<input v-model='aValue' name='lookup' type="text" placeholder="Lookup Address..." class="form-control vf-google-place-lookup">
+    <input
+        v-model="aValue"
+        name="lookup"
+        type="text"
+        placeholder="Lookup Address..."
+        class="form-control vf-google-place-lookup">
 </template>
 
 <script>

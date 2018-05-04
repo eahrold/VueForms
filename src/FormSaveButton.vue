@@ -1,25 +1,32 @@
 <template>
     <div class="form-group vf-form-group row">
         <div class="col-md-12 text-right">
-            <button v-if='deletable' @click='remove()'
-                class="btn btn-danger btn-delete btn-block"
+            <button
+                v-if="deletable"
                 :class="{ 'active': saving }"
-                :disabled="saving || removing">
-                <i v-if='removing' class="fa fa-spinner fa-spin"></i>
+                :disabled="saving || removing"
+                class="btn btn-danger btn-delete btn-block"
+                @click="remove()">
+                <i
+                    v-if="removing"
+                    class="fa fa-spinner fa-spin"/>
                 {{ (removing ? altRemoveLabel : removeLabel) }}
             </button>
 
-            <slot name='before'></slot>
+            <slot name="before"/>
 
-            <button @click='save()'
-                class="btn btn-primary btn-save btn-block"
+            <button
                 :class="{ 'active': saving, 'btn-dirty' : isDirty }"
-                :disabled="saving || removing || disabled">
-                <i v-if='saving' class="fa fa-spinner fa-spin"></i>
+                :disabled="saving || removing || disabled"
+                class="btn btn-primary btn-save btn-block"
+                @click="save()">
+                <i
+                    v-if="saving"
+                    class="fa fa-spinner fa-spin"/>
                 {{ (saving ? altLabel : label) }}
             </button>
 
-            <slot name='after'></slot>
+            <slot name="after"/>
 
         </div>
     </div>

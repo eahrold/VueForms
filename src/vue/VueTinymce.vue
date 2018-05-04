@@ -1,5 +1,7 @@
 <template>
-<textarea v-if="isReady" :id="vf_uid"></textarea>
+    <textarea
+        v-if="isReady"
+        :id="vf_uid"/>
 </template>
 
 <script>
@@ -98,35 +100,6 @@ export default {
         }
     },
 
-    mounted () {
-        if (this.isReady) {
-            this.$nextTick(() => {
-                this.loadTinymce()
-            })
-        }
-    },
-
-    watch: {
-        isReady (ready) {
-            if (ready && !this.tinymce) {
-                this.loadTinymce()
-            }
-        },
-
-        $route (newVal, oldVal) {
-            this.editor = tinymce.get(this.vf_uid)
-            this.recreate = true
-        },
-
-        value (newVal, oldVal) {
-            if ((newVal === '') || newVal === null || (oldVal === undefined) || this.recreate) {
-                const editor = this.editor = tinymce.get(this.element)
-                editor.setContent(newVal || '')
-                this.recreate = false
-            }
-        }
-    },
-
     computed: {
         defaults () {
             var selector = `#${this.vf_uid}`
@@ -154,6 +127,35 @@ export default {
 
                 file_browser_callback: this.filepicker
             }
+        }
+    },
+
+    watch: {
+        isReady (ready) {
+            if (ready && !this.tinymce) {
+                this.loadTinymce()
+            }
+        },
+
+        $route (newVal, oldVal) {
+            this.editor = tinymce.get(this.vf_uid)
+            this.recreate = true
+        },
+
+        value (newVal, oldVal) {
+            if ((newVal === '') || newVal === null || (oldVal === undefined) || this.recreate) {
+                const editor = this.editor = tinymce.get(this.element)
+                editor.setContent(newVal || '')
+                this.recreate = false
+            }
+        }
+    },
+
+    mounted () {
+        if (this.isReady) {
+            this.$nextTick(() => {
+                this.loadTinymce()
+            })
         }
     },
 

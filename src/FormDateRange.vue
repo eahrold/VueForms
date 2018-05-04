@@ -1,5 +1,5 @@
 <template>
-<!--
+    <!--
 Date Range Picker Component
 
 Usage:
@@ -10,28 +10,42 @@ Usage:
    label='Some Label'>
 </form-daterange>
  -->
-    <div class="form-group vf-form-group" :class='formClass'>
-        <label class="control-label vf-control-label" :for='vf_uid'>{{ label }}: </label>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            :for="vf_uid"
+            class="control-label vf-control-label">{{ label }}: </label>
         <div class="input-group vf-input-group">
             <input
-                v-bind='$attrs'
-                v-on='$listeners'
-                :id='vf_uid'
+                v-bind="$attrs"
+                :id="vf_uid"
                 :name="label"
-                :style='inputStyle'
-                :class='inputClass'
-                @blur='onBlur'
-                @focus='onFocus'
+                :style="inputStyle"
+                :class="inputClass"
                 type="text"
-                class='form-control vf-form-control'/>
-            <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend vf-input-group-addon vf-date-addon">
+                class="form-control vf-form-control"
+                v-on="$listeners"
+                @blur="onBlur"
+                @focus="onFocus">
+            <a
+                class="input-group-addon input-group-prepend vf-input-group-addon vf-date-addon"
+                @click.prevent.stop="clear">
                 <span class="input-group-text">
-                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    <i
+                        class="fa fa-times-circle"
+                        aria-hidden="true"/>
                 </span>
             </a>
         </div>
-        <form-errors v-for='(property, idx) in properties' :key='idx' :errors='errors' :property='property'></form-errors>
-        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
+        <form-errors
+            v-for="(property, idx) in properties"
+            :key="idx"
+            :errors="errors"
+            :property="property"/>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block"><small><slot name="help"/></small></p>
     </div>
 </template>
 <script>
@@ -83,12 +97,6 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(() => {
-            this.load()
-        })
-    },
-
     computed: {
         ranges () {
             return {
@@ -119,6 +127,33 @@ export default {
             if (!this.required) return true
             return (!!this.start && moment(this.start).isValid()) && (!!this.end && moment(this.end).isValid())
         }
+    },
+
+    watch: {
+        timePicker (change) {
+            this.load()
+            this.$_emitDates(moment(this.start), moment(this.end))
+        },
+
+        start (change) {
+            this.updateStart(moment(change))
+            if (change === null) {
+                this.rootPicker.val('')
+            }
+        },
+
+        end (change) {
+            this.updateEnd(moment(change))
+            if (change === null) {
+                this.rootPicker.val('')
+            }
+        }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            this.load()
+        })
     },
 
     methods: {
@@ -173,27 +208,6 @@ export default {
         clear () {
             this.$_emitDates(null, null)
             this.rootPicker.val('')
-        }
-    },
-
-    watch: {
-        timePicker (change) {
-            this.load()
-            this.$_emitDates(moment(this.start), moment(this.end))
-        },
-
-        start (change) {
-            this.updateStart(moment(change))
-            if (change === null) {
-                this.rootPicker.val('')
-            }
-        },
-
-        end (change) {
-            this.updateEnd(moment(change))
-            if (change === null) {
-                this.rootPicker.val('')
-            }
         }
     }
 }

@@ -1,34 +1,59 @@
 <template>
-    <div id='vf-form-alert-panel' class='vf-alert'>
-    <transition-group :name='animation'>
-        <div v-for='(message, idx) in messages'
-            :key='`${idx}-${message.hash}`'
-            :style='{"z-index": message.zIndex}'
-            class="alert alert-dismissable"
-            :class='toastClass(message)'>
-          <a href="#" class="close" @click.stop.prevent='dismissToast(message, true)' aria-label="close">&times;</a>
-          <span v-html='message.text'></span>
-          <slot></slot>
-        </div>
-    </transition-group>
+    <div
+        id="vf-form-alert-panel"
+        class="vf-alert">
+        <transition-group :name="animation">
+            <div
+                v-for="(message, idx) in messages"
+                :key="`${idx}-${message.hash}`"
+                :style="{&quot;z-index&quot;: message.zIndex}"
+                :class="toastClass(message)"
+                class="alert alert-dismissable">
+                <a
+                    href="#"
+                    class="close"
+                    aria-label="close"
+                    @click.stop.prevent="dismissToast(message, true)">&times;</a>
+                <span v-html="message.text"/>
+                <slot/>
+            </div>
+        </transition-group>
 
-    <form-modal class='vf-modal-sm' v-if='alert' @close='closeAlert'>
-        <div slot='body' class='text-center'>
-            <h1 v-if='!!alert.status'><i class="fa fa-3x" :class='alertIconClass' aria-hidden="true"></i></h1>
-            <h4 v-html='alert.message'></h4>
-            <ul class='list-unstyled text-danger' v-if='flattenedAlertErrors.length'>
-                <li v-for='(error, key) in flattenedAlertErrors'
-                  :key='key'
-                  class='list-item'>
-                    <b>{{ error }}</b>
-                </li>
-            </ul>
-        </div>
-        <div v-if='alert.promise' class='text-right' slot='footer'>
-            <div class="btn btn-danger" @click='alert.promise.reject({status: "cancelled"})'>{{ alert.cancelText || 'Cancel'}}</div>
-            <div class="btn btn-default btn-primary" @click='alert.promise.resolve({status: "confirmed"})'>{{ alert.confirmText || 'OK'}}</div>
-        </div>
-    </form-modal>
+        <form-modal
+            v-if="alert"
+            class="vf-modal-sm"
+            @close="closeAlert">
+            <div
+                slot="body"
+                class="text-center">
+                <h1 v-if="!!alert.status"><i
+                    :class="alertIconClass"
+                    class="fa fa-3x"
+                    aria-hidden="true"/></h1>
+                <h4 v-html="alert.message"/>
+                <ul
+                    v-if="flattenedAlertErrors.length"
+                    class="list-unstyled text-danger">
+                    <li
+                        v-for="(error, key) in flattenedAlertErrors"
+                        :key="key"
+                        class="list-item">
+                        <b>{{ error }}</b>
+                    </li>
+                </ul>
+            </div>
+            <div
+                v-if="alert.promise"
+                slot="footer"
+                class="text-right">
+                <div
+                    class="btn btn-danger"
+                    @click="alert.promise.reject({status: &quot;cancelled&quot;})">{{ alert.cancelText || 'Cancel' }}</div>
+                <div
+                    class="btn btn-default btn-primary"
+                    @click="alert.promise.resolve({status: &quot;confirmed&quot;})">{{ alert.confirmText || 'OK' }}</div>
+            </div>
+        </form-modal>
 
     </div>
 </template>
@@ -116,6 +141,23 @@ export default {
         }
     },
 
+    watch: {
+        message (aVal) {
+            if (!_.isEmpty(aVal)) {
+                const message = {
+                    hash: this.makeVfUuid(),
+                    text: aVal
+                }
+
+                this.messages.unshift(message)
+
+                setTimeout(() => {
+                    this.dismissToast(message)
+                }, this.timeout)
+            }
+        }
+    },
+
     // ----------------------------------------------------------
     // Events
     // -------------------------------------------------------
@@ -137,23 +179,6 @@ export default {
             this.$vfalert.$off(types.ALERT, this.onAlert)
             this.$vfalert.$off(types.TOAST, this.onToast)
             this.$vfalert.$off(types.CONFIRM, this.onConfirm)
-        }
-    },
-
-    watch: {
-        message (aVal) {
-            if (!_.isEmpty(aVal)) {
-                const message = {
-                    hash: this.makeVfUuid(),
-                    text: aVal
-                }
-
-                this.messages.unshift(message)
-
-                setTimeout(() => {
-                    this.dismissToast(message)
-                }, this.timeout)
-            }
         }
     },
 

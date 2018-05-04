@@ -1,34 +1,42 @@
 <template>
-<!--
+    <!--
 Borrowed Heavily from
 https://github.com/fareez-ahamed/autocomplete-vuejs2
 -->
-<div class="form-group vf-form-group" :class='formClass'>
-    <div style="position:relative" :class="{'open':openSuggestion}">
-        <label :for='vf_uid'>{{ aLabel }}: </label>
-        <input
-            v-bind='$attrs'
-            v-on='$listeners'
-            type="text"
-            :id="vf_uid"
-            :name='property'
-            :value="aValue"
-            :style='inputStyle'
-            :class='inputClass'
-            @input="updateValue($event.target.value)"
-            @keydown.enter = 'enter'
-            @keydown.down = 'down'
-            @keydown.up = 'up'
-            class="form-control vf-form-control">
-        <ul class="dropdown-menu" style="width:100%">
-            <li v-for="(suggestion, idx) in matches" :key='idx'
-                :class="{'active': isActive(idx)}"
-                @click="suggestionClick(idx)">
-                <span class="clickable">{{ suggestion }}</span>
-            </li>
-        </ul>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <div
+            :class="{'open':openSuggestion}"
+            style="position:relative">
+            <label :for="vf_uid">{{ aLabel }}: </label>
+            <input
+                v-bind="$attrs"
+                :id="vf_uid"
+                :name="property"
+                :value="aValue"
+                :style="inputStyle"
+                :class="inputClass"
+                type="text"
+                class="form-control vf-form-control"
+                v-on="$listeners"
+                @input="updateValue($event.target.value)"
+                @keydown.enter = "enter"
+                @keydown.down = "down"
+                @keydown.up = "up">
+            <ul
+                class="dropdown-menu"
+                style="width:100%">
+                <li
+                    v-for="(suggestion, idx) in matches"
+                    :key="idx"
+                    :class="{'active': isActive(idx)}"
+                    @click="suggestionClick(idx)">
+                    <span class="clickable">{{ suggestion }}</span>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -53,12 +61,6 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(() => {
-            this.aValue = this.value
-        })
-    },
-
     computed: {
     // Filtering the suggestion based on the input
         matches () {
@@ -72,6 +74,12 @@ export default {
                this.matches.length !== 0 &&
                this.open === true
         }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            this.aValue = this.value
+        })
     },
     methods: {
         updateValue (value) {

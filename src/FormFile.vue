@@ -1,23 +1,28 @@
 <template>
-    <div class="form-group vf-form-group" :class='formClass'>
-        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            :for="vf_uid"
+            class="control-label vf-control-label">{{ aLabel }}</label>
         <input
-        type="file"
-        v-bind='$attrs'
-        v-on='$listeners'
-        :name="property"
-        :id="property"
-        :multiple="multiple"
-        :accept='_accept'
-        :style='inputStyle'
-        :class='inputClass'
-        @change="processFile($event)">
-        <small v-if='showAttached'>Current {{ pluralized }}: {{ currentFile }}</small>
+            v-bind="$attrs"
+            :name="property"
+            :id="property"
+            :multiple="multiple"
+            :accept="_accept"
+            :style="inputStyle"
+            :class="inputClass"
+            type="file"
+            v-on="$listeners"
+            @change="processFile($event)">
+        <small v-if="showAttached">Current {{ pluralized }}: {{ currentFile }}</small>
         <form-errors
-            v-if='displayErrors'
-            v-bind="{errors, warning, property}">
-        </form-errors>
-        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
+            v-if="displayErrors"
+            v-bind="{errors, warning, property}"/>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block"><small><slot name="help"/></small></p>
     </div>
 </template>
 
@@ -70,7 +75,7 @@ import { core } from './mixins'
 import { fileTypes } from './data_sources'
 
 export default {
-    name: 'form-file',
+    name: 'FormFile',
 
     mixins: [ core ],
 
@@ -95,14 +100,6 @@ export default {
         return {
             aValue: null
         }
-    },
-
-    mounted () {
-        this.$nextTick(() => {
-            if (this.value) {
-                this.aValue = this.value
-            }
-        })
     },
 
     computed: {
@@ -132,6 +129,14 @@ export default {
             }
             return true
         }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            if (this.value) {
+                this.aValue = this.value
+            }
+        })
     },
 
     methods: {

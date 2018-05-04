@@ -1,10 +1,12 @@
 <template>
-    <div class='loader-wrapper'>
-        <transition name='fade'>
-            <div v-if='loading' class='loader'>
-                <div class='ring-1'></div>
-                <div class='ring-2'></div>
-                <div class='ring-3'></div>
+    <div class="loader-wrapper">
+        <transition name="fade">
+            <div
+                v-if="loading"
+                class="loader">
+                <div class="ring-1"/>
+                <div class="ring-2"/>
+                <div class="ring-3"/>
             </div>
         </transition>
     </div>

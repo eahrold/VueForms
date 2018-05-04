@@ -1,12 +1,23 @@
 <template>
     <div>
-        <div class="segmented-control" :class='`text-${type}`'>
-            <template v-for='(opt, idx) in options'>
-                <input :key='`sc-input-${idx}`' v-model='aValue' :value='idx' type="radio" :name="property" :id="`sc-${vf_uid}-${idx}`">
+        <div
+            :class="`text-${type}`"
+            class="segmented-control">
+            <template v-for="(opt, idx) in options">
+                <input
+                    :key="`sc-input-${idx}`"
+                    v-model="aValue"
+                    :value="idx"
+                    :name="property"
+                    :id="`sc-${vf_uid}-${idx}`"
+                    type="radio">
             </template>
 
-            <template v-for='(opt, idx) in options'>
-                <label :key='`sc-label-${idx}`' :for="`sc-${vf_uid}-${idx}`" :data-value="opt">{{ opt }}</label>
+            <template v-for="(opt, idx) in options">
+                <label
+                    :key="`sc-label-${idx}`"
+                    :for="`sc-${vf_uid}-${idx}`"
+                    :data-value="opt">{{ opt }}</label>
             </template>
         </div>
     </div>

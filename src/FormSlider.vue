@@ -10,16 +10,17 @@
 
 <template>
     <div>
-        <label class='switch-label pull-left'>{{ aLabel }}</label>
+        <label class="switch-label pull-left">{{ aLabel }}</label>
         <div class="switch pull-left">
-            <input @change="toggle"
-                   v-model='aValue'
-                   :id="'switch-' + property"
-                   class="switch-toggle switch-toggle-round"
-                   type="checkbox">
-            <label :for="'switch-' + property"></label>
+            <input
+                v-model="aValue"
+                :id="'switch-' + property"
+                class="switch-toggle switch-toggle-round"
+                type="checkbox"
+                @change="toggle">
+            <label :for="'switch-' + property"/>
         </div>
-        <div class="clearfix"></div>
+        <div class="clearfix"/>
     </div>
 </template>
 

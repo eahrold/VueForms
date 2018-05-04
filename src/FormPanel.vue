@@ -1,8 +1,14 @@
 <template>
-    <div class="panel" :class='panelClass'>
-        <div v-if='hasHeaderSlot' class="panel-heading"><h4><slot name='heading'></slot></h4></div>
-        <div class="panel-body"><slot></slot></div>
-        <div v-if='hasFooterSlot' class="panel-footer"><slot name='footer'></slot></div>
+    <div
+        :class="panelClass"
+        class="panel">
+        <div
+            v-if="hasHeaderSlot"
+            class="panel-heading"><h4><slot name="heading"/></h4></div>
+        <div class="panel-body"><slot/></div>
+        <div
+            v-if="hasFooterSlot"
+            class="panel-footer"><slot name="footer"/></div>
     </div>
 </template>
 

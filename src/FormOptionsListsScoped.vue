@@ -1,41 +1,74 @@
 <template>
-<div class="form-group col col-md-12">
-    <!-- Lable  -->
-    <div class="row">
-        <slot name='label'>
-            <div class="col-md-12"><label v-if='label'>{{ label }}</label></div>
-        </slot>
-    </div>
-    <!-- End Label -->
+    <div class="form-group col col-md-12">
+        <!-- Lable  -->
+        <div class="row">
+            <slot name="label">
+                <div class="col-md-12"><label v-if="label">{{ label }}</label></div>
+            </slot>
+        </div>
+        <!-- End Label -->
 
-    <!-- List Groups -->
-    <div  class="col-sm-6">
-        <small class="help-text">Current Items</small>
-        <draggable class="value-container" :class='valueListClass' v-model="aValue" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-            <transition-group name="no" class="list-group draggable-list" tag="ul">
-                <li class="list-group-item" v-for="item in aValue" :key="item.id">
-                    <slot name='current' v-bind="item"></slot>
-                </li>
-            </transition-group>
-        </draggable>
-    </div>
+        <!-- List Groups -->
+        <div class="col-sm-6">
+            <small class="help-text">Current Items</small>
+            <draggable
+                :class="valueListClass"
+                v-model="aValue"
+                :options="dragOptions"
+                :move="onMove"
+                class="value-container"
+                @start="isDragging=true"
+                @end="isDragging=false">
+                <transition-group
+                    name="no"
+                    class="list-group draggable-list"
+                    tag="ul">
+                    <li
+                        v-for="item in aValue"
+                        :key="item.id"
+                        class="list-group-item">
+                        <slot
+                            v-bind="item"
+                            name="current"/>
+                    </li>
+                </transition-group>
+            </draggable>
+        </div>
 
-    <div class="col-sm-6">
-        <small class="help-text">Available Items</small>
-        <transition name='fade'>
-            <li v-if='showOptSearch' class="list-group-item"><input v-model='optSearch' class='form-control' placeholder="Search..."></li>
-        </transition>
+        <div class="col-sm-6">
+            <small class="help-text">Available Items</small>
+            <transition name="fade">
+                <li
+                    v-if="showOptSearch"
+                    class="list-group-item"><input
+                        v-model="optSearch"
+                        class="form-control"
+                        placeholder="Search..."></li>
+            </transition>
 
-        <draggable class="value-container" :class='optionsListClass' :value="availableOptions" :options="dragOptions" :move="onMove">
-            <transition-group name="no" class="list-group draggable-list" tag="ul">
-                <li class="list-group-item" v-for="item in availableOptions" :key="item.id">
-                    <slot name='available' v-bind="item"></slot>
-                </li>
-          </transition-group>
-        </draggable>
-    </div>
+            <draggable
+                :class="optionsListClass"
+                :value="availableOptions"
+                :options="dragOptions"
+                :move="onMove"
+                class="value-container">
+                <transition-group
+                    name="no"
+                    class="list-group draggable-list"
+                    tag="ul">
+                    <li
+                        v-for="item in availableOptions"
+                        :key="item.id"
+                        class="list-group-item">
+                        <slot
+                            v-bind="item"
+                            name="available"/>
+                    </li>
+                </transition-group>
+            </draggable>
+        </div>
     <!-- End List Groups -->
-</div>
+    </div>
 
 </template>
 <script>
@@ -97,32 +130,6 @@ export default {
         }
     },
 
-    mounted () {
-        this.aValue = this.value.map((entry, index) => {
-            return _.assign({}, entry, { order: index + 1, fixed: false })
-        })
-        this.aOptions = this.options
-    },
-
-    methods: {
-        orderList () {
-            this.aValue = this.aValue.sort((one, two) => { return one.order - two.order })
-        },
-
-        onMove ({relatedContext, draggedContext}) {
-            const relatedElement = relatedContext.element
-            const draggedElement = draggedContext.element
-            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-        },
-
-        elementDescription (element) {
-            if (this.textKey) {
-                return _.get(element, this.textKey, element.id)
-            }
-            return element.name || element.title || element.slug || element.id
-        }
-    },
-
     computed: {
         showOptSearch () {
             return !_.isEmpty(this.optSearch) || (!_.isEmpty(this.availableOptions) && (this.availableOptions.length >= 5))
@@ -180,6 +187,32 @@ export default {
             this.$nextTick(() => {
                 this.delayedDragging = false
             })
+        }
+    },
+
+    mounted () {
+        this.aValue = this.value.map((entry, index) => {
+            return _.assign({}, entry, { order: index + 1, fixed: false })
+        })
+        this.aOptions = this.options
+    },
+
+    methods: {
+        orderList () {
+            this.aValue = this.aValue.sort((one, two) => { return one.order - two.order })
+        },
+
+        onMove ({relatedContext, draggedContext}) {
+            const relatedElement = relatedContext.element
+            const draggedElement = draggedContext.element
+            return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+        },
+
+        elementDescription (element) {
+            if (this.textKey) {
+                return _.get(element, this.textKey, element.id)
+            }
+            return element.name || element.title || element.slug || element.id
         }
     }
 }

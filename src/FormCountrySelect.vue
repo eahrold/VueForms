@@ -1,16 +1,16 @@
 <template>
     <form-select
-        v-model='aValue'
-        v-bind='{
+        v-model="aValue"
+        v-bind="{
             property,
             options,
             label,
             errors,
             disabled,
             required,
-        }'
-        :multiple='false'
-        width='100%' />
+        }"
+        :multiple="false"
+        width="100%" />
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 <template>
     <div class="form-group vf-form-group upload">
 
-        <transition name='fade'>
-            <div v-if='id'>
+        <transition name="fade">
+            <div v-if="id">
 
                 <div class="row">
                     <label class="col-xs-12">{{ label }}</label>
@@ -11,35 +11,37 @@
                 <div class="row">
                     <div class="col-xs-3">
                         <vue-dropzone
-                            :existing='value'
+                            :existing="value"
                             :url="requestEndpoint"
                             :accepted-file-types="acceptedFileTypes"
-                            :headers='requestHeaders'
-                            :max-number-of-files='limit'
-                            :max-file-size-in-mb='maxFileSize'
+                            :headers="requestHeaders"
+                            :max-number-of-files="limit"
+                            :max-file-size-in-mb="maxFileSize"
                             @error="dzError"
-                            @progress='progress = arguments[0]'
+                            @progress="progress = arguments[0]"
                             @success="dzAdded"
                             @removed="dzRemoved">
-                            <template slot='button'>{{ btnText }}</template>
+                            <template slot="button">{{ btnText }}</template>
                         </vue-dropzone>
                     </div>
                     <div class="col-xs-9">
-                        <form-progress-bar :progress='progress'></form-progress-bar>
+                        <form-progress-bar :progress="progress"/>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-xs-12">
                         <small class="help-block form-text">{{ dzHelpText }}</small>
-                        <small v-if='helpText' class="help-block form-text">{{ helpText }}</small>
+                        <small
+                            v-if="helpText"
+                            class="help-block form-text">{{ helpText }}</small>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-xs-12">
                         <template v-if="!!$slots['thumbnail']">
-                            <slot name='thumbnail'></slot>
+                            <slot name="thumbnail"/>
                         </template>
                     </div>
                 </div>

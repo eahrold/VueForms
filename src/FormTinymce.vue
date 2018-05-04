@@ -1,25 +1,32 @@
 <template>
-    <div class="form-group vf-form-group" :class='formClass'>
-        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            :for="vf_uid"
+            class="control-label vf-control-label">{{ aLabel }}</label>
 
         <form-file-gallery
-            v-if='showModal'
-            @choose='chooseFile'
-            @close='closeFilePicker'
-            src-key='path'
-            :add-meta='true'
-            :endpoint='$vfconfig.filesEndpoint("images")'
-          :errors='errors'>
-        </form-file-gallery>
+            v-if="showModal"
+            :add-meta="true"
+            :endpoint="$vfconfig.filesEndpoint(&quot;images&quot;)"
+            :errors="errors"
+            src-key="path"
+            @choose="chooseFile"
+            @close="closeFilePicker"/>
 
-        <vue-tinymce :api-key="_apiKey" v-model='aValue' :init='init'></vue-tinymce>
+        <vue-tinymce
+            :api-key="_apiKey"
+            v-model="aValue"
+            :init="init"/>
 
         <form-errors
-            v-if='displayErrors'
-            v-bind="{errors, warning, property}">
-        </form-errors>
+            v-if="displayErrors"
+            v-bind="{errors, warning, property}"/>
 
-        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block"><small><slot name="help"/></small></p>
     </div>
 </template>
 
@@ -61,12 +68,6 @@ export default {
     },
 
     mixins: [ core ],
-    data () {
-        return {
-            showModal: false,
-            editor: null
-        }
-    },
 
     props: {
         tinymceConfig: {
@@ -79,25 +80,10 @@ export default {
             required: false
         }
     },
-
-    methods: {
-        closeFilePicker () {
-            this.showModal = false
-        },
-
-        openFilePicker () {
-            this.showModal = true
-        },
-
-        chooseFile (file) {
-            let content
-            if (_.isObject(file)) {
-                content = file
-            } else if (_.isString(file)) {
-                content = {path: file}
-            }
-            this.editor.insertContent(imageTemplate(content))
-            this.closeFilePicker()
+    data () {
+        return {
+            showModal: false,
+            editor: null
         }
     },
 
@@ -123,6 +109,27 @@ export default {
                 }
             }
             return _.assign(init, defaults, _.get(this.$vfconfig, 'tinymce.config', {}))
+        }
+    },
+
+    methods: {
+        closeFilePicker () {
+            this.showModal = false
+        },
+
+        openFilePicker () {
+            this.showModal = true
+        },
+
+        chooseFile (file) {
+            let content
+            if (_.isObject(file)) {
+                content = file
+            } else if (_.isString(file)) {
+                content = {path: file}
+            }
+            this.editor.insertContent(imageTemplate(content))
+            this.closeFilePicker()
         }
     }
 

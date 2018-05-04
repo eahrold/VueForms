@@ -1,17 +1,29 @@
 <template>
     <div class="form-group">
         <form-file-gallery
-            v-if='showModal'
-            v-bind='{srcKey, endpoint, headers}'
-            @choose='choose'
-            @close='close'>
-        </form-file-gallery>
+            v-if="showModal"
+            v-bind="{srcKey, endpoint, headers}"
+            @choose="choose"
+            @close="close"/>
 
-        <button class='btn btn-default' @click='open'>{{ btnText }}</button>
-        <span v-if='isImage(aValue)'><img class='img-thumbnail selected' style="height: 2.4em" :src="aValue"> {{ aValue }}</span>
-        <span v-else-if='aValue'><i class="fa fa-file-o" aria-hidden="true"></i> {{ aValue }}</span>
-        <transition name='fade'>
-            <a v-if='aValue' @click='aValue = null' class='pull-right text-danger' href="#"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+        <button
+            class="btn btn-default"
+            @click="open">{{ btnText }}</button>
+        <span v-if="isImage(aValue)"><img
+            :src="aValue"
+            class="img-thumbnail selected"
+            style="height: 2.4em"> {{ aValue }}</span>
+        <span v-else-if="aValue"><i
+            class="fa fa-file-o"
+            aria-hidden="true"/> {{ aValue }}</span>
+        <transition name="fade">
+            <a
+                v-if="aValue"
+                class="pull-right text-danger"
+                href="#"
+                @click="aValue = null"><i
+                    class="fa fa-times-circle"
+                    aria-hidden="true"/></a>
         </transition>
     </div>
 </template>
@@ -24,10 +36,10 @@ import { core } from './mixins'
 import FormFileGallery from './FormFileGallery'
 
 export default {
-    mixins: [ core ],
     components: {
         'form-file-gallery': FormFileGallery
     },
+    mixins: [ core ],
 
     props: {
         headers: {

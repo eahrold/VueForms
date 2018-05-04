@@ -1,9 +1,15 @@
 <template>
-<form :action="url" :id='rootId' :class='{dropzone: id === rootId}'>
-    <div v-if="!!$slots['button']" :id="id" class="btn btn-primary btn-dropzone">
-        <slot name='button'></slot>
-    </div>
-</form>
+    <form
+        :action="url"
+        :id="rootId"
+        :class="{dropzone: id === rootId}">
+        <div
+            v-if="!!$slots['button']"
+            :id="id"
+            class="btn btn-primary btn-dropzone">
+            <slot name="button"/>
+        </div>
+    </form>
 </template>
 
 <script>
@@ -70,13 +76,6 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(() => {
-            this.loadDropzone()
-            this.preload()
-        })
-    },
-
     data () {
         return {
             dropzone: null
@@ -114,6 +113,13 @@ export default {
             }
             return opts
         }
+    },
+
+    mounted () {
+        this.$nextTick(() => {
+            this.loadDropzone()
+            this.preload()
+        })
     },
 
     methods: {

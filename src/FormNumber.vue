@@ -1,18 +1,17 @@
 <template>
     <form-text
-        type='number'
-        v-model.number='aValue'
+        v-model.number="aValue"
         v-bind="$attrs"
-        v-on="$listeners"
         :min="min"
         :max="max"
         :errors="errors"
         :property="property"
         :label="label"
-        :style='inputStyle'
-        :class='inputClass'
-        number>
-    </form-text>
+        :style="inputStyle"
+        :class="inputClass"
+        type="number"
+        number
+        v-on="$listeners"/>
 </template>
 
 <script>

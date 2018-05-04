@@ -1,9 +1,23 @@
 <template>
-    <form :id='vf_uid' v-bind='{name, enctype, novalidate}'>
-        <input type='hidden' id='_method' name='_method' v-model="method"/>
-        <input v-if='vf_csfrToken' type='hidden' name='_token' :value='vf_csfrToken'>
-        <slot></slot>
-        <form-save-button v-if='saves' :saving='saving' :is-dirty='isDirty' @save='save'></form-save-button>
+    <form
+        :id="vf_uid"
+        v-bind="{name, enctype, novalidate}">
+        <input
+            id="_method"
+            v-model="method"
+            type="hidden"
+            name="_method">
+        <input
+            v-if="vf_csfrToken"
+            :value="vf_csfrToken"
+            type="hidden"
+            name="_token">
+        <slot/>
+        <form-save-button
+            v-if="saves"
+            :saving="saving"
+            :is-dirty="isDirty"
+            @save="save"/>
     </form>
 </template>
 
@@ -58,6 +72,21 @@ export default {
         }
     },
 
+    computed: {
+        vf_csfrToken () {
+            if (_.isString(this.csfrToken)) return this.csfrToken
+            if (this.csfrToken !== false && this.$vfconfig) {
+                return this.$vfconfig.csfrToken()
+            }
+        },
+
+        enctype () {
+            return this.multipart
+                ? 'multipart/form-data'
+                : 'application/x-www-form-urlencoded'
+        }
+    },
+
     mounted () {
         this.$nextTick(() => {
             window.foo = this.$children
@@ -83,21 +112,6 @@ export default {
                 this.$emit('error', respose)
                 this.finally()
             })
-        }
-    },
-
-    computed: {
-        vf_csfrToken () {
-            if (_.isString(this.csfrToken)) return this.csfrToken
-            if (this.csfrToken !== false && this.$vfconfig) {
-                return this.$vfconfig.csfrToken()
-            }
-        },
-
-        enctype () {
-            return this.multipart
-                ? 'multipart/form-data'
-                : 'application/x-www-form-urlencoded'
         }
     }
 }

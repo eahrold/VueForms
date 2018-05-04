@@ -1,9 +1,9 @@
 <template>
     <div class="vf-form-section">
-        <h4 class='vf-section-title'><slot name='heading'>{{ heading }}</slot></h4>
+        <h4 class="vf-section-title"><slot name="heading">{{ heading }}</slot></h4>
         <div class="row">
             <div class="col">
-            <slot></slot>
+                <slot/>
             </div>
         </div>
     </div>

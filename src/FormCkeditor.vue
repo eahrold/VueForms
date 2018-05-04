@@ -5,30 +5,38 @@
 </style>
 
 <template>
-    <div v-if='hasEditor' class="form-group vf-form-group" :class='formClass'>
-        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
+    <div
+        v-if="hasEditor"
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            :for="vf_uid"
+            class="control-label vf-control-label">{{ aLabel }}</label>
 
         <form-file-gallery
-            v-if='showModal'
-            @choose='chooseFile'
-            @close='closeFilePicker'
-            src-key='path'
-            :add-meta='true'
-            :endpoint='$vfconfig.filesEndpoint("images")'
-          :errors='errors'>
-        </form-file-gallery>
+            v-if="showModal"
+            :add-meta="true"
+            :endpoint="$vfconfig.filesEndpoint(&quot;images&quot;)"
+            :errors="errors"
+            src-key="path"
+            @choose="chooseFile"
+            @close="closeFilePicker"/>
 
-        <textarea :name="property" :rows='rows' :id="vf_uid">
+        <textarea
+            :name="property"
+            :rows="rows"
+            :id="vf_uid">
             <div>--- Enter Text Here ---</div>
             <div>--- Place Image Above ---</div>
         </textarea>
 
         <form-errors
-            v-if='displayErrors'
-            v-bind="{errors, warning, property}">
-        </form-errors>
+            v-if="displayErrors"
+            v-bind="{errors, warning, property}"/>
 
-        <p v-if="!!$slots['help']" class="help-block vf-help-block"><small><slot name='help'></slot></small></p>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block"><small><slot name="help"/></small></p>
     </div>
 </template>
 
@@ -144,13 +152,6 @@ export default {
         errors
     ],
 
-    data () {
-        return {
-            showModal: false,
-            editor: null
-        }
-    },
-
     props: {
         cfg: {
             type: Object,
@@ -159,6 +160,35 @@ export default {
         rows: {
             type: Number,
             default: 5
+        }
+    },
+
+    data () {
+        return {
+            showModal: false,
+            editor: null
+        }
+    },
+
+    computed: {
+        hasEditor () {
+            return !!ClassicEditor
+        },
+
+        _headers () {
+            return this.headers || this.$vfconfig.headers
+        },
+
+        _endpoint () {
+            return this.endpoint || this.$vfconfig.endpoints.upload
+        }
+    },
+
+    watch: {
+        value (newVal) {
+            if (newVal !== this._last) {
+                this.editor.setData(newVal)
+            }
         }
     },
 
@@ -239,28 +269,6 @@ export default {
             .catch(error => {
                 console.error(error)
             })
-    },
-
-    computed: {
-        hasEditor () {
-            return !!ClassicEditor
-        },
-
-        _headers () {
-            return this.headers || this.$vfconfig.headers
-        },
-
-        _endpoint () {
-            return this.endpoint || this.$vfconfig.endpoints.upload
-        }
-    },
-
-    watch: {
-        value (newVal) {
-            if (newVal !== this._last) {
-                this.editor.setData(newVal)
-            }
-        }
     },
 
     created () {

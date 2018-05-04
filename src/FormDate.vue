@@ -1,29 +1,38 @@
 <template>
-    <div class="form-group vf-form-group" :class='formClass'>
-        <label class="control-label vf-control-label" :for='vf_uid'>{{ aLabel }}</label>
-        <div class='input-group date'>
+    <div
+        :class="formClass"
+        class="form-group vf-form-group">
+        <label
+            :for="vf_uid"
+            class="control-label vf-control-label">{{ aLabel }}</label>
+        <div class="input-group date">
             <input
-                v-bind='$attrs'
-                v-on='$listeners'
-                :id='vf_uid'
-                :style='inputStyle'
-                :class='inputClass'
-                @blur='onBlur'
-                @focus='onFocus'
-                type='text'
-                class="form-control vf-form-control" />
-                 <a @click.prevent.stop='clear' class="input-group-addon input-group-prepend vf-input-group-addon">
-                    <span class="input-group-text">
-                        <i class="fa fa-times-circle" aria-hidden="true"></i>
-                    </span>
-                 </a>
+                v-bind="$attrs"
+                :id="vf_uid"
+                :style="inputStyle"
+                :class="inputClass"
+                type="text"
+                class="form-control vf-form-control"
+                v-on="$listeners"
+                @blur="onBlur"
+                @focus="onFocus" >
+            <a
+                class="input-group-addon input-group-prepend vf-input-group-addon"
+                @click.prevent.stop="clear">
+                <span class="input-group-text">
+                    <i
+                        class="fa fa-times-circle"
+                        aria-hidden="true"/>
+                </span>
+            </a>
         </div>
         <form-errors
-            v-if='displayErrors'
-            v-bind="{errors, warning, property}">
-        </form-errors>
-        <p v-if="!!$slots['help']" class="help-block vf-help-block">
-            <small><slot name='help'></slot></small>
+            v-if="displayErrors"
+            v-bind="{errors, warning, property}"/>
+        <p
+            v-if="!!$slots['help']"
+            class="help-block vf-help-block">
+            <small><slot name="help"/></small>
         </p>
     </div>
 </template>
@@ -42,6 +51,17 @@ export default {
     data () {
         return {
             picker: null
+        }
+    },
+
+    watch: {
+        timePicker () {
+            this.load()
+            this.$_emitDates(moment(this.start))
+        },
+
+        value (change) {
+            this.updateStart(moment(change))
         }
     },
 
@@ -93,17 +113,6 @@ export default {
         clear () {
             this.$emit('input', null)
             this.rootPicker.val('')
-        }
-    },
-
-    watch: {
-        timePicker () {
-            this.load()
-            this.$_emitDates(moment(this.start))
-        },
-
-        value (change) {
-            this.updateStart(moment(change))
         }
     }
 }
