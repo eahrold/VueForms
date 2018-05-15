@@ -16,7 +16,7 @@
                     <input
                         :name="property"
                         :id="`${vf_uid}-${idx}`"
-                        :value="opt"
+                        :value="optionValue(opt, idx)"
                         v-model="aValue"
                         type="checkbox"
                         class="form-check-input">
@@ -37,7 +37,7 @@
                 <input
                     :name="property"
                     :id="`${vf_uid}-${idx}`"
-                    :value="opt"
+                    :value="optionValue(opt, idx)"
                     v-model="aValue"
                     type="checkbox"
                     class="form-check-input">
