@@ -7437,6 +7437,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return !this.passes;
             },
 
+            get inUse() {
+                return !_lodash2.default.isEmpty(this.VueForms_validation_registry);
+            },
+
             // ----------------------------------------------------------
             // Methods
             // -------------------------------------------------------

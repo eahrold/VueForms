@@ -76,6 +76,10 @@ export const ValidatorStore = function () {
             return !this.passes
         },
 
+        get inUse () {
+            return !_.isEmpty(this.VueForms_validation_registry)
+        },
+
         // ----------------------------------------------------------
         // Methods
         // -------------------------------------------------------
