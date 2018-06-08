@@ -7,6 +7,8 @@ const lang = {
     EMAIL: 'This must be a valid email address',
     URL: 'The value must be a valid, secure url (https://)',
     MATCH: 'Does not match',
+    MAX: 'The value is to large',
+    MIN: 'The value is too small',
     DATE: 'The value must be a valid date',
     IMAGE: 'This must be a valid image'
 }
@@ -40,6 +42,14 @@ export const ValidatorStore = function () {
 
             date: function (value) {
                 return Rules.date(value) || lang.DATE
+            },
+
+            max: function (max) {
+                return Rules.max(max) || lang.MAX
+            },
+
+            min: function (min) {
+                return Rules.min(min) || lang.MIN
             },
 
             match: function (compared, label) {
@@ -111,7 +121,19 @@ export const ValidatorStore = function () {
             })
         },
 
+        addRules(rules) {
+            _.forOwn(rules, (rule, key)=>{
+                this.addRule(key, value)
+            })
+        },
+
         addRule (key, rule) {
+            if (!_.isString(key)) {
+                console.error("[VFValidation] The First Parameter passed into addRule shuould be the key", { key, rule})
+            }
+            if (!_.isFunction(rule)) {
+                console.error("[VFValidation] Rules must be functions", { key, rule})
+            }
             this.VueForm_validation_internalRules[key] = rule
         },
 

@@ -14,7 +14,7 @@
                     class="close"
                     aria-label="close"
                     @click.stop.prevent="dismissToast(message, true)">&times;</a>
-                <span v-html="message.text"/>
+                <span class='vf-toast-message' v-html="message.text"/>
                 <slot/>
             </div>
         </transition-group>
@@ -289,6 +289,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.vf-toast-message {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 .vf-alert {
   position: fixed;
   right: 2em;

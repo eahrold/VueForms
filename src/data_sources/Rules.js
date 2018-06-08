@@ -28,6 +28,30 @@ export const date = function (value) {
     return moment(value).isValid()
 }
 
+export const max = function (max) {
+    return function (value) {
+        if (_.isString(value)) {
+            return value.length <= max
+        }
+        if (_.isNumber(value)) {
+            return value <= max
+        }
+        return true
+    }
+}
+
+export const min = function (max) {
+    return function (value) {
+        if (_.isString(value) || _.isArray(value)) {
+            return value.length > max
+        }
+        if (_.isNumber(value)) {
+            return value > max
+        }
+        return true
+    }
+}
+
 export const match = function (compared, label, response) {
     return function (value) {
         return (compared === value) || (response || false)

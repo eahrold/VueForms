@@ -3,17 +3,18 @@
         <div class="vf-modal-mask">
             <div class="vf-modal-wrapper">
                 <div class="vf-modal-container">
-                    <span
-                        class="vf-modal-close close"
-                        @click="$emit('close')">x</span>
+                    <template v-if='!hideHeader'>
+                        <span @click="$emit('close')"
+                            class="vf-modal-close close">x</span>
 
-                    <div
-                        v-if="!!$slots.header"
-                        class="vf-modal-header clearfix">
-                        <h4>
-                            <slot name="header"/>
-                        </h4>
-                    </div>
+                        <div
+                            v-if="!!$slots.header"
+                            class="vf-modal-header clearfix">
+                            <h4>
+                                <slot name="header"/>
+                            </h4>
+                        </div>
+                     </template>
 
                     <div class="vf-modal-body clearfix">
                         <slot name="body">

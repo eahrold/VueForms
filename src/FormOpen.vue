@@ -3,6 +3,7 @@
         :id="vf_uid"
         v-bind="{name, enctype, novalidate}">
         <input
+            @submit.prevent='save'
             id="_method"
             v-model="method"
             type="hidden"
@@ -87,11 +88,7 @@ export default {
         }
     },
 
-    mounted () {
-        this.$nextTick(() => {
-            window.foo = this.$children
-        })
-    },
+    mounted () {},
 
     methods: {
         formData () {
