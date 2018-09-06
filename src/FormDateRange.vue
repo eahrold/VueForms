@@ -198,6 +198,8 @@ export default {
                 this.clear()
             }).on('apply.daterangepicker', (ev, picker) => {
                 this.$_emitDates(picker.startDate, picker.endDate)
+            }).on('hide.daterangepicker', (ev, picker) => {
+                this.$_emitDates(picker.startDate, picker.endDate)
             })
 
             if (invalid) { this.rootPicker.val('') }
