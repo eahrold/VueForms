@@ -14,7 +14,7 @@
                     <input
                         :name="property"
                         :id="`${vf_uid}-${idx}`"
-                        :value="opt"
+                        :value="optionValue(opt, idx)"
                         v-model="aValue"
                         type="radio">
                     {{ optionDescription(opt) }}
@@ -34,7 +34,7 @@
                 <input
                     :name="property"
                     :id="`${vf_uid}-${idx}`"
-                    :value="opt"
+                    :value="optionValue(opt, idx)"
                     v-model="aValue"
                     type="radio">
                 {{ optionDescription(opt) }}

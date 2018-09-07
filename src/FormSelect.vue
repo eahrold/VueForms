@@ -10,6 +10,7 @@
             v-model="aValue"
             :id="vf_uid"
             :name="property"
+            v-bind="$attrs"
             class="form-control">
             <option
                 v-if="!required"

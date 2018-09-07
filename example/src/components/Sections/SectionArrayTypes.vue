@@ -20,9 +20,28 @@
       :inline='inline'
       :options='options'
       :errors='errors'>
-          <template slot='help'><b>Current Val: {{ model.checkbox_group | pick('value') }}</b> </template>
+          <template slot='help'><b>Current Val: {{ model.checkbox_group }}</b> </template>
     </form-checkbox-group>
 
+    <form-select-many
+      label='Select Many Complex Array'
+      v-model='model.selectize_multiple'
+      :multiple='true'
+      :value-key='false'
+      text-key='name'
+      property='selectize_multiple'
+      :options='optionsComplex'
+      :errors='errors'>
+    </form-select-many>
+
+    <form-select-many
+      label='Select Many From Array'
+      v-model='model.checkbox_group_from_array'
+      :multiple='true'
+      property='checkbox_group_from_array'
+      :options='optionsArray'
+      :errors='errors'>
+    </form-select-many>
 
     <form-checkbox-group
       v-model='model.checkbox_group_from_array'
@@ -97,6 +116,7 @@ export default {
     props: {
         options: {},
         optionsArray: {},
+        optionsComplex: {},
         status: {},
     },
 

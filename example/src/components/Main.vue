@@ -2,7 +2,7 @@
 <div class="col-md-8 h-100 o-scroll">
   <h1>Vue Forms</h1>
   <SectionFeatures id='section-feature' v-model='model' v-bind='{errors,}' />
-  <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, status, options, optionsArray}' />
+  <SectionArrayTypes id='section-array' v-model='model' v-bind='{errors, status, options, optionsArray, optionsComplex}' />
   <SectionAdvancedText id='section-advanced-text-editor' v-model='model' v-bind='{errors,}' />
   <SectionCore id='section-core' v-model='model' v-bind='{validation, show, errors,}'/>
   <SectionAlert id='section-alert' v-model='model' v-bind='{fakeErrors, status, statuses, positions, messages}' />
@@ -69,6 +69,12 @@ export default {
         'Option 1',
         'Option 2',
         'Option 3',
+      ],
+
+      optionsComplex: [
+        {id: 1001, name: "james", email: 'Option 4'},
+        {id: 1002, name: "antremple", email: 'Option 3'},
+        {id: 1003, name: "thramplor", email: 'Option 6'},
       ],
 
       model: this.value

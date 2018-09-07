@@ -31,6 +31,10 @@ export default {
     computed: {
         $_VF_OptionsMixin_optionsListIsObject () {
             return !isArray(this.options)
+        },
+
+        optionsIsArrayOfObjects() {
+            return isObject(_.get(this, 'options.0'))
         }
     },
 
