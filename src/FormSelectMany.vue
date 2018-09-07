@@ -86,9 +86,9 @@
                 :aria-labelledby="vf_uid"
                 class="dropdown-menu">
 
-                <div class="form-group search px-1">
+                <div v-if='search' class="form-group search px-1">
                     <input
-                        v-model="search"
+                        v-model="searchString"
                         class="form-control"
                         placeholder="Search...">
                 </div>
@@ -144,6 +144,11 @@ import { core, options } from './mixins'
 export default {
     mixins: [ core, options ],
     props: {
+        search: {
+            type: Boolean,
+            default: true,
+        },
+
         textKey: {
             type: String,
             default: 'text'
@@ -188,7 +193,7 @@ export default {
     data () {
         return {
             aValue: this.value || this._defaultValue,
-            search: ''
+            searchString: ''
         }
     },
 
@@ -198,10 +203,13 @@ export default {
         },
 
         _filtered () {
-            if (_.isEmpty(this.search)) return this.options
+            if (_.isEmpty(this.searchString)) return this.options
 
-            const regex = new RegExp(this.search, 'i')
+            const regex = new RegExp(this.searchString, 'i')
             return _.filter(this.options, (opt) => {
+                if(_.isString(opt)) {
+                    return opt.match(regex)
+                }
                 return opt[this.textKey].match(regex)
             })
         },
