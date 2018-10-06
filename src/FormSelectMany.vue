@@ -232,7 +232,7 @@ export default {
                             return item[this.textKey]
                         }
 
-                        if(_.isString(item)) {
+                        if(!_.isObject(item)) {
                             if(this.optionsIsArrayOfObjects) {
                                 return _.find(this.options, {[this.valueKey]: item})[this.textKey]
                             }
