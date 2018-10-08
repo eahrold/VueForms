@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import _ from 'lodash'
-import mimeTypes from '../data_sources/SupportedMimeTypes'
+import { fileTypes, } from '../data_sources'
 
 const DEFAULT_DATE_FORMAT = 'MM/DD/YYYY'
 const DEFAULT_TIME_FORMAT = 'h:mm A'
@@ -42,8 +42,8 @@ export default new Vue({
 
     computed: {
         fileTypes () {
-            return mimeTypes
-        }
+            return fileTypes
+        },
     },
 
     methods: {

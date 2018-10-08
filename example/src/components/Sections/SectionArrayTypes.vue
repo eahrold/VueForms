@@ -24,15 +24,36 @@
     </form-checkbox-group>
 
     <form-select-many
+      label='Select Many Complex Array (Slotted Scoped)'
+      v-model='model.select_many_scoped'
+      :multiple='true'
+      :value-map='$vfselect.valueMap.raw'
+      :is-selected='$vfselect.isSelected.byId'
+      property='select_many_scoped'
+      :options='optionsComplex'
+      :errors='errors'>
+      <span slot='selected' slot-scope='context'>You've Chosen <b>{{ context.value.length }}</b> items <em>({{
+        context.value.map(function(i){ return i.email}).slice(0, 2).join(', ')
+      }}...)</em></span>
+      <span slot='option-label' slot-scope='context'>
+        <b>{{ context.option.name }}</b><em> {{ context.option.email }}</em>
+      </span>
+    </form-select-many>
+
+    <pre class="bg-code"><code>{{ JSON.stringify(model.select_many_scoped, null, 2) }}</code></pre>
+
+    <form-select-many
       label='Select Many Complex Array'
       v-model='model.selectize_multiple'
       :multiple='true'
       :value-key='false'
       text-key='name'
+      :is-selected='$vfselect.isSelected.byId'
       property='selectize_multiple'
       :options='optionsComplex'
       :errors='errors'>
     </form-select-many>
+
 
     <form-select-many
       label='Select Many From Array'
@@ -74,18 +95,6 @@
       text-key='text'>
         <template slot='help'><b>Current Val: {{ model.radio_select }}</b> </template>
     </form-radio-button>
-
-    <form-selectize
-      v-model='model.selectize_multiple'
-      property='selectize_multiple'
-      :multiple='true'
-      :inline='inline'
-      :options='options'
-      :errors='errors'>
-          <template slot='help'>
-            <b>Current Val: {{ model.selectize_multiple }}</b>
-          </template>
-    </form-selectize>
 
     <form-options-list
       v-model='model.options_list'
@@ -137,4 +146,10 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.bg-code {
+  border-radius: 1em;
+  background: #fff3f5;
+  padding: 1em
+}
+</style>

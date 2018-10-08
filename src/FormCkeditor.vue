@@ -16,7 +16,7 @@
         <form-file-gallery
             v-if="showModal"
             :add-meta="true"
-            :endpoint="$vfconfig.filesEndpoint(&quot;images&quot;)"
+            :endpoint="$vfconfig.filesEndpoint('/images')"
             :errors="errors"
             src-key="path"
             @choose="chooseFile"
@@ -69,6 +69,7 @@ const imageTemplate = function ({path, caption, alt, width, height, align}) {
     return imgTemplate
 }
 
+
 class FileUploadAdapter {
     constructor (loader, {endpoint, headers}) {
         this.loader = loader
@@ -118,7 +119,7 @@ class FileUploadAdapter {
                 const response = this.responseHandler(event)
 
                 if (response.success) {
-                    console.log('Fulfilling', response)
+                    // console.log('Fulfilling', response)
                     return resolve(response)
                 }
                 return resolve(this.loader.file)
@@ -251,7 +252,7 @@ export default {
 
                 const plugins = ClassicEditor.build.plugins.map(plugin => plugin.pluginName)
                 const toolbar = Array.from(editor.ui.componentFactory.names())
-                console.log('[VF] CKeditor Config', {toolbar, plugins})
+                // console.log('[VF] CKeditor Config', {toolbar, plugins})
 
                 editor.model.document.on('change', (evt, data) => {
                     // console.log("chage", {evt, data})
@@ -261,7 +262,7 @@ export default {
                 editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
                     const config = {
                         'headers': this._headers,
-                        'endpoint': this._endpoint
+                        'endpoint': this._endpoint,
                     }
                     return new FileUploadAdapter(loader, config)
                 }

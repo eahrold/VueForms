@@ -9,7 +9,7 @@
         <form-file-gallery
             v-if="showModal"
             :add-meta="true"
-            :endpoint="$vfconfig.filesEndpoint(&quot;images&quot;)"
+            :endpoint="$vfconfig.filesEndpoint('/images')"
             :errors="errors"
             src-key="path"
             @choose="chooseFile"

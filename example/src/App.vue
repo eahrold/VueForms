@@ -58,6 +58,7 @@ export default {
 
         selectize: null,
         selectize_multiple: [],
+        select_many_scoped: [],
         checkbox_group: [],
         checkbox_group_from_array: [],
         segmented_control_info: 0,

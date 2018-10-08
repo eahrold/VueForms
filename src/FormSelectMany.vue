@@ -16,13 +16,28 @@
     overflow-y: scroll;
 }
 
+.dropdown {
+
+    .bs-caret .fa-caret-down {
+        transition: .5s transform ease;
+        transform: rotate(-90deg);
+    }
+
+
+    &.show {
+        .bs-caret .fa-caret-down {
+            transform: rotate(0deg);
+        }
+    }
+}
+
 .btn-left {
     text-align: left;
 }
 
 .dropdown-item {
     width: 100%;
-    padding: 0.25rem 1.5rem;
+    padding: 0;
     clear: both;
     text-align: inherit;
     white-space: nowrap;
@@ -49,8 +64,15 @@
         }
     }
 
+    > input.d-none {
+        display: none;
+    }
+
     > label {
+        cursor: pointer;
+        padding: 0.25rem 1.5rem;
         width: 100%;
+        heigh: 100%;
     }
 }
 
@@ -74,7 +96,7 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false">
-                {{ selected }}
+                <slot name='selected' v-bind='{value,}'>{{ selectedText }}</slot>
                 <span class="bs-caret pull-right">
                     <slot name="caret"><i
                         class="fa fa-caret-down"
@@ -94,33 +116,30 @@
                 </div>
                 <form class="dropdown-content-wrapper">
                     <div
-                        v-for="(opt, idx) in _filtered"
+                        v-for="(opt, idx) in $_filtered"
                         :key="idx"
                         :class="optItemClass(opt, idx)"
                         class="dropdown-item">
                         <label
                             :for="`vf-sel-${vf_uid}-${idx}`"
                             :class="optLabelClass(opt, idx)">
-                            <span>{{ optionDescription(opt) }} <i
-                                v-if="isSelected(opt, idx)"
+                            <input
+                                v-model="aValue"
+                                class="d-none"
+                                :id="`vf-sel-${vf_uid}-${idx}`"
+                                :value="optionValue(opt, idx)"
+                                :name="property"
+                                :type="$_inputType">
+                            <slot name='option-label' v-bind='{
+                                option: opt, selected: $_isSelected(opt, idx)
+                            }'>
+                                <span>{{ optionDescription(opt) }}</span>
+                            </slot>
+                            <transition name='fade' :duration='0.5'>
+                            <i  v-if="$_isSelected(opt, idx)"
                                 class="fa fa-check pull-right"
-                                aria-hidden="true"/></span>
-                            <input
-                                v-if="multiple"
-                                :id="`vf-sel-${vf_uid}-${idx}`"
-                                v-model="aValue"
-                                :value="optionValue(opt, idx)"
-                                class="invisible"
-                                name="property"
-                                type="checkbox">
-                            <input
-                                v-else
-                                :id="`vf-sel-${vf_uid}-${idx}`"
-                                v-model="aValue"
-                                :value="optionValue(opt, idx)"
-                                class="invisible"
-                                name="property"
-                                type="radio">
+                                aria-hidden="true"/>
+                            </transition>
                         </label>
                     </div>
                 </form>
@@ -144,6 +163,11 @@ import { core, options } from './mixins'
 export default {
     mixins: [ core, options ],
     props: {
+        isSelected: {
+            type: Function,
+            required: false
+        },
+
         search: {
             type: Boolean,
             default: true,
@@ -192,30 +216,33 @@ export default {
 
     data () {
         return {
-            aValue: this.value || this._defaultValue,
+            aValue: this.value || this.$_defaultValue,
             searchString: ''
         }
     },
 
     computed: {
-        _defaultValue() {
+        $_inputType() {
+            return this.multiple ? 'checkbox' : 'radio'
+        },
+
+        $_defaultValue() {
             return (this.multiple ? [] : null)
         },
 
-        _filtered () {
+        $_filtered () {
             if (_.isEmpty(this.searchString)) return this.options
 
             const regex = new RegExp(this.searchString, 'i')
             return _.filter(this.options, (opt) => {
-                if(_.isString(opt)) {
-                    return opt.match(regex)
-                }
-                return opt[this.textKey].match(regex)
+                return JSON.stringify(opt).match(regex)
             })
         },
 
 
-        selected () {
+        selectedText () {
+            if (!! this.$scopedSlots.selected) return;
+
             if (!_.isEmpty(this.aValue)) {
                 if (!this.multiple) {
                     if(this.optionsIsArrayOfObjects) {
@@ -263,13 +290,13 @@ export default {
     methods: {
         optLabelClass (opt, idx) {
             return {
-                [this.hilightClass]: this.isSelected(opt, idx)
+                [this.hilightClass]: this.$_isSelected(opt, idx)
             }
         },
 
         optItemClass (opt, idx) {
             return {
-                'selected': this.isSelected(opt, idx)
+                'selected': this.$_isSelected(opt, idx)
             }
         },
 
@@ -286,13 +313,15 @@ export default {
 
         $_isSingleSingleSelected(opt, idx) {
             const {aValue, valueKey} = this
-            console.log({opt, idx, aValue, valueKey})
-
             const optVal = _.get(opt, this.valueKey, opt)
             return (optVal === _.get(this.aValue, this.valueKey) || this.aValue === optVal)
         },
 
-        isSelected (opt, idx) {
+        $_isSelected (opt, idx) {
+            if(this.isSelected) {
+                return this.isSelected(opt, this.aValue)
+            }
+
             return this.multiple
                 ? this.$_isMultipleSelected(opt, idx)
                 : this.$_isSingleSingleSelected(opt, idx)

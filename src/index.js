@@ -18,7 +18,8 @@ import {
 
 import {
     dateFormats,
-    fileTypes
+    fileTypes,
+    selectUtil,
 } from './data_sources'
 
 import FormText from './FormText'
@@ -33,7 +34,6 @@ import FormCheckbox from './FormCheckbox'
 import FormSelect from './FormSelect'
 import FormSelectMany from './FormSelectMany'
 
-import FormSelectize from './FormSelectize'
 import FormRadioButton from './FormRadioButton'
 import FormCheckboxGroup from './FormCheckboxGroup'
 import FormSegmentedControl from './FormSegmentedControl'
@@ -83,7 +83,6 @@ export const VueForms = {
         Vue.component('form-daterange', FormDateRange)
         Vue.component('form-date', FormDate)
         Vue.component('form-text-mask', FormTextMask)
-        Vue.component('form-selectize', FormSelectize)
 
         Vue.component('form-name-prefix-select', FormNamePrefixSelect)
         Vue.component('form-name-suffix-select', FormNameSuffixSelect)
@@ -115,6 +114,13 @@ export const VueFormsCore = {
         Object.defineProperty(Vue.prototype, '$vfconfig', {
             get () {
                 return vfconfig
+            }
+        })
+
+
+        Object.defineProperty(Vue.prototype, '$vfselect', {
+            get () {
+                return selectUtil
             }
         })
 
@@ -198,7 +204,6 @@ export {
     FormCheckbox,
 
     FormSelect,
-    FormSelectize,
     FormSelectMany,
     FormRadioButton,
     FormCheckboxGroup,

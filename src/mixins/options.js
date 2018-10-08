@@ -2,6 +2,11 @@ import { isObject, isArray } from 'lodash'
 
 export default {
     props: {
+        valueMap: {
+            type: Function,
+            required: false
+        },
+
         options: {
             type: [ Array, Object ],
             required: false
@@ -47,6 +52,10 @@ export default {
         },
 
         optionValue (opt, indexOrKey) {
+            if(this.valueMap) {
+                return this.valueMap(opt, indexOrKey)
+            }
+
             if (!this.$_VF_OptionsMixin_optionsListIsObject && this.useIndexAsValue) return indexOrKey
 
             if (this.useKeyAsValue === true) {

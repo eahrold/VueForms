@@ -72,9 +72,9 @@ export default {
       ],
 
       optionsComplex: [
-        {id: 1001, name: "james", email: 'Option 4'},
-        {id: 1002, name: "antremple", email: 'Option 3'},
-        {id: 1003, name: "thramplor", email: 'Option 6'},
+        {id: 1001, name: "james", email: 'james@home.com'},
+        {id: 1002, name: "antremple", email: 'antremple@nowhere.ville'},
+        {id: 1003, name: "thramplor", email: 'thramplor@snazzygard.org'},
       ],
 
       model: this.value
