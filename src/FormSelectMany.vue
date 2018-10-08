@@ -64,7 +64,7 @@
         }
     }
 
-    > input.d-none {
+    .d-none {
         display: none;
     }
 
