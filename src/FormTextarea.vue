@@ -8,7 +8,6 @@
         <textarea
             :id="vf_uid"
             :disabled="disabled"
-            :placeholder="placeholder"
             :rows="rows"
             :style="inputStyle"
             :class="inputClass"

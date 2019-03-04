@@ -22,10 +22,9 @@
             <transition
                 name="fade"
                 mode="out-in">
-                <div
-                    v-if="selected"
+                <div v-if="selected"
                     key="meta"
-                    class="row">
+                    class="col col-12">
                     <form-file-edit
                         v-model="selected"
                         :src="fileSrc(selected)"
@@ -42,39 +41,9 @@
                         </div>
                     </form-file-edit>
                 </div>
-                <div
-                    v-else
+                <div v-else
                     key="gallery"
                     class="row">
-                    <div
-                        v-if="pagedFiles.length"
-                        class="col-xs-12 text-right">
-                        <ul class="pagination">
-                            <li
-                                :class="{disabled: !hasPrev}"
-                                class="page-item">
-                                <a
-                                    href="javascript:void(0)"
-                                    class="page-link"
-                                    @click.prevent.stop="pagePrev">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="">Previous</span>
-                                </a>
-                            </li>
-                            <li
-                                :class="{disabled: !hasNext}"
-                                class="page-item">
-                                <a
-                                    href="javascript:void(0)"
-                                    class="page-link"
-                                    @click.prevent.stop="pageNext" >
-                                    <span class="">Next</span>
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
                     <div
                         v-for="(file, idx) in pagedFiles"
                         :key="idx"
@@ -93,9 +62,43 @@
                             <p>{{ fileSrc(file) }}</p>
                         </form-panel>
                     </div>
-                    <div class="col-xs-12 text-center">
-                        <h4 class="help-text help-block"> {{ offset + 1 }} - {{ offset + limit }} of {{ files.length }}</h4>
+
+                    <div class="row text-center">
+                        <div v-if="pagedFiles.length"
+                            class="col-12 w-100 col-xs-12 text-right">
+                            <ul class="pagination">
+                                <li
+                                    :class="{disabled: !hasPrev}"
+                                    class="page-item">
+                                    <a
+                                        href="javascript:void(0)"
+                                        class="page-link"
+                                        @click.prevent.stop="pagePrev">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="">Previous</span>
+                                    </a>
+                                </li>
+                                <li
+                                    :class="{disabled: !hasNext}"
+                                    class="page-item">
+                                    <a
+                                        href="javascript:void(0)"
+                                        class="page-link"
+                                        @click.prevent.stop="pageNext" >
+                                        <span class="">Next</span>
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-12 w-100 text-center">
+                            <h4 class="help-text help-block">
+                                {{ offset + 1 }} - {{ offset + limit }} of {{ files.length }}
+                            </h4>
+                        </div>
                     </div>
+
                 </div>
             </transition>
         </div>

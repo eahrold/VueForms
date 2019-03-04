@@ -1,16 +1,14 @@
 <template>
     <div class="panel panel-default vf-panel">
-        <div
-            :class="{movable, }"
-            class="panel-heading clearfix"
-            @click="isCollapsed = !isCollapsed">
-            <div class="pull-left"><slot name="heading">
-                {{ heading }}
-            </slot>
+        <div :class="{movable, }" class="panel-heading clearfix" @click="isCollapsed = !isCollapsed">
+            <div class="pull-left">
+                <slot name="heading">
+                    {{ heading }}
+                </slot>
             </div>
             <div class="pull-right">
                 <i
-                    :class="isCollapsed ? &quot;fa-caret-up&quot; : &quot;fa-caret-down&quot;"
+                    :class='isCollapsed ? "fa-caret-up" : "fa-caret-down"'
                     class="fa"
                     aria-hidden="true"/>
             </div>

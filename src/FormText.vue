@@ -13,7 +13,6 @@
                 v-model="aValue"
                 v-bind="$attrs"
                 :type="type"
-                :placeholder="placeholder"
                 :required="required"
                 :name="property"
                 :id="vf_uid"

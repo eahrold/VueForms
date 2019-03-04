@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-12">
+    <div class="col-md-12 row">
         <div class="col-md-4">
             <img
                 :style="thumbStyle"

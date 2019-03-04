@@ -22,6 +22,8 @@
             @choose="chooseFile"
             @close="closeFilePicker"/>
 
+
+        <div @click='showModal=true'>Insert Image</div>
         <textarea
             :name="property"
             :rows="rows"
@@ -52,23 +54,6 @@ import {
 import FormFileGallery from './FormFileGallery'
 
 const ClassicEditor = window.ClassicEditor
-
-const imageTemplate = function ({path, caption, alt, width, height, align}) {
-    // const style = ''
-    const attrs = _.reduce({src: path, alt, width, height, align}, (result, value, key) => {
-        if (value) {
-            result += `${[key]}="${value}" `
-        }
-        return result
-    }, '')
-    let imgTemplate = `<img ${attrs} />`
-
-    if (_.isString(caption)) {
-        return `<figure class="image">${imgTemplate}<figcaption><p>${caption.replace(/(?:\r\n|\r|\n)/g, '<br />')}</p></figcaption></figure>`
-    }
-    return imgTemplate
-}
-
 
 class FileUploadAdapter {
     constructor (loader, {endpoint, headers}) {
@@ -250,7 +235,6 @@ export default {
             .then(editor => {
                 this.editor = editor
 
-                const plugins = ClassicEditor.build.plugins.map(plugin => plugin.pluginName)
                 const toolbar = Array.from(editor.ui.componentFactory.names())
                 // console.log('[VF] CKeditor Config', {toolbar, plugins})
 
@@ -268,7 +252,7 @@ export default {
                 }
             })
             .catch(error => {
-                console.error(error)
+                console.error("CKeditor Error", {error})
             })
     },
 
@@ -299,7 +283,16 @@ export default {
             } else if (_.isString(file)) {
                 content = {path: file}
             }
-            this.editor.insertContent(imageTemplate(content))
+
+            const { editor } = this;
+            editor.model.change( writer => {
+                const imageElement = writer.createElement( 'image', {
+                    src: content.path
+                } );
+                // Insert the image in the current selection location.
+                editor.model.insertContent( imageElement, editor.model.document.selection );
+            } );
+
             this.closeFilePicker()
         }
     }

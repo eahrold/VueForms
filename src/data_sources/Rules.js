@@ -68,5 +68,7 @@ export default {
     email,
     date,
     url,
-    match
+    match,
+    min,
+    max,
 }

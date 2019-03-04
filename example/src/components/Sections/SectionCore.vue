@@ -45,6 +45,7 @@
     v-model='model.url'
     property='url'
     :errors='errors'
+    placeholder='http//pretend.com'
     :rules='[$validation.rules.url]'>
       <template slot='help'>
         <b>[Current Val: {{ `${model.url}` }}]</b>
@@ -89,6 +90,7 @@
     <form-textarea
       v-model='model.text_area'
       property='text_area'
+      placeholder="This is the placeholder text"
       :errors='errors'>
     </form-textarea>
   </form-section>

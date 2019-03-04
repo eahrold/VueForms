@@ -10,7 +10,6 @@
                 v-model="aValue"
                 v-bind="$attrs"
                 :id="vf_uid"
-                :placeholder="placeholder"
                 :name="property"
                 :mask="mask"
                 :disabled="disabled || !enabled"

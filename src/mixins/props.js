@@ -10,11 +10,6 @@ export default {
             required: true
         },
 
-        placeholder: {
-            type: [String, Number],
-            default: ''
-        },
-
         property: {
             type: String,
             required: true
